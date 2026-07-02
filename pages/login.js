@@ -10,6 +10,8 @@ export class LoginPage {
     }
 
 async loginIntoSite(email, password) {
+
+    
   await this.page.getByText(this.account).click();
   await this.page.getByLabel(this.email).fill(email);
   await this.page.getByPlaceholder(this.password).fill(password);
