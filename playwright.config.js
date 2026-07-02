@@ -17,7 +17,7 @@ module.exports = defineConfig({
   reporter: [
     ['html', { outputFolder: 'reports' }],
     ['list'],
-   // ['allure-playwright', { outputFolder: 'reports/allure-results' }], 
+    // ['allure-playwright', { outputFolder: 'reports/allure-results' }],
   ],
 
   use: {
