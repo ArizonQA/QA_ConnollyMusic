@@ -1,6 +1,6 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
-
+require('dotenv').config();
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -21,8 +21,10 @@ module.exports = defineConfig({
   ],
 
   use: {
-    baseURL: 'https://uat.ges.store/',
-    headless: !!process.env.CI,
+    baseURL: process.env.BASE_URL,
+    headless: process.env.HEADLESS
+  ? process.env.HEADLESS === 'true'
+  : !!process.env.CI,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
