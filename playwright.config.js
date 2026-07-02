@@ -15,14 +15,14 @@ module.exports = defineConfig({
 //npx allure open reports/allure-report
 
   reporter: [
-    ['html', { outputFolder: 'reports/html' }],
+    ['html', { outputFolder: 'reports' }],
     ['list'],
-    ['allure-playwright', { outputFolder: 'reports/allure-results' }], 
+   // ['allure-playwright', { outputFolder: 'reports/allure-results' }], 
   ],
 
   use: {
     baseURL: 'https://uat.ges.store/',
-    headless: false, 
+    headless: !!process.env.CI,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

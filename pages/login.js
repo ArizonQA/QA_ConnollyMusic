@@ -1,4 +1,3 @@
-// Login Page Object Model - Converted from Java to JavaScript
 
 export class LoginPage {
     constructor(page) {
@@ -16,5 +15,5 @@ async loginIntoSite(email, password) {
   await this.page.getByPlaceholder(this.password).fill(password);
   await this.page.getByText(this.submit).click();
 }
-}
 
+}
