@@ -77,7 +77,7 @@ jobs:
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: "Playwright Test Report - Build #${{ github.run_number }}"
-          to: stevenrogersvvm@gmail.com
+          to: vijay@arizon.digital
           from: ${{ secrets.EMAIL_USERNAME }}
           body: |
             Exhibitor Portal Execution Report
