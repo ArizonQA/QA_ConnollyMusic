@@ -14,12 +14,14 @@
     "test:report": "playwright show-report",
     "test:watch": "playwright test --watch",
     "codegen": "playwright codegen http://localhost:3000",
-    "report:generate": "allure generate ./reports/allure-results --clean -o ./reports/allure-report",
-    "report:open": "allure open ./reports/allure-report"
+    "report:generate": "npx allure generate ./reports/allure-results --clean -o ./reports/allure-report",
+    "report:open": "npx allure open ./reports/allure-report"
   },
-  "devDependencies": {
-    "@playwright/test": "^1.40.0"
-  },
+ "devDependencies": {
+  "@playwright/test": "^1.61.1",
+  "allure-playwright": "^2.15.1",
+  "allure-commandline": "^2.43.0"
+},
   "dependencies": {
     "dotenv": "^17.4.2"
   }

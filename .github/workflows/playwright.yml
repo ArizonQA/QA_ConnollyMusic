@@ -47,7 +47,7 @@ jobs:
           path: reports/
           if-no-files-found: ignore
 
-      - name: Create test summary
+      - name: Summary Report
         if: always()
         run: |
           echo "## Test Results Summary" > test-summary.md
@@ -90,7 +90,7 @@ jobs:
             Repository: ${{ github.repository }}
             Workflow: ${{ github.workflow }}
             
-            The HTML test report is attached.
+            Allure HTML test report is attached.
             
             View full workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           attachments: test-summary.md,test-reports.zip

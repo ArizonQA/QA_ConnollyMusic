@@ -7,4 +7,13 @@ export const test = base.extend({
   }
 });
 
+test.afterEach(async ({ page }, testInfo) => {
+  if (testInfo.status === 'passed' || testInfo.status === 'failed') {
+    await testInfo.attach('screenshot', {
+      body: await page.screenshot({ fullPage: true }),
+      contentType: 'image/png',
+    });
+  }
+});
+
 export { expect } from '@playwright/test';

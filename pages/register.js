@@ -1,95 +1,69 @@
+import { expect } from '@playwright/test';
+
 export class RegisterPage {
   constructor(page) {
     this.page = page;
 
-    // Label locator
-    this.customerNumberInput = page.getByLabel('Customer Number');
-
-    // Role locator
+    // Search / Company selection
+    this.customerNumber = page.getByLabel('Customer Number');
     this.searchButton = page.getByRole('button', { name: 'Search' });
+    this.selectFirst = page.getByText('Select').first();
 
-    // Text locator
-    this.selectCompanyOption = page.getByText('Select').first();
-
-    // Text locator
-    this.confirmCreateYourAccountButton = page.getByText('Confirm & Create Your Account');
-
-    // Label locator
-    this.firstNameInput = page.getByLabel('First Name');
-
-    // Label locator
-    this.lastNameInput = page.getByLabel('Last Name');
-
-    // Label locator
-    this.phoneNumberInput = page.getByLabel('Phone Number');
-
-    // Label locator
-    this.emailAddressInput = page.getByLabel('Email Address');
-
-    // Label locator
-    this.emailConfirmationInput = page.getByLabel('Email Confirmation');
-
-    // Role locator (textbox)
-    this.passwordInput = page.getByRole('textbox', { name: 'Password' });
-
-    // Label locator
-    this.eacCheckbox = page.getByLabel('3rd Party/EAC');
-
-    // Role locator
+    // Confirmation / create
+    this.confirmCreateYourAccount = page.getByText('Confirm & Create Your Account');
     this.createAccountButton = page.getByRole('button', { name: 'Create Account' });
 
-    // Role locator
+    // User fields
+    this.firstName = page.getByLabel('First Name');
+    this.lastName = page.getByLabel('Last Name');
+    this.emailAddress = page.getByLabel('Email Address');
+    this.emailConfirmation = page.getByLabel('Email Confirmation');
+    this.phoneNumber = page.getByLabel('Phone Number');
+    this.passwordTextbox = page.getByRole('textbox', { name: 'Password' });
+    this.EACCheckbox = page.getByLabel('3rd Party/EAC');
+
+    // New company / EAC form fields
     this.submitRequestButton = page.getByRole('button', { name: 'Submit Request' });
+    this.fName = page.getByLabel('First Name');
+    this.nName = page.getByLabel('Last Name');
+    this.cEmail = page.getByLabel('Email');
+    this.companyName = page.getByLabel('Company Name');
+    this.address = page.getByLabel('Company Address');
+    this.city = page.getByLabel('City');
+    this.postalCode = page.getByLabel('Postal Code');
+    this.phone = page.getByLabel('Phone');
 
-    // Label locator
-    this.companyContactFirstNameInput = page.getByLabel('First Name');
+    // Country / State selectors
+    this.countryButton = page.getByRole('button', { name: 'Select Country' });
+    this.searchCountry = page.getByPlaceholder('Search...');
+    this.selectCountry = page.locator("//li[normalize-space()='United States']");
 
-    // Label locator
-    this.companyContactLastNameInput = page.getByLabel('Last Name');
+    this.stateButton = page.getByRole('button', { name: 'Select State' });
+    this.searchState = page.getByPlaceholder('Search...');
+    this.selectState = page.locator("//li[normalize-space()='New York']");
 
-    // Label locator
-    this.companyEmailInput = page.getByLabel('Email');
-
-    // Label locator
-    this.companyNameInput = page.getByLabel('Company Name');
-
-    // Label locator
-    this.companyAddressInput = page.getByLabel('Company Address');
-
-    // Label locator
-    this.cityInput = page.getByLabel('City');
-
-    // Role locator
-    this.countryDropdown = page.getByRole('button', { name: 'Select Country' });
-
-    // Placeholder locator
-    this.countrySearchInput = page.getByPlaceholder('Search...');
-
-    // XPath locator
-    this.unitedStatesOption = page.locator("//li[normalize-space()='United States']");
-
-    // Role locator
-    this.stateDropdown = page.getByRole('button', { name: 'Select State' });
-
-    // Placeholder locator
-    this.stateSearchInput = page.getByPlaceholder('Search...');
-
-    // XPath locator
-    this.newYorkOption = page.locator("//li[normalize-space()='New York']");
-
-    // Label locator
-    this.postalCodeInput = page.getByLabel('Postal Code');
-
-    // Label locator
-    this.phoneInput = page.getByLabel('Phone');
-
-    // Role locator
     this.submitButton = page.getByRole('button', { name: 'Submit' });
+
+    this.myprofile= page.getByText('My Profile');
+    this.companyName = page.getByLabel('Company Name');
   }
 
 
-  async ExistingCustomerRegistration() {
-    await this.customerNumberInput.fill('123456');
+  async registerWithExistingCompany(data) {
+    await this.customerNumber.fill("414518");
+    await this.searchButton.click();
+    await this.selectFirst.click();
+    await this.confirmCreateYourAccount.click();
+    await this.createAccountButton.click();
+    
+    await this.firstName.fill(data.firstName);
+    await this.lastName.fill(data.lastName);
+    await this.emailAddress.fill(data.email);
+    await this.emailConfirmation.fill(data.email);
+    await this.phoneNumber.fill(data.phone);
+    await this.passwordTextbox.nth(0).fill(data.password);
+    await this.passwordTextbox.nth(1).fill(data.password);
+    await this.createAccountButton.click();
+
   }
-  
 }
