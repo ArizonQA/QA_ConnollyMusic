@@ -46,3 +46,50 @@ jobs:
           name: playwright-report
           path: reports/
           if-no-files-found: ignore
+
+      - name: Create test summary
+        if: always()
+        run: |
+          echo "## Test Results Summary" > test-summary.md
+          echo "**Build**: ${{ github.run_number }}" >> test-summary.md
+          echo "**Branch**: ${{ github.ref_name }}" >> test-summary.md
+          echo "**Commit**: ${{ github.sha }}" >> test-summary.md
+          echo "**Status**: ${{ job.status }}" >> test-summary.md
+          echo "" >> test-summary.md
+          echo "Reports are attached to this email." >> test-summary.md
+
+      - name: Compress reports
+        if: always()
+        run: |
+          if [ -d "reports" ] && [ "$(ls -A reports)" ]; then
+            zip -r test-reports.zip reports/
+          else
+            echo "No reports to compress"
+          fi
+
+      - name: Send Email with Reports
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp-mail.outlook.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Playwright Test Report - Build #${{ github.run_number }}"
+          to: vijay@arizon.digital
+          from: ${{ secrets.EMAIL_USERNAME }}
+          body: |
+            Exhibitor Portal Execution Report
+            
+            Build #${{ github.run_number }}
+            Status: ${{ job.status }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            
+            Repository: ${{ github.repository }}
+            Workflow: ${{ github.workflow }}
+            
+            The HTML test report is attached.
+            
+            View full workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          attachments: test-summary.md,test-reports.zip
