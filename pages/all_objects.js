@@ -17,4 +17,5 @@ export class AllPageObjects {
     if (!this._register) this._register = new RegisterPage(this.page);
     return this._register;
   }
+  
 }

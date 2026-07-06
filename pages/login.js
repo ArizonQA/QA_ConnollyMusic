@@ -11,6 +11,9 @@ export class LoginPage {
         this.passwordTextbox = page.getByPlaceholder('Enter Your Password...');
         this.loginButton = page.getByRole('button', { name: 'Log in' });
         this.registerLink = page.getByText('Create an Account');
+
+        this.securitycodeTextbox = page.locator("//input[@type='password']");
+        this.continuetoWebsite = page.locator("//button[.='Continue']");
     }
 
 

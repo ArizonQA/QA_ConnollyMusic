@@ -9,8 +9,8 @@ module.exports = defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 0: 0,
-  workers: process.env.CI ? 3 : undefined,
+  retries: process.env.CI ? 0:0,
+  workers: process.env.CI ? 3:undefined,
 
 //npx allure generate reports/allure-results --clean -o reports/allure-report
 //npx allure open reports/allure-report
@@ -22,7 +22,7 @@ module.exports = defineConfig({
   ],
 
   use: {
-    baseURL: process.env.BASE_URL,
+    baseURL: "https://dev.ges.store/",
     headless: process.env.HEADLESS
   ? process.env.HEADLESS === 'true'
   : !!process.env.CI,
