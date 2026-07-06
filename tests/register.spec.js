@@ -8,13 +8,16 @@ test.beforeEach(async ({ page, AllPageObjects }) => {
   
   await AllPageObjects.login().accountMenu.click();
   await AllPageObjects.login().registerLink.click();
+  await expect(page).toHaveURL("https://dev.ges.store/findcompany");
 
 });
 
-test.skip("Register with existing company as Exhibitor", async ({ page, AllPageObjects }) => {
+test("Register with existing company as Exhibitor", async ({ page, AllPageObjects }) => {
   
 
   await AllPageObjects.register().register_With_Existing_Company_As_Exhibitor(RegisterTestData.existingCompany());
+
+
  // await AllPageObjects.register().myprofile.click();
 
  // await expect(AllPageObjects.register().companyName.not.toBeNull();
@@ -23,7 +26,7 @@ test.skip("Register with existing company as Exhibitor", async ({ page, AllPageO
 
 });
 
-test.skip("Register with existing company as Eac", async ({ page, AllPageObjects }) => {
+test("Register with existing company as Eac", async ({ page, AllPageObjects }) => {
   
 
   await AllPageObjects.register().register_With_Existing_Company_As_Eac(RegisterTestData.existingCompanyAsEac());

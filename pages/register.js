@@ -54,8 +54,7 @@ export class RegisterPage {
     await this.searchButton.click();
     await this.selectFirst.click();
     await this.confirmCreateYourAccount.click();
-    await this.createAccountButton.click();
-    
+
     await this.firstName.fill(data.firstName);
     await this.lastName.fill(data.lastName);
     await this.emailAddress.fill(data.email);
@@ -72,8 +71,8 @@ export class RegisterPage {
     await this.searchButton.click();
     await this.selectFirst.click();
     await this.confirmCreateYourAccount.click();
-    await this.createAccountButton.click();
     
+ 
     await this.firstName.fill(EacData.firstName);
     await this.lastName.fill(EacData.lastName);
     await this.emailAddress.fill(EacData.email);
@@ -91,6 +90,8 @@ export class RegisterPage {
     await this.customerNumber.fill("customernumber");
     await this.searchButton.click();
     await  this.submitRequestButton.click();
+    await this.page.waitForTimeout(2000);
+    await expect(this.page).toHaveURL("https://dev.ges.store/findcompany/submit");
     await this.fName.fill(NewExhibitorData.company.firstName);
     await this.nName.fill(NewExhibitorData.company.lastName);
     await this.cEmail.fill(NewExhibitorData.company.email);
@@ -107,8 +108,8 @@ export class RegisterPage {
     await this.postalCode.fill(NewExhibitorData.company.postalCode);
     await this.phone.fill(NewExhibitorData.company.phone);
     await this.submitButton.click();
-
-    await this.confirmCreateYourAccount.click();
+    
+await this.confirmCreateYourAccount.click();
     
     await this.firstName.fill(NewExhibitorData.company.userfirstName);
     await this.lastName.fill(NewExhibitorData.company.userlastName);
@@ -126,6 +127,8 @@ export class RegisterPage {
     await this.customerNumber.fill("customernumber");
     await this.searchButton.click();
     await  this.submitRequestButton.click();
+    await this.page.waitForTimeout(2000);
+    await expect(this.page).toHaveURL("https://dev.ges.store/findcompany/submit");
     await this.fName.fill(NewEacData.company.firstName);
     await this.nName.fill(NewEacData.company.lastName);
     await this.cEmail.fill(NewEacData.company.email);
@@ -143,7 +146,6 @@ export class RegisterPage {
     await this.submitButton.click();
 
     await this.confirmCreateYourAccount.click();
-    await this.createAccountButton.click();
     
     await this.firstName.fill(NewEacData.company.userfirstName);
     await this.lastName.fill(NewEacData.company.userlastName);
