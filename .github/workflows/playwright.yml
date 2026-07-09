@@ -5,125 +5,128 @@ on:
     branches:
       - main
       - master
+
   pull_request:
     branches:
       - main
       - master
+
   workflow_dispatch:
+
   schedule:
-  - cron: '0 2 1 * *'
+    - cron: '0 2 1 * *'
 
 jobs:
   test:
-    timeout-minutes: 60
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
+      - name: Run Playwright Tests
         run: npx playwright test --project=chromium
         env:
           CI: true
 
-      - name: Install Allure commandline
+      - name: Install Allure CLI
         if: always()
         run: npm install -g allure-commandline
 
-      - name: Generate Allure report
+      - name: Generate Allure Report
         if: always()
-        run: npx allure generate allure-results --clean -o reports/allure-report
+        run: |
+          mkdir -p reports
+          allure generate allure-results --clean -o reports/allure-report
 
-      - name: Upload Playwright report
+      - name: Create Summary
+        if: always()
+        run: |
+          echo "## Test Execution Summary" > test-summary.md
+          echo "" >> test-summary.md
+          echo "Build : ${{ github.run_number }}" >> test-summary.md
+          echo "Status: ${{ job.status }}" >> test-summary.md
+          echo "Branch: ${{ github.ref_name }}" >> test-summary.md
+          echo "Commit: ${{ github.sha }}" >> test-summary.md
+
+      - name: Zip Reports
+        if: always()
+        run: |
+          if [ -d reports ]; then
+            zip -r test-reports.zip reports
+          fi
+
+      - name: Verify Files
+        if: always()
+        run: |
+          echo "Current Directory"
+          pwd
+
+          echo ""
+          echo "Generated Files"
+          ls -lh
+
+          echo ""
+          echo "Reports Folder"
+          ls -R reports || true
+
+      - name: Upload Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: reports/
-          if-no-files-found: ignore
+          name: Test-Reports
+          path: |
+            reports
+            test-reports.zip
+            test-summary.md
 
-      - name: Summary Report
+      - name: Send Email
         if: always()
-        run: |
-          echo "## Test Results Summary" > test-summary.md
-          echo "**Build**: ${{ github.run_number }}" >> test-summary.md
-          echo "**Branch**: ${{ github.ref_name }}" >> test-summary.md
-          echo "**Commit**: ${{ github.sha }}" >> test-summary.md
-          echo "**Status**: ${{ job.status }}" >> test-summary.md
-          echo "" >> test-summary.md
-          echo "Reports are attached to this email." >> test-summary.md
-
-      - name: Compress reports
-        if: always()
-        env:
-          ZIP_PASSWORD: ${{ secrets.REPORT_ZIP_PASSWORD }}
-        run: |
-          # Password-protected so Gmail's content scanner can't inspect the .js
-          # files bundled inside the HTML reports and block the email (552-5.7.0).
-
-          # Playwright's built-in HTML report (excluding the allure-report subfolder)
-          if [ -d "reports" ] && [ "$(find reports -maxdepth 1 -mindepth 1 ! -name allure-report)" ]; then
-            zip -r -P "$ZIP_PASSWORD" playwright-report.zip reports -x "reports/allure-report/*"
-          else
-            echo "No Playwright HTML report to compress"
-          fi
-
-          # Allure HTML report, zipped separately for clarity
-          if [ -d "reports/allure-report" ] && [ "$(ls -A reports/allure-report)" ]; then
-            zip -r -P "$ZIP_PASSWORD" allure-report.zip reports/allure-report
-          else
-            echo "No Allure report to compress"
-          fi
-
-      - name: Send Email with Reports
-        if: always()
-        uses: dawidd6/action-send-mail@v18
+        uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
+
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: "Playwright Test Report - Build #${{ github.run_number }}"
+
+          subject: Playwright Test Report - Build #${{ github.run_number }}
+
           to: vijay@arizon.digital
           from: ${{ secrets.EMAIL_USERNAME }}
+
           body: |
-            Exhibitor Portal Execution Report
+            Hello,
 
-            Build #${{ github.run_number }}
-            Status: ${{ job.status }}
-            Branch: ${{ github.ref_name }}
-            Commit: ${{ github.sha }}
+            Playwright execution has completed.
 
-            Repository: ${{ github.repository }}
-            Workflow: ${{ github.workflow }}
+            Build Number : ${{ github.run_number }}
+            Status       : ${{ job.status }}
+            Branch       : ${{ github.ref_name }}
+            Commit       : ${{ github.sha }}
 
-            Attachments:
-            - playwright-report.zip -> Playwright's built-in HTML report
-            - allure-report.zip -> Allure HTML report
+            Repository   : ${{ github.repository }}
+            Workflow     : ${{ github.workflow }}
 
-            Both zips are password-protected (Gmail blocks .js files even inside
-            zips, so encryption is required to deliver the report by email).
-            Zip password: ${{ secrets.REPORT_ZIP_PASSWORD }}
+            Reports are attached.
 
-            Note: The Allure report is a static site that loads data via fetch(),
-            so it won't render correctly if you just double-click index.html.
-            Unzip it and serve it locally instead, e.g.:
-              npx allure open reports/allure-report
-            or any local static file server pointed at the extracted folder.
+            Workflow URL:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            View full workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          attachments: test-summary.md,playwright-report.zip,allure-report.zip
+          attachments: |
+            test-summary.md
+            test-reports.zip
