@@ -108,7 +108,7 @@ export class RegisterPage {
     await this.postalCode.fill(NewExhibitorData.company.postalCode);
     await this.phone.fill(NewExhibitorData.company.phone);
     await this.submitButton.click();
-    
+
 await this.confirmCreateYourAccount.click();
     
     await this.firstName.fill(NewExhibitorData.company.userfirstName);

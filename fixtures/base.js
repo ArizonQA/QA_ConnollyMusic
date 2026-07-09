@@ -1,10 +1,16 @@
 import { test as base } from '@playwright/test';
 import { AllPageObjects } from '../pages/all_objects.js';
+import { ExcelUtils } from '../utils/ExcelUtils.js';
 
 export const test = base.extend({
   AllPageObjects: async ({ page }, use) => {
     await use(new AllPageObjects(page));
-  }
+  },
+
+   excel: async ({}, use) => {
+        await use(ExcelUtils);
+    }
+
 });
 
 test.afterEach(async ({ page }, testInfo) => {
@@ -12,8 +18,11 @@ test.afterEach(async ({ page }, testInfo) => {
     await testInfo.attach('screenshot', {
       body: await page.screenshot({ fullPage: true }),
       contentType: 'image/png',
+
     });
   }
 });
+
+
 
 export { expect } from '@playwright/test';

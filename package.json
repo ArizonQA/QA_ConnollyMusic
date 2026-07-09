@@ -17,12 +17,14 @@
     "report:generate": "npx allure generate ./reports/allure-results --clean -o ./reports/allure-report",
     "report:open": "npx allure open ./reports/allure-report"
   },
- "devDependencies": {
-  "@playwright/test": "^1.61.1",
-  "allure-playwright": "^2.15.1",
-  "allure-commandline": "^2.43.0"
-},
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "allure-commandline": "^2.43.0",
+    "allure-playwright": "^2.15.1"
+  },
   "dependencies": {
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "exceljs": "^3.10.0",
+    "xlsx": "^0.18.5"
   }
 }
