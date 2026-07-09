@@ -62,22 +62,25 @@ jobs:
           echo "Branch: ${{ github.ref_name }}" >> test-summary.md
           echo "Commit: ${{ github.sha }}" >> test-summary.md
 
-      - name: Zip Essential Report Files Only
+      - name: Zip Reports (password protected)
         if: always()
         run: |
-          if [ -d reports/allure-report ]; then
-            cd reports/allure-report
-            zip -r ../../test-reports.zip . \
-              -x "*.js.map" \
-              -x "*history/*" \
-              -x "*export/*" \
-              -x "*plugins/*" \
-              -x "*.trace" \
-              -x "*.webm" \
-              -x "*.mp4" \
-              -x "*screenshot*" \
-              -x "*attachments/*"
-            cd ../..
+          if [ -z "${{ secrets.ZIP_PASSWORD }}" ]; then
+            echo "::error::ZIP_PASSWORD secret is not set. Refusing to create an unprotected zip."
+            exit 1
+          fi
+          if [ -d reports ]; then
+            zip -r -P "${{ secrets.ZIP_PASSWORD }}" test-reports.zip reports
+          fi
+
+      - name: Verify Zip Is Actually Encrypted
+        if: always()
+        run: |
+          if unzip -P wrong-password-check -t test-reports.zip > /dev/null 2>&1; then
+            echo "::error::Zip is NOT password protected — it opened with a wrong password."
+            exit 1
+          else
+            echo "Zip is password protected, confirmed."
           fi
 
       - name: Verify Files
@@ -91,8 +94,8 @@ jobs:
           ls -lh
 
           echo ""
-          echo "Zip Contents"
-          unzip -l test-reports.zip || true
+          echo "Reports Folder"
+          ls -R reports || true
 
       - name: Upload Artifact
         if: always()
@@ -133,7 +136,11 @@ jobs:
             Repository   : ${{ github.repository }}
             Workflow     : ${{ github.workflow }}
 
-            Reports are attached.
+            The attached zip is password protected (Gmail blocks unprotected report attachments containing Allure/JS content).
+            Password: Report2026! (change this — see note below)
+
+            You can also download the full report directly from GitHub Actions (requires repo access):
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             Workflow URL:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
