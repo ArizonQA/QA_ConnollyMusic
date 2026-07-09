@@ -65,8 +65,22 @@ jobs:
       - name: Zip Reports (password protected)
         if: always()
         run: |
+          if [ -z "${{ secrets.ZIP_PASSWORD }}" ]; then
+            echo "::error::ZIP_PASSWORD secret is not set. Refusing to create an unprotected zip."
+            exit 1
+          fi
           if [ -d reports ]; then
             zip -r -P "${{ secrets.ZIP_PASSWORD }}" test-reports.zip reports
+          fi
+
+      - name: Verify Zip Is Actually Encrypted
+        if: always()
+        run: |
+          if unzip -P wrong-password-check -t test-reports.zip > /dev/null 2>&1; then
+            echo "::error::Zip is NOT password protected — it opened with a wrong password."
+            exit 1
+          else
+            echo "Zip is password protected, confirmed."
           fi
 
       - name: Verify Files
