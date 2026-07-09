@@ -46,11 +46,18 @@ jobs:
         if: always()
         run: npm install -g allure-commandline
 
-      - name: Generate Allure Report
+      - name: Generate Allure Single-File Report
         if: always()
         run: |
           mkdir -p reports
-          allure generate allure-results --clean -o reports/allure-report
+          allure generate allure-results --single-file --clean -o reports/allure-report
+
+      - name: Rename Report File
+        if: always()
+        run: |
+          if [ -f reports/allure-report/index.html ]; then
+            cp reports/allure-report/index.html allure-report.html
+          fi
 
       - name: Create Summary
         if: always()
@@ -61,27 +68,6 @@ jobs:
           echo "Status: ${{ job.status }}" >> test-summary.md
           echo "Branch: ${{ github.ref_name }}" >> test-summary.md
           echo "Commit: ${{ github.sha }}" >> test-summary.md
-
-      - name: Zip Reports (password protected)
-        if: always()
-        run: |
-          if [ -z "${{ secrets.ZIP_PASSWORD }}" ]; then
-            echo "::error::ZIP_PASSWORD secret is not set. Refusing to create an unprotected zip."
-            exit 1
-          fi
-          if [ -d reports ]; then
-            zip -r -P "${{ secrets.ZIP_PASSWORD }}" test-reports.zip reports
-          fi
-
-      - name: Verify Zip Is Actually Encrypted
-        if: always()
-        run: |
-          if unzip -P wrong-password-check -t test-reports.zip > /dev/null 2>&1; then
-            echo "::error::Zip is NOT password protected — it opened with a wrong password."
-            exit 1
-          else
-            echo "Zip is password protected, confirmed."
-          fi
 
       - name: Verify Files
         if: always()
@@ -104,7 +90,7 @@ jobs:
           name: Test-Reports
           path: |
             reports
-            test-reports.zip
+            allure-report.html
             test-summary.md
 
       - name: Send Email
@@ -136,15 +122,11 @@ jobs:
             Repository   : ${{ github.repository }}
             Workflow     : ${{ github.workflow }}
 
-            The attached zip is password protected (Gmail blocks unprotected report attachments containing Allure/JS content).
-            Password: Report2026! (change this — see note below)
-
-            You can also download the full report directly from GitHub Actions (requires repo access):
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            The Allure report is attached as a single HTML file — just open it in any browser.
 
             Workflow URL:
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
           attachments: |
             test-summary.md
-            test-reports.zip
+            allure-report.html

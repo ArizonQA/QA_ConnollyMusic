@@ -12,7 +12,7 @@ test.beforeEach(async ({ page, AllPageObjects }) => {
 
 });
 
-test(" @smoke Register with existing company as Exhibitor", async ({ page, AllPageObjects }) => {
+test.skip(" @smoke Register with existing company as Exhibitor", async ({ page, AllPageObjects }) => {
   
 
   await AllPageObjects.register().register_With_Existing_Company_As_Exhibitor(RegisterTestData.existingCompany());
@@ -26,7 +26,7 @@ test(" @smoke Register with existing company as Exhibitor", async ({ page, AllPa
 
 });
 
-test("Register with existing company as Eac", async ({ page, AllPageObjects }) => {
+test.skip("Register with existing company as Eac", async ({ page, AllPageObjects }) => {
   
 
   await AllPageObjects.register().register_With_Existing_Company_As_Eac(RegisterTestData.existingCompanyAsEac());

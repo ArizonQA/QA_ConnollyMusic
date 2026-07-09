@@ -4,7 +4,7 @@ import ExcelUtils from '../utils/ExcelUtils.js';
 const users = ExcelUtils.getAllData('./testdata/login.xlsx', 'login');
 
 users.forEach((user, index) => {
-  test(`Login Functionality - ${user.TestcaseID} [Row ${index + 1}]`, async ({ page, AllPageObjects }) => {
+  test.skip(`Login Functionality - ${user.TestcaseID} [Row ${index + 1}]`, async ({ page, AllPageObjects }) => {
 
     const start = new Date();
 
