@@ -45,4 +45,35 @@ export default class ExcelUtils {
 
     }
 
+    
+    static updateStatus(filePath, sheetName, testCaseId, status, startTime, endTime, error = "") {
+
+        const workbook = XLSX.readFile(filePath);
+        const sheet = workbook.Sheets[sheetName];
+
+        const data = XLSX.utils.sheet_to_json(sheet);
+
+        const duration =
+            ((new Date(endTime) - new Date(startTime)) / 1000).toFixed(2);
+
+        data.forEach(row => {
+
+            if (row.TestcaseID === testCaseId) {
+
+                row.Status = status;
+                row["Start Time"] = startTime;
+                row["End Time"] = endTime;
+                row["Duration(s)"] = duration;
+                row["Error"] = error;   
+
+            }
+
+        });
+
+        workbook.Sheets[sheetName] = XLSX.utils.json_to_sheet(data);
+
+        XLSX.writeFile(workbook, filePath);
+
+    }
+
 }
