@@ -11,7 +11,7 @@ on:
       - master
   workflow_dispatch:
   schedule:
-  - cron: '0 2 1 * *' 
+  - cron: '0 2 1 * *'
 
 jobs:
   test:
@@ -39,6 +39,10 @@ jobs:
         env:
           CI: true
 
+      - name: Install Allure commandline
+        if: always()
+        run: npm install -g allure-commandline
+
       - name: Generate Allure report
         if: always()
         run: npx allure generate allure-results --clean -o reports/allure-report
@@ -64,11 +68,24 @@ jobs:
 
       - name: Compress reports
         if: always()
+        env:
+          ZIP_PASSWORD: ${{ secrets.REPORT_ZIP_PASSWORD }}
         run: |
-          if [ -d "reports" ] && [ "$(ls -A reports)" ]; then
-            zip -r test-reports.zip reports/
+          # Password-protected so Gmail's content scanner can't inspect the .js
+          # files bundled inside the HTML reports and block the email (552-5.7.0).
+
+          # Playwright's built-in HTML report (excluding the allure-report subfolder)
+          if [ -d "reports" ] && [ "$(find reports -maxdepth 1 -mindepth 1 ! -name allure-report)" ]; then
+            zip -r -P "$ZIP_PASSWORD" playwright-report.zip reports -x "reports/allure-report/*"
           else
-            echo "No reports to compress"
+            echo "No Playwright HTML report to compress"
+          fi
+
+          # Allure HTML report, zipped separately for clarity
+          if [ -d "reports/allure-report" ] && [ "$(ls -A reports/allure-report)" ]; then
+            zip -r -P "$ZIP_PASSWORD" allure-report.zip reports/allure-report
+          else
+            echo "No Allure report to compress"
           fi
 
       - name: Send Email with Reports
@@ -85,16 +102,28 @@ jobs:
           from: ${{ secrets.EMAIL_USERNAME }}
           body: |
             Exhibitor Portal Execution Report
-            
+
             Build #${{ github.run_number }}
             Status: ${{ job.status }}
             Branch: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
-            
+
             Repository: ${{ github.repository }}
             Workflow: ${{ github.workflow }}
-            
-            Allure HTML test report is attached.
-            
+
+            Attachments:
+            - playwright-report.zip -> Playwright's built-in HTML report
+            - allure-report.zip -> Allure HTML report
+
+            Both zips are password-protected (Gmail blocks .js files even inside
+            zips, so encryption is required to deliver the report by email).
+            Zip password: ${{ secrets.REPORT_ZIP_PASSWORD }}
+
+            Note: The Allure report is a static site that loads data via fetch(),
+            so it won't render correctly if you just double-click index.html.
+            Unzip it and serve it locally instead, e.g.:
+              npx allure open reports/allure-report
+            or any local static file server pointed at the extracted folder.
+
             View full workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          attachments: test-summary.md,test-reports.zip
+          attachments: test-summary.md,playwright-report.zip,allure-report.zip
