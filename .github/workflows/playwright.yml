@@ -62,11 +62,11 @@ jobs:
           echo "Branch: ${{ github.ref_name }}" >> test-summary.md
           echo "Commit: ${{ github.sha }}" >> test-summary.md
 
-      - name: Zip Reports
+      - name: Zip Reports (password protected)
         if: always()
         run: |
           if [ -d reports ]; then
-            zip -r test-reports.zip reports
+            zip -r -P "${{ secrets.ZIP_PASSWORD }}" test-reports.zip reports
           fi
 
       - name: Verify Files
@@ -122,9 +122,10 @@ jobs:
             Repository   : ${{ github.repository }}
             Workflow     : ${{ github.workflow }}
 
-            Reports are attached.
+            The attached zip is password protected (Gmail blocks unprotected report attachments).
+            Password: see repo secret ZIP_PASSWORD, or contact the CI admin.
 
-            Workflow URL:
+            You can also download the full report directly from GitHub Actions (requires repo access):
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
           attachments: |
