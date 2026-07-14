@@ -11,7 +11,15 @@ export class TestData {
         return { 
             email: 'kathir@arizon.digital',
             password: 'password',
-            CustomeHubAiTabText: 'Please enter your details to sign in to the CommerceHub AI console.'
+
+            CustomeHubAiTabHeading: 'Welcome back',
+            CustomeHubAiTabSubHeading: 'Please enter your details to sign in to the CommerceHub AI console.',
+            
+            customerLoginHeading:
+                "Customer Login",
+
+            customerLoginSubHeading:
+                "Access your personalized storefront and continue your buying journey."
         };
     }
 

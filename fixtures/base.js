@@ -1,17 +1,17 @@
 import { test as base } from '@playwright/test';
 import { AllPageObjects } from '../pages/all_objects.js';
 import { ExcelUtils } from '../utils/ExcelUtils.js';
-
+import { TestData } from '../testdata/AllTestData.js';
 
 export const test = base.extend({
   AllPageObjects: async ({ page }, use) => {
     await use(new AllPageObjects(page));
   },
 
-   excel: async ({}, use) => {
-        await use(ExcelUtils);
-    },
-       logs: async ({}, use, testInfo) => {
+  excel: async ({ }, use) => {
+    await use(ExcelUtils);
+  },
+  logs: async ({ }, use, testInfo) => {
 
     const logger = {
 
@@ -23,7 +23,7 @@ export const test = base.extend({
             contentType: "text/plain"
           }
         );
-      }, 
+      },
 
     };
 
@@ -32,6 +32,14 @@ export const test = base.extend({
   }
 
 });
+
+test.beforeEach('Initialize browser and open CommerceHub AI application', async ({ page, logs }) => {
+  
+  await page.goto(TestData.Urls().CommerceHubAi);
+  await logs.info('Browser initialized and CommerceHub AI application loaded successfully.');
+
+});
+
 
 test.afterEach(async ({ page }, testInfo) => {
   if (testInfo.status === 'passed' || testInfo.status === 'failed') {

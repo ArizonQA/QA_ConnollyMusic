@@ -6,3 +6,6 @@ test-results/
 reports/
 .DS_Store
 *.log
+
+# Test Companion onboarding (local, per-machine)
+.test-companion/
