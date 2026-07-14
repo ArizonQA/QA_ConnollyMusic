@@ -8,7 +8,7 @@
     "clean": "rimraf reports/allure-results reports/allure-report",
 
     "test": "npm run clean && playwright test",
- "dev": "npx http-server . -p 3000",
+    "dev": "npx http-server . -p 3000",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:facebook": "playwright test tests/facebook-login.spec.js",

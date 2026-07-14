@@ -97,17 +97,17 @@ jobs:
         if: always()
         uses: dawidd6/action-send-mail@v3
         with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
+          server_address: smtp.office365.com
+          server_port: 587
+          secure: false
 
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-
-          subject: Playwright Test Report - Build #${{ github.run_number }}
+          username: ${{ secrets.OUTLOOK_USERNAME }}
+          password: ${{ secrets.OUTLOOK_PASSWORD }}
+ 
+          subject: Playwright Test Report - Build #${{ github.run_number }} - ${{ job.status }}
 
           to: vijay@arizon.digital
-          from: ${{ secrets.EMAIL_USERNAME }}
+          from: ${{ secrets.OUTLOOK_USERNAME }}
 
           body: |
            Hello Team,
@@ -135,3 +135,7 @@ jobs:
 
            Regards,
            Arizon QA Team
+
+        attachments: |
+          allure-report.html
+          test-summary.md
