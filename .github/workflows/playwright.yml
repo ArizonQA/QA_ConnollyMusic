@@ -136,6 +136,3 @@ jobs:
            Regards,
            Arizon QA Team
 
-        attachments: |
-          allure-report.html
-          test-summary.md
