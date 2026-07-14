@@ -1,21 +1,30 @@
 import { LoginPage } from './login.js';
-import { RegisterPage } from './register.js';
+import { DashboardPage } from './dashboard.js';
+import { ForgetPassword } from './forget_password.js';
+
 
 export class AllPageObjects {
+  
   constructor(page) {
     this.page = page;
-    this._login = null;
-    this._register = null;
+    this.loginpage = null;
+    this.dashboardpage =null;
+    this.forgetPassword = null;
+   
   }
 
   login() {
-    if (!this._login) this._login = new LoginPage(this.page);
-    return this._login;
+    if (!this.loginpage) this.loginpage = new LoginPage(this.page);
+    return this.loginpage;
   }
 
-  register() {
-    if (!this._register) this._register = new RegisterPage(this.page);
-    return this._register;
+  dashboard() {
+    if (!this.dashboardpage) this.dashboardpage = new DashboardPage(this.page);
+    return this.dashboardpage;
   }
-  
+
+  forget(){
+    if(!this.forgetPassword) this.forgetPassword = new ForgetPassword(this.page);
+    return this.forgetPassword;
+  }
 }

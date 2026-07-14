@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Tests report
 
 on:
   push:
@@ -110,23 +110,28 @@ jobs:
           from: ${{ secrets.EMAIL_USERNAME }}
 
           body: |
-            Hello,
+           Hello Team,
 
-            Playwright execution has completed.
+           Playwright automation test execution has been completed successfully.
 
-            Build Number : ${{ github.run_number }}
-            Status       : ${{ job.status }}
-            Branch       : ${{ github.ref_name }}
-            Commit       : ${{ github.sha }}
+           Execution Details:
+           ----------------------------------------
+             Build Number : ${{ github.run_number }}
+             Status       : ${{ job.status }}
+             Repository   : ${{ github.repository }}
+             Branch       : ${{ github.ref_name }}
+             Commit ID    : ${{ github.sha }}
+             Workflow     : ${{ github.workflow }}
+            ----------------------------------------
 
-            Repository   : ${{ github.repository }}
-            Workflow     : ${{ github.workflow }}
+            Please find the attached execution artifacts:
+              • Test Summary Report (test-summary.md)
+              • Allure Execution Report (allure-report.html)
 
-            The Allure report is attached as a single HTML file — just open it in any browser.
+           You can also view the workflow execution details using the link below:
+             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-            Workflow URL:
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+           Kindly review the attached reports for detailed test results, execution statistics, and failure analysis.
 
-          attachments: |
-            test-summary.md
-            allure-report.html
+           Regards,
+           Arizon QA Team

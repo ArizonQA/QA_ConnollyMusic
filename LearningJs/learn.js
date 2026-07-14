@@ -1,5 +1,7 @@
+import XLSX from 'xlsx';
 
-const { test, chromium } = require('@playwright/test');
+
+
 let fruits = ["apple", "banana", "cherry", "date", "elderberry"];
 
 let num = new Array(5);
@@ -163,3 +165,24 @@ for(let ch of numbrs){
 }
 
 console.log(as_Map);
+
+
+const newbook= XLSX.utils.book_new();
+
+const workbook = XLSX.readFile('./testdata/login.xlsx');
+
+const dt =[{username: "Vijay@arizon.digital",Pass: "Pass@123"},
+  {username: "Uat@ges.com",Pass: "Pass@123"},  
+];
+
+const dts=XLSX.utils.json_to_sheet(dt);
+XLSX.utils.book_append_sheet(workbook,dts,'login');
+XLSX.writeFile(workbook,'./testdata/login.xlsx');
+
+const sheet1 =workbook.Sheets['login'];
+const data =XLSX.utils.sheet_to_json(sheet1);
+
+
+// for(const row of data){
+    console.log(row.Password);
+

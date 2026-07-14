@@ -2,6 +2,7 @@ import { test as base } from '@playwright/test';
 import { AllPageObjects } from '../pages/all_objects.js';
 import { ExcelUtils } from '../utils/ExcelUtils.js';
 
+
 export const test = base.extend({
   AllPageObjects: async ({ page }, use) => {
     await use(new AllPageObjects(page));
@@ -9,7 +10,26 @@ export const test = base.extend({
 
    excel: async ({}, use) => {
         await use(ExcelUtils);
-    }
+    },
+       logs: async ({}, use, testInfo) => {
+
+    const logger = {
+
+      async info(message) {
+        await testInfo.attach(
+          `INFO - ${new Date().toLocaleTimeString()}`,
+          {
+            body: Buffer.from(message),
+            contentType: "text/plain"
+          }
+        );
+      }, 
+
+    };
+
+    await use(logger);
+
+  }
 
 });
 
@@ -22,7 +42,5 @@ test.afterEach(async ({ page }, testInfo) => {
     });
   }
 });
-
-
 
 export { expect } from '@playwright/test';

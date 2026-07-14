@@ -1,27 +1,46 @@
-
 import { expect } from '@playwright/test';
 
 export class LoginPage {
     constructor(page) {
         this.page = page;
 
-        // Locators
-        this.accountMenu = page.getByText('Account');
-        this.emailTextbox = page.getByLabel('Email Address');
-        this.passwordTextbox = page.getByPlaceholder('Enter Your Password...');
-        this.loginButton = page.getByRole('button', { name: 'Log in' });
-        this.registerLink = page.getByText('Create an Account');
-
-        this.securitycodeTextbox = page.locator("//input[@type='password']");
-        this.continuetoWebsite = page.locator("//button[.='Continue']");
+        this.userTypeCommerceHubAi = page.getByRole('button', { name: 'CommerceHub AI User' });
+        this.email = page.getByRole('textbox', { name: 'Email Address' });
+        this.password = page.getByRole('textbox', { name: 'Password' });
+        this.signIn = page.getByRole('button', { name: 'Sign In' });
+        this.validateCustomerHubAiTab =  page.getByText("Please enter your details to sign in to the CommerceHub AI console.");
+        this.ForgetPassword = page.getByRole('link',{name:'Forgot password?'});
+        
     }
 
+    async navigate(url) {
 
-    async loginIntoSite(email, password) {
-        await this.accountMenu.click();
-        await this.emailTextbox.fill(email);
-        await this.passwordTextbox.fill(password);
-        await this.loginButton.click();
+        await this.page.goto(url);
+        
+    }
+
+    async selectuserTypeCommerceHubAi() {
+        
+        await this.userTypeCommerceHubAi.click();
+        await this.page.waitForTimeout(1000);
+    }
+
+    async validateCustomerHubAi_Tab(CustomeHubAiTabText) {
+
+        await expect(this.validateCustomerHubAiTab).toContainText(
+        CustomeHubAiTabText);
+    }
+
+    async loginIntoCustomerHubAi(email, password) {
+        await this.email.fill(email);
+        await this.password.fill(password);
+        console.log(email+ " " +password);
+        await this.signIn.click();
+    }
+
+    async ValidateForgetPasswordRedirection(){
+        await this.ForgetPassword.click();
+       
     }
 
    

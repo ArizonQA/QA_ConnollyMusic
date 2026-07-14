@@ -1,9 +1,14 @@
+
 {
-  "name": "playwright-tests",
-  "version": "1.0.0",
+     "name": "playwright-tests",
+      "version": "1.0.0",
+
+
   "scripts": {
-    "test": "playwright test",
-    "dev": "npx http-server . -p 3000",
+    "clean": "rimraf reports/allure-results reports/allure-report",
+
+    "test": "npm run clean && playwright test",
+ "dev": "npx http-server . -p 3000",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:facebook": "playwright test tests/facebook-login.spec.js",
@@ -16,6 +21,7 @@
     "codegen": "playwright codegen http://localhost:3000",
     "report:generate": "npx allure generate ./reports/allure-results --clean -o ./reports/allure-report",
     "report:open": "npx allure open ./reports/allure-report"
+    
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
