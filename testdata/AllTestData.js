@@ -3,7 +3,8 @@ export class TestData {
      static Urls() {
         return {
             CommerceHubAi: "https://commerce-hub-ai.arizon.solutions/",
-            customerDashboard: 'https://commerce-hub-ai.arizon.solutions/admin',
+            CommerceHubAiDashboard: 'https://commerce-hub-ai.arizon.solutions/admin',
+            forgetPassword:'https://commerce-hub-ai.arizon.solutions/forgot-password'
         }
     }
 
@@ -25,7 +26,16 @@ export class TestData {
 
     static forgetPassword(){
         return{
-            forgetPasswordHeading: "Enter your work email address and we'll send a reset link if an account exists.",
+            forgetPasswordHeading: 'Forgot password',
+            forgetPasswordsubHeading: "Enter your work email address and we'll send a reset link if an account exists.",
+            successMessage:'If the email exists, a reset link has been sent.',
+        }
+    }
+
+    static invalidLogin(){
+        return {
+            password:'password123',
+            errorMessage:'Invalid credentials.'
         }
     }
 }

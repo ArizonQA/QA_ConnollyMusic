@@ -36,12 +36,13 @@ export const test = base.extend({
 test.beforeEach('Initialize browser and open CommerceHub AI application', async ({ page, logs }) => {
   
   await page.goto(TestData.Urls().CommerceHubAi);
+  await page.waitForLoadState('networkidle');
   await logs.info('Browser initialized and CommerceHub AI application loaded successfully.');
 
 });
 
 
-test.afterEach(async ({ page }, testInfo) => {
+test.afterEach(async ({ page, context }, testInfo) => {
   if (testInfo.status === 'passed' || testInfo.status === 'failed') {
     await testInfo.attach('screenshot', {
       body: await page.screenshot({ fullPage: true }),
@@ -49,6 +50,9 @@ test.afterEach(async ({ page }, testInfo) => {
 
     });
   }
+
+  await context.clearCookies();
+  await context.clearPermissions();
 });
 
 export { expect } from '@playwright/test';

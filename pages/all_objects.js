@@ -27,4 +27,20 @@ export class AllPageObjects {
     if(!this.forgetPassword) this.forgetPassword = new ForgetPassword(this.page);
     return this.forgetPassword;
   }
+
+
+  // 👇 Add this wrapper
+  async waitForTimeout(ms) {
+    await this.page.waitForTimeout(ms);
+  }
+
+   async goBack() {
+    await this.page.goBack();
+  }
+
+ 
+  async goTo(url) {
+  await this.page.goto(url, { waitUntil: 'networkidle' }); 
+}
+
 }

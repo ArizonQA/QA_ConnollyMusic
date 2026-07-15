@@ -2,79 +2,55 @@ import XLSX from 'xlsx';
 
 export default class ExcelUtils {
 
-    static getWorksheet(filePath, sheetName) {
-        const workbook = XLSX.readFile(filePath);
-        return workbook.Sheets[sheetName];
-    }
-
-    // Read a single cell (Example: A2)
-    static getCellValue(filePath, sheetName, cellAddress) {
-        const sheet = this.getWorksheet(filePath, sheetName);
-        return sheet[cellAddress]?.v;
-    }
-
-    // Read all rows
-    static getAllData(filePath, sheetName) {
-
+    static updateStatus(filePath, sheetName, testCaseId, status, startTime, endTime, error = "") {
     const workbook = XLSX.readFile(filePath);
+    const sheet = workbook.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(sheet);
 
-    console.log("Available Sheets:", workbook.SheetNames);
+    const duration = ((new Date(endTime) - new Date(startTime)) / 1000).toFixed(2);
 
-    const worksheet = workbook.Sheets[sheetName];
+    data.forEach(row => {
+        if (row["Test Case ID"] === testCaseId) {
+            row["Result"] = status;
+            row["Execution Date"] = new Date().toLocaleString();
+            row["Comments"] = error || "Automation execution completed successfully";
+            row["Start Time"] = new Date(startTime).toLocaleString();   // ✅ formatted
+            row["End Time"]   = new Date(endTime).toLocaleString();     // ✅ formatted
+            row["Duration(s)"] = duration;
+        }
+    });
 
-    console.log("Worksheet:", worksheet);
+    // Explicit header order
+    const headers = [
+        "Test Case ID",
+        "Test Environment",
+        "Test Module",
+        "Test Summary",
+        "Test Step / Action",
+        "Test Data",          // ✅ keep Test Data here
+        "Test Type",
+        "Expected Result",
+        "Test Priority",
+        "Execution Date",
+        "Result",
+        "Comments",
+        "Start Time",
+        "End Time",
+        "Duration(s)"
+    ];
 
-    return XLSX.utils.sheet_to_json(worksheet);
+    workbook.Sheets[sheetName] = XLSX.utils.json_to_sheet(data, { header: headers });
+    XLSX.writeFile(workbook, filePath);
 }
 
-    // Read a specific row
-    static getRow(filePath, sheetName, rowNumber) {
+static getTestData(filePath, sheetName, testCaseId) {
+    const workbook = XLSX.readFile(filePath);
+    const sheet = workbook.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(sheet);
 
-        const data = this.getAllData(filePath, sheetName);
-
-        return data[rowNumber - 2];
-
-    }
-
-    // Read a value using column name
-    static getValue(filePath, sheetName, rowNumber, columnName) {
-
-        const row = this.getRow(filePath, sheetName, rowNumber);
-
-        return row[columnName];
-
-    }
-
-    
-    static updateStatus(filePath, sheetName, testCaseId, status, startTime, endTime, error = "") {
-
-        const workbook = XLSX.readFile(filePath);
-        const sheet = workbook.Sheets[sheetName];
-
-        const data = XLSX.utils.sheet_to_json(sheet);
-
-        const duration =
-            ((new Date(endTime) - new Date(startTime)) / 1000).toFixed(2);
-
-        data.forEach(row => {
-
-            if (row.TestcaseID === testCaseId) {
-
-                row.Status = status;
-                row["Start Time"] = startTime;
-                row["End Time"] = endTime;
-                row["Duration(s)"] = duration;
-                row["Error"] = error;   
-
-            }
-
-        });
-
-        workbook.Sheets[sheetName] = XLSX.utils.json_to_sheet(data);
-
-        XLSX.writeFile(workbook, filePath);
-
-    }
+    const row = data.find(rows => rows["Test Case ID"] === testCaseId);
+    return row ? row["Test Data"] : null;
+}
 
 }
 

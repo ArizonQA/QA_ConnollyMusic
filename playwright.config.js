@@ -10,7 +10,7 @@ module.exports = defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 0 : 0,
-  workers: process.env.CI ? 3 : undefined,
+  workers: process.env.CI ? 1 : undefined,
 
   //npx allure generate reports/allure-results --clean -o reports/allure-report
   //npx allure open reports/allure-report

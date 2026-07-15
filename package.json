@@ -1,36 +1,31 @@
-
 {
      "name": "playwright-tests",
-      "version": "1.0.0",
-
-
-  "scripts": {
-    "clean": "rimraf reports/allure-results reports/allure-report",
-
-    "test": "npm run clean && playwright test",
-    "dev": "npx http-server . -p 3000",
-    "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug",
-    "test:facebook": "playwright test tests/facebook-login.spec.js",
-    "test:chrome": "playwright test --project=chromium",
-    "test:firefox": "playwright test --project=firefox",
-    "test:webkit": "playwright test --project=webkit",
-    "test:mobile": "playwright test --project='Mobile Chrome'",
-    "test:report": "playwright show-report",
-    "test:watch": "playwright test --watch",
-    "codegen": "playwright codegen http://localhost:3000",
-    "report:generate": "npx allure generate ./reports/allure-results --clean -o ./reports/allure-report",
-    "report:open": "npx allure open ./reports/allure-report"
-    
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.61.1",
-    "allure-commandline": "^2.43.0",
-    "allure-playwright": "^2.15.1"
-  },
-  "dependencies": {
-    "dotenv": "^17.4.2",
-    "exceljs": "^3.4.0",
-    "xlsx": "^0.18.5"
-  }
+     "version": "1.0.0",
+     "scripts": {
+          "clean": "rimraf reports/allure-results reports/allure-report",
+          "test": "npm run clean && playwright test",
+          "dev": "npx http-server . -p 3000",
+          "test:headed": "playwright test --headed",
+          "test:debug": "playwright test --debug",
+          "test:facebook": "playwright test tests/facebook-login.spec.js",
+          "test:chrome": "playwright test --project=chromium",
+          "test:firefox": "playwright test --project=firefox",
+          "test:webkit": "playwright test --project=webkit",
+          "test:mobile": "playwright test --project='Mobile Chrome'",
+          "test:report": "playwright show-report",
+          "test:watch": "playwright test --watch",
+          "codegen": "playwright codegen http://localhost:3000",
+          "report:generate": "npx allure generate ./reports/allure-results --clean -o ./reports/allure-report",
+          "report:open": "npx allure open ./reports/allure-report"
+     },
+     "devDependencies": {
+          "@playwright/test": "^1.61.1",
+          "allure-commandline": "^2.43.0",
+          "allure-playwright": "^2.15.1"
+     },
+     "dependencies": {
+          "dotenv": "^17.4.2",
+          "exceljs": "^3.10.0",
+          "xlsx": "^0.18.5"
+     }
 }
