@@ -1,6 +1,8 @@
 import { LoginPage } from './login.js';
-import { DashboardPage } from './dashboard.js';
+import { DashboardPage } from './admindashboard.js';
+import {CustomerDashboard} from './customerDashboard.js';
 import { ForgetPassword } from './forget_password.js';
+import {Product} from './product.js';
 
 
 export class AllPageObjects {
@@ -10,6 +12,8 @@ export class AllPageObjects {
     this.loginpage = null;
     this.dashboardpage =null;
     this.forgetPassword = null;
+    this.customerDashboard=null;
+    this.products=null;
    
   }
 
@@ -27,20 +31,27 @@ export class AllPageObjects {
     if(!this.forgetPassword) this.forgetPassword = new ForgetPassword(this.page);
     return this.forgetPassword;
   }
-
-
-  // 👇 Add this wrapper
-  async waitForTimeout(ms) {
-    await this.page.waitForTimeout(ms);
+  customerDashboard(){
+    if(!this.customerDashboard) this.customerDashboard = new CustomerDashboard(this.page);
+    return this.customerDashboard;
   }
 
-   async goBack() {
-    await this.page.goBack();
+  product(){
+    if(!this.product) this.product =new Product(this.page)
+      return this.product;
   }
+ 
+//   async waitForTimeout(ms) {
+//     await this.page.waitForTimeout(ms);
+//   }
+
+//    async goBack() {
+//     await this.page.goBack();
+//   }
 
  
-  async goTo(url) {
-  await this.page.goto(url, { waitUntil: 'networkidle' }); 
-}
+//   async goToUrl(url) {
+//   await this.page.goto(url, { waitUntil: 'networkidle' }); 
+// }
 
 }

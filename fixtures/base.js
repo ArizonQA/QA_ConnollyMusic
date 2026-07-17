@@ -1,4 +1,4 @@
-import { test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { AllPageObjects } from '../pages/all_objects.js';
 import { ExcelUtils } from '../utils/ExcelUtils.js';
 import { TestData } from '../testdata/AllTestData.js';
@@ -33,13 +33,6 @@ export const test = base.extend({
 
 });
 
-test.beforeEach('Initialize browser and open CommerceHub AI application', async ({ page, logs }) => {
-  
-  await page.goto(TestData.Urls().CommerceHubAi);
-  await page.waitForLoadState('networkidle');
-  await logs.info('Browser initialized and CommerceHub AI application loaded successfully.');
-
-});
 
 
 test.afterEach(async ({ page, context }, testInfo) => {
@@ -51,8 +44,8 @@ test.afterEach(async ({ page, context }, testInfo) => {
     });
   }
 
-  await context.clearCookies();
-  await context.clearPermissions();
+  // await context.clearCookies();
+  // await context.clearPermissions();
 });
 
-export { expect } from '@playwright/test';
+export { expect } ;

@@ -2,25 +2,20 @@ export class TestData {
 
      static Urls() {
         return {
-            CommerceHubAi: "https://commerce-hub-ai.arizon.solutions/",
-            CommerceHubAiDashboard: 'https://commerce-hub-ai.arizon.solutions/admin',
-            forgetPassword:'https://commerce-hub-ai.arizon.solutions/forgot-password'
+            Url: "https://commerce-hub-ai.arizon.solutions/",
+            DashboardUrl: 'https://commerce-hub-ai.arizon.solutions/admin',
+            forgetPasswordUrl:'https://commerce-hub-ai.arizon.solutions/forgot-password',
         }
     }
-
-    static CustomerHublogin() {
+//CustomerHublogin
+    static loginData() {
         return { 
+
             email: 'kathir@arizon.digital',
             password: 'password',
-
-            CustomeHubAiTabHeading: 'Welcome back',
-            CustomeHubAiTabSubHeading: 'Please enter your details to sign in to the CommerceHub AI console.',
-            
-            customerLoginHeading:
-                "Customer Login",
-
-            customerLoginSubHeading:
-                "Access your personalized storefront and continue your buying journey."
+            AdminTabHeading: 'Welcome back',
+            AdminSubTabHeading: 'Please enter your details to sign in to the CommerceHub AI console.',
+            customerLoginHeading:"Customer Login",
         };
     }
 
@@ -38,4 +33,12 @@ export class TestData {
             errorMessage:'Invalid credentials.'
         }
     }
+    // 🔑 New static function for invalid email datasets
+    static invalidEmails() {
+    return {
+        errorMessageForEmail: "Enter a valid email address.",
+        errorMessageForEmptyEmail:"Enter an email address."
+    };
+}
+
 }

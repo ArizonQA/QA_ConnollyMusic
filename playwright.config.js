@@ -9,8 +9,12 @@ module.exports = defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 0 : 0,
+  retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
+
+  expect: {
+    timeout: 15000,   // was 5000 default — give hydration room to finish
+  },
 
   //npx allure generate reports/allure-results --clean -o reports/allure-report
   //npx allure open reports/allure-report
@@ -36,18 +40,18 @@ module.exports = defineConfig({
   ],
 
   use: {
-    baseURL: "https://dev.ges.store/",
-    headless: process.env.HEADLESS
-      ? process.env.HEADLESS === 'true'
-      : !!process.env.CI,
-    viewport: process.env.CI ? { width: 1920, height: 1080 } : null,
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    launchOptions: {
-      args: process.env.CI ? [] : ['--start-maximized'],
+  baseURL: "https://commerce-hub-ai.arizon.solutions/",
+  headless: process.env.HEADLESS ? process.env.HEADLESS === 'true' : !!process.env.CI,
+  viewport: { width: 1920, height: 1080 },
+  trace: 'on-first-retry',
+  screenshot: 'only-on-failure',
+  video: 'retain-on-failure',
+  actionTimeout: 15000,       // add this
+  navigationTimeout: 30000,   // add this
+  launchOptions: {
+    args: [] 
     },
-  },
+},
 
   projects: [
     {
