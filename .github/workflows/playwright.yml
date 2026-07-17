@@ -1,20 +1,14 @@
-name: Playwright Tests report
+name: Playwright Automation Test Report
 
 on:
   push:
     branches:
       - main
       - master
-
   pull_request:
     branches:
       - main
       - master
-
-  # workflow_dispatch:
-
-  # schedule:
-  #   - cron: '0 2 1 * *'
 
 jobs:
   test:
@@ -37,8 +31,10 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright Tests
-        run: npx playwright test --project=chromium
+      - name: Run Playwright Tests with JSON report
+        run: |
+          npx playwright test --project=chromium --reporter=html,json > result.json
+        continue-on-error: true
         env:
           CI: true
 
@@ -59,29 +55,15 @@ jobs:
             cp reports/allure-report/index.html allure-report.html
           fi
 
-      - name: Create Summary
-        if: always()
+      - name: Parse test results
+        id: results
         run: |
-          echo "## Test Execution Summary" > test-summary.md
-          echo "" >> test-summary.md
-          echo "Build : ${{ github.run_number }}" >> test-summary.md
-          echo "Status: ${{ job.status }}" >> test-summary.md
-          echo "Branch: ${{ github.ref_name }}" >> test-summary.md
-          echo "Commit: ${{ github.sha }}" >> test-summary.md
-
-      - name: Verify Files
-        if: always()
-        run: |
-          echo "Current Directory"
-          pwd
-
-          echo ""
-          echo "Generated Files"
-          ls -lh
-
-          echo ""
-          echo "Reports Folder"
-          ls -R reports || true
+          passed=$(jq '[.suites[].specs[] | select(.ok==true)] | length' result.json)
+          skipped=$(jq '[.suites[].specs[] | select(.skip==true)] | length' result.json)
+          failed=$(jq '[.suites[].specs[] | select(.ok==false and .skip!=true)] | length' result.json)
+          echo "passed=$passed" >> $GITHUB_OUTPUT
+          echo "skipped=$skipped" >> $GITHUB_OUTPUT
+          echo "failed=$failed" >> $GITHUB_OUTPUT
 
       - name: Upload Artifact
         if: always()
@@ -91,48 +73,69 @@ jobs:
           path: |
             reports
             allure-report.html
-            test-summary.md
+            result.json
 
-      - name: Send Email
-        if: always()
+      # Email on failure → attach report
+      - name: Send Email on Failure
+        if: steps.results.outputs.failed != '0'
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
-
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
- 
-          subject: Playwright Test Report - Build #${{ github.run_number }} - ${{ job.status }}
-
+          subject: Playwright Test Report - Build #${{ github.run_number }} - FAILED
           to: vijay@arizon.digital
           from: ${{ secrets.EMAIL_USERNAME }}
-
           body: |
-           Hello Team,
+            Hello Team,
 
-           Playwright automation test execution has been completed successfully.
+            Playwright automation test execution has FAILED.
 
-           Execution Details:
-           ----------------------------------------
-             Build Number : ${{ github.run_number }}
-             Status       : ${{ job.status }}
-             Repository   : ${{ github.repository }}
-             Branch       : ${{ github.ref_name }}
-             Commit ID    : ${{ github.sha }}
-             Workflow     : ${{ github.workflow }}
-            ----------------------------------------
+            Execution Details:
+            -----------------------------
+            Build Number : ${{ github.run_number }}
+            Branch       : ${{ github.ref_name }}
+            Commit ID    : ${{ github.sha }}
+            Passed       : ${{ steps.results.outputs.passed }}
+            Skipped      : ${{ steps.results.outputs.skipped }}
+            Failed       : ${{ steps.results.outputs.failed }}
 
-            Please find the attached execution artifacts:
-              • Test Summary Report (test-summary.md)
-              • Allure Execution Report (allure-report.html)
+            Please find the attached Allure report for detailed failure analysis.
 
-           You can also view the workflow execution details using the link below:
-             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            Regards,
+            Arizon QA Team
+          attachments: allure-report.html
 
-           Kindly review the attached reports for detailed test results, execution statistics, and failure analysis.
+      # Email on success → summary only
+      - name: Send Email on Success
+        if: steps.results.outputs.failed == '0'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Playwright Test Report - Build #${{ github.run_number }} - PASSED
+          to: vijay@arizon.digital
+          from: ${{ secrets.EMAIL_USERNAME }}
+          body: |
+            Hello Team,
 
-           Regards,
-           Arizon QA Team
-           
+            Playwright automation test execution PASSED successfully.
+
+            Execution Details:
+            -----------------------------
+            Build Number : ${{ github.run_number }}
+            Branch       : ${{ github.ref_name }}
+            Commit ID    : ${{ github.sha }}
+            Passed       : ${{ steps.results.outputs.passed }}
+            Skipped      : ${{ steps.results.outputs.skipped }}
+            Failed       : ${{ steps.results.outputs.failed }}
+
+            No attachments included since all tests passed.
+
+            Regards,
+            Arizon QA Team

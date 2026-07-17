@@ -37,8 +37,8 @@ export class AllPageObjects {
   }
 
   product(){
-    if(!this.product) this.product =new Product(this.page)
-      return this.product;
+    if(!this.products) this.products =new Product(this.page)
+      return this.products;
   }
  
 //   async waitForTimeout(ms) {
