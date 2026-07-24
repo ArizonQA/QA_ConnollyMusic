@@ -1,0 +1,46 @@
+- generic [ref=e1]:
+  - region "Notifications alt+T"
+  - main [ref=e2]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e10]:
+          - paragraph [ref=e11]: CommerceHub AI
+          - paragraph [ref=e12]: By Arizon Digital
+        - generic [ref=e13]:
+          - heading "AI-Powered Commerce, Simplified" [level=2] [ref=e14]
+          - paragraph [ref=e15]: Unified intelligence for modern enterprise scale. Connect, optimize, and scale your commerce operations with predictive AI.
+        - generic [ref=e21]: Trusted by fast-moving commerce teams
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - heading "Customer Login" [level=1] [ref=e25]
+          - paragraph [ref=e26]: Access your personalized storefront and continue your buying journey.
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - button "Customer Login" [ref=e29]
+            - button "Admin Login" [ref=e30]
+          - generic [ref=e31]:
+            - text: Email Address
+            - textbox "Email Address" [ref=e32]:
+              - /placeholder: name@yourstore.com
+              - text: Kathir@arizon.digital
+          - generic [ref=e33]:
+            - generic [ref=e34]:
+              - generic [ref=e35]: Password
+              - link "Forgot password?" [ref=e36] [cursor=pointer]:
+                - /url: /forgot-password
+            - generic [ref=e37]:
+              - textbox "Password" [ref=e38]:
+                - /placeholder: ••••••••
+                - text: pasword
+              - button "Show password" [ref=e39]:
+                - img [ref=e40]
+          - generic [ref=e43]:
+            - checkbox "Remember me" [ref=e44]
+            - text: Remember me
+          - generic [ref=e45]:
+            - button "Sign In" [ref=e46]
+            - button "◌ Sign in with Store Access" [active] [ref=e47]:
+              - generic [ref=e48]: ◌
+              - text: Sign in with Store Access
+        - paragraph [ref=e49]: Don't have an account? Register
+  - alert [ref=e50]

@@ -1,14 +1,20 @@
-name: Playwright Automation Test Report
+name: Playwright Tests report
 
 on:
   push:
     branches:
       - main
       - master
+
   pull_request:
     branches:
       - main
       - master
+
+  # workflow_dispatch:
+
+  # schedule:
+  #   - cron: '0 2 1 * *'
 
 jobs:
   test:
@@ -31,10 +37,8 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright Tests with JSON report
-        run: |
-          npx playwright test --project=chromium --reporter=html,json > result.json
-        continue-on-error: true
+      - name: Run Playwright Tests
+        run: npx playwright test --project=chromium
         env:
           CI: true
 
@@ -55,87 +59,83 @@ jobs:
             cp reports/allure-report/index.html allure-report.html
           fi
 
-      - name: Parse test results
-        id: results
+      - name: Create Summary
+        if: always()
         run: |
-          passed=$(jq '[.suites[].specs[] | select(.ok==true)] | length' result.json)
-          skipped=$(jq '[.suites[].specs[] | select(.skip==true)] | length' result.json)
-          failed=$(jq '[.suites[].specs[] | select(.ok==false and .skip!=true)] | length' result.json)
-          echo "passed=$passed" >> $GITHUB_OUTPUT
-          echo "skipped=$skipped" >> $GITHUB_OUTPUT
-          echo "failed=$failed" >> $GITHUB_OUTPUT
+          echo "## Test Execution Summary" > test-summary.md
+          echo "" >> test-summary.md
+          echo "Build : ${{ github.run_number }}" >> test-summary.md
+          echo "Status: ${{ job.status }}" >> test-summary.md
+          echo "Branch: ${{ github.ref_name }}" >> test-summary.md
+          echo "Commit: ${{ github.sha }}" >> test-summary.md
+
+      - name: Verify Files
+        if: always()
+        run: |
+          echo "Current Directory"
+          pwd
+
+          echo ""
+          echo "Generated Files"
+          ls -lh
+
+          echo ""
+          echo "Reports Folder"
+          ls -R reports || true
 
       - name: Upload Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Test-Reports
+          if-no-files-found: warn
           path: |
             reports
             allure-report.html
-            result.json
+            test-summary.md
+            testcase/Commerce_Hub_AI_Test_cases.xlsx
+            testdata/Commerce_Hub_AI_Test_cases.xlsx
 
-      # Email on failure → attach report
-      - name: Send Email on Failure
-        if: steps.results.outputs.failed != '0'
+      - name: Send Email
+        if: always()
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           secure: true
+
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Playwright Test Report - Build #${{ github.run_number }} - FAILED
+ 
+          subject: Playwright Test Report - Build #${{ github.run_number }} - ${{ job.status }}
+
           to: vijay@arizon.digital
           from: ${{ secrets.EMAIL_USERNAME }}
+
           body: |
-            Hello Team,
+           Hello Team,
 
-            Playwright automation test execution has FAILED.
+           Playwright automation test execution has been completed successfully.
 
-            Execution Details:
-            -----------------------------
-            Build Number : ${{ github.run_number }}
-            Branch       : ${{ github.ref_name }}
-            Commit ID    : ${{ github.sha }}
-            Passed       : ${{ steps.results.outputs.passed }}
-            Skipped      : ${{ steps.results.outputs.skipped }}
-            Failed       : ${{ steps.results.outputs.failed }}
+           Execution Details:
+           ----------------------------------------
+             Build Number : ${{ github.run_number }}
+             Status       : ${{ job.status }}
+             Repository   : ${{ github.repository }}
+             Branch       : ${{ github.ref_name }}
+             Commit ID    : ${{ github.sha }}
+             Workflow     : ${{ github.workflow }}
+            ----------------------------------------
 
-            Please find the attached Allure report for detailed failure analysis.
+            Please find the attached execution artifacts:
+              • Test Summary Report (test-summary.md)
+              • Allure Execution Report (allure-report.html)
 
-            Regards,
-            Arizon QA Team
-          attachments: allure-report.html
+           You can also view the workflow execution details using the link below:
+             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # Email on success → summary only
-      - name: Send Email on Success
-        if: steps.results.outputs.failed == '0'
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          secure: true
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: Playwright Test Report - Build #${{ github.run_number }} - PASSED
-          to: vijay@arizon.digital
-          from: ${{ secrets.EMAIL_USERNAME }}
-          body: |
-            Hello Team,
+           Kindly review the attached reports for detailed test results, execution statistics, and failure analysis.
 
-            Playwright automation test execution PASSED successfully.
-
-            Execution Details:
-            -----------------------------
-            Build Number : ${{ github.run_number }}
-            Branch       : ${{ github.ref_name }}
-            Commit ID    : ${{ github.sha }}
-            Passed       : ${{ steps.results.outputs.passed }}
-            Skipped      : ${{ steps.results.outputs.skipped }}
-            Failed       : ${{ steps.results.outputs.failed }}
-
-            No attachments included since all tests passed.
-
-            Regards,
-            Arizon QA Team
+           Regards,
+           Arizon QA Team
+           

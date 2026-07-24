@@ -1,20 +1,12 @@
 import { LoginPage } from './login.js';
-import { DashboardPage } from './admindashboard.js';
-import {CustomerDashboard} from './customerDashboard.js';
-import { ForgetPassword } from './forget_password.js';
-import {Product} from './product.js';
-
+import { ProductPage } from './product.js';
 
 export class AllPageObjects {
   
   constructor(page) {
     this.page = page;
     this.loginpage = null;
-    this.dashboardpage =null;
-    this.forgetPassword = null;
-    this.customerDashboard=null;
-    this.products=null;
-   
+    this.productpage = null;
   }
 
   login() {
@@ -22,36 +14,9 @@ export class AllPageObjects {
     return this.loginpage;
   }
 
-  dashboard() {
-    if (!this.dashboardpage) this.dashboardpage = new DashboardPage(this.page);
-    return this.dashboardpage;
+  product() {
+    if (!this.productpage) this.productpage = new ProductPage(this.page);
+    return this.productpage;
   }
-
-  forget(){
-    if(!this.forgetPassword) this.forgetPassword = new ForgetPassword(this.page);
-    return this.forgetPassword;
-  }
-  customerDashboard(){
-    if(!this.customerDashboard) this.customerDashboard = new CustomerDashboard(this.page);
-    return this.customerDashboard;
-  }
-
-  product(){
-    if(!this.products) this.products =new Product(this.page)
-      return this.products;
-  }
- 
-//   async waitForTimeout(ms) {
-//     await this.page.waitForTimeout(ms);
-//   }
-
-//    async goBack() {
-//     await this.page.goBack();
-//   }
-
- 
-//   async goToUrl(url) {
-//   await this.page.goto(url, { waitUntil: 'networkidle' }); 
-// }
 
 }

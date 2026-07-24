@@ -1,0 +1,43 @@
+- generic [active] [ref=f2e1]:
+  - region "Notifications alt+T"
+  - main [ref=f2e2]:
+    - generic [ref=f2e4]:
+      - generic [ref=f2e5]:
+        - generic [ref=f2e10]:
+          - paragraph [ref=f2e11]: CommerceHub AI
+          - paragraph [ref=f2e12]: By Arizon Digital
+        - generic [ref=f2e13]:
+          - heading "AI-Powered Commerce, Simplified" [level=2] [ref=f2e14]
+          - paragraph [ref=f2e15]: Unified intelligence for modern enterprise scale. Connect, optimize, and scale your commerce operations with predictive AI.
+        - generic [ref=f2e16]: Trusted by fast-moving commerce teams
+      - generic [ref=f2e23]:
+        - generic [ref=f2e24]:
+          - heading "Customer Login" [level=1] [ref=f2e25]
+          - paragraph [ref=f2e26]: Access your personalized storefront and continue your buying journey.
+        - generic [ref=f2e27]:
+          - generic [ref=f2e28]:
+            - button "Customer Login" [ref=f2e29]
+            - button "Admin Login" [ref=f2e30]
+          - generic [ref=f2e31]:
+            - text: Email Address
+            - textbox "Email Address" [ref=f2e32]:
+              - /placeholder: name@yourstore.com
+          - generic [ref=f2e33]:
+            - generic [ref=f2e34]:
+              - generic [ref=f2e35]: Password
+              - link "Forgot password?" [ref=f2e36] [cursor=pointer]:
+                - /url: /forgot-password
+            - generic [ref=f2e37]:
+              - textbox "Password" [ref=f2e38]:
+                - /placeholder: ••••••••
+              - button "Show password" [ref=f2e39]
+          - generic [ref=f2e43]:
+            - checkbox "Remember me" [ref=f2e44]
+            - text: Remember me
+          - generic [ref=f2e45]:
+            - button "Sign In" [ref=f2e46]
+            - button "◌ Sign in with Store Access" [ref=f2e47]:
+              - generic [ref=f2e48]: ◌
+              - text: Sign in with Store Access
+        - paragraph [ref=f2e49]: Don't have an account? Register
+  - alert [ref=f2e50]
