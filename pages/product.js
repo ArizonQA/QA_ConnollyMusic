@@ -12,7 +12,7 @@ export class ProductPage {
     // Form fields - Add/Edit Product
     this.productNameInput = page.getByRole('textbox', { name: 'Product Name *' });
     this.skuInput = page.getByRole('textbox', { name: 'SKU *' });
-    this.priceInput = page.getByLabel(/Price/i);
+    this.priceInput = page.getByLabel('Price');
     this.stockInput = page.getByRole('spinbutton', { name: 'Current Stock' });
     this.categorySelect = page.getByRole('combobox').last();
     
@@ -55,7 +55,9 @@ export class ProductPage {
   async fillProductForm(productName, sku, price, stock, category) {
     await this.productNameInput.fill(productName);
     await this.skuInput.fill(sku);
-    await this.priceInput.fill(price.toString());
+    await this.page.waitForTimeout(1000); // Wait for any potential dynamic updates
+  
+    await this.priceInput.first().fill(price.toString());
     await this.stockInput.fill(stock.toString());
     await this.categorySelect.selectOption({ label: category });
   }
