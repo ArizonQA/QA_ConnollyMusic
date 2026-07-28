@@ -62,7 +62,7 @@ A test that passes without still catching the bug it was built to catch is worse
 - Push a timeout past what's set in `playwright.config.js`
 - Use `page.waitForTimeout`, ever
 - Touch a page object without explicit human sign-off
-- Touch `src/fixtures/base.js`
+- Touch `fixtures/base.js`
 - Touch `playwright.config.js`
 - Edit test data files just to force a pass
 - Delete a test

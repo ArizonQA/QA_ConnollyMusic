@@ -29,7 +29,7 @@ model: 'claude-haiku-4-5'
 
 You are the Generator agent.
 
-Your job is to take a test case from the Excel workbook `testdata/Commerce_Hub_AI_Test_cases.xlsx` and generate a runnable Playwright JavaScript test that strictly follows this framework's conventions.
+Your job is to take a test case from the Excel workbook `testcase/Commerce_Hub_AI_Test_cases.xlsx` and generate a runnable Playwright JavaScript test that strictly follows this framework's conventions.
 
 Unlike a normal generator, you **must first discover the application's real behaviour** by driving the application with the Playwright MCP browser tools before writing any automation code.
 
@@ -40,15 +40,15 @@ Unlike a normal generator, you **must first discover the application's real beha
 Before writing any code:
 
 1. Read `AGENTS.md`
-2. Read `tests/loginTest.spec.js` (reference test)
+2. Read `tests/login-test.spec.js` (reference test)
 3. Read `fixtures/base.js`
 4. Read `utils/ExcelUtils.js`
-5. Read `testdata/AllTestData.js`
+5. Read `testcase/Commerce_Hub_AI_Test_cases.xlsx`
 6. Read the required page object(s) from `pages/`
 7. Read the requested test case from
 
 ```
-testdata/Commerce_Hub_AI_Test_cases.xlsx
+testcase/Commerce_Hub_AI_Test_cases.xlsx
 ```
 
 If any rule conflicts with `AGENTS.md`,
@@ -117,8 +117,7 @@ Never hardcode
 
 Always retrieve them using
 
-- ExcelUtils.getTestData()
-- AllTestData.js
+- ExcelUtils.js
 
 ---
 
@@ -136,10 +135,12 @@ Every generated test must read
 using
 
 ```
-ExcelUtils.getTestCase(...)
+ExcelUtils.getTestData(...)
 ```
 
-Never invent missing data.
+Never invent missing data 
+
+If ExcelUtils.js does not already contain the functionality needed, add a new method.
 
 ---
 
@@ -178,7 +179,8 @@ Use
 ```
 test.step()
 ```
-for flows containing more than three user actions.
+for flows containing more than three user actions. 
+
 Record important execution details using
 
 ```javascript
@@ -208,9 +210,12 @@ If a required method does not exist
 - update the corresponding page object
 - expose it through AllPageObjects
 
-Do not duplicate existing functionality.
+Do not duplicate existing functionality - Use if already exists on the project folder
 
 Never place assertions inside page objects.
+
+Add assertion elements to the page object only if they are required for the page's functionality.
+Add assertions data into json file and use them in the test as test data.
 
 ---
 
@@ -251,11 +256,7 @@ stop and ask the user instead of inventing CSS selectors.
 
 ## Assertion rules
 
-Assertions must directly verify the
-
-Expected Result
-
-from the Excel sheet.
+Assertions must directly verify the Expected Result from the Excel sheet.
 
 Prefer
 
@@ -264,7 +265,15 @@ expect(locator).toBeVisible()
 expect(locator).toHaveText()
 expect(locator).toContainText()
 expect(locator).toHaveCount()
+
+To validate Url and title
+
+await expect(page).toHaveURL('testdata');
+await expect(page).toHaveTitle('testdata');
+
 ```
+
+Keep the Only URL and Title assertions in a JSON file and use them in the test as test data.
 
 Generate approximately two meaningful assertions unless the test case requires more.
 
@@ -283,24 +292,40 @@ Use Playwright's web-first assertions.
 
 ```javascript
 import { test, expect } from '../fixtures/base.js';
+import { AllPageObjects } from '../pages/all_objects.js';
 import ExcelUtils from '../utils/ExcelUtils.js';
+import path from 'path';
 
-test.describe('Login', () => {
+test.describe('Login Tests', () => {
 
-test('TC_001 Login @smoke @critical', async ({
-AllPageObjects,
-logs
-}) => {
+  test.beforeEach(async ({ page, logs }) => {
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    console.log("URL - " + page.url());
+  });
 
-const login = AllPageObjects.loginPage;
+  const filePath = path.resolve('testcase/Commerce_Hub_AI_Test_cases.xlsx');
+  const sheetName = 'Login and Store Sync';
 
-await logs.info("Opening Login Page");
+  // ─── Original TC_001 ────────────────────────────────────────────────────────
+  test('TC_LOGIN_01 - Verify customer can log in with valid credentials @critical',
+  async ({ page, AllPageObjects, logs }) => {
 
-await login.login();
+    const startTime = new Date();   // <-- Missing line
 
-await expect(login.dashboardHeading).toBeVisible();
+    try {
 
-});
+      // code here
+
+      const endTime = new Date();
+      ExcelUtils.updateStatus(filePath, sheetName, testCaseId, "Pass", startTime, endTime,
+        "Login page loaded with Customer Login tab selected and all expected controls visible.");
+    } catch (error) {
+      const endTime = new Date();
+      ExcelUtils.updateStatus(filePath, sheetName, testCaseId, "Fail", startTime, endTime, "", error.message);
+      throw error;
+    }
+  
+  });
 
 });
 ```
@@ -331,7 +356,7 @@ Retrieve
 using
 
 ```
-ExcelUtils.getTestCase(...)
+ExcelUtils Funtions
 ```
 
 ---
@@ -356,7 +381,7 @@ capture
 browser_snapshot
 ```
 
-Use snapshots to discover
+Use snapshots to discover or any other better way to discover locators
 
 - Roles
 - Accessible names
@@ -393,11 +418,11 @@ tests/<module>/<testCaseId>_<shortName>.spec.js
 The generated test must
 
 - read Excel test data
-- log important steps
 - use AllPageObjects
 - contain meaningful assertions
 - update execution status
-
+- update logs for necessary details
+- No business logic in test files
 Pass
 
 ```javascript
