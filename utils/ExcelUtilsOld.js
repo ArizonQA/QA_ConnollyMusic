@@ -1,6 +1,6 @@
 import XLSX from 'xlsx';
 
-export default class ExcelUtils {
+export default class ExcelUtilsFormatted {
 
   static updateStatus(filePath, sheetName, testCaseId, status, startTime, endTime, actualResult = "", error = "") {
     const maxRetries = 2;

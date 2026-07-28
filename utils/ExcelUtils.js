@@ -19,7 +19,7 @@
 import ExcelJS from 'exceljs';
 import XLSX from 'xlsx';
 
-export default class ExcelUtilsFormatted {
+export default class ExcelUtils {
 
   /**
    * Updates test execution status in Excel while preserving ALL formatting.
