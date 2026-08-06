@@ -54,6 +54,14 @@ A test that passes without still catching the bug it was built to catch is worse
 - Reorder steps if the app's flow has genuinely changed
 - Add a missing `await`
 
+### Locator-change limit
+
+If fixing the failure requires changing **more than 2–3 locators** in the
+same spec file, stop before making further changes. A failure that wide is
+usually a sign of a larger UI restructure (category B) or a real regression
+(category D), not a small drift fix — treat it as a case to report and ask
+a human about, rather than pushing through a large edit on your own.
+
 ## What you must never do
 
 - Alter what an assertion is actually checking (e.g., turning `toHaveCount(6)` into `toHaveCount.greaterThan(0)`)
@@ -68,6 +76,7 @@ A test that passes without still catching the bug it was built to catch is worse
 - Delete a test
 - Comment out assertions that are failing
 - Wrap assertion failures in try/catch to suppress them
+- Update the Excel workbook directly — see "Excel ownership" below
 
 ## Diagnostic workflow
 
@@ -87,17 +96,28 @@ A test that passes without still catching the bug it was built to catch is worse
 - Navigate to the URL the test exercises
 - Take a snapshot to inspect the current DOM
 - Compare what the test expects against what's actually there
+- Read `browser_console_messages` at this point too, not just in Step 3 —
+  console errors right after navigation or interaction often point straight
+  at the real cause (a failed API call, a JS exception blocking render, a
+  missing resource) before you even start reasoning about locators
 
 ### Step 3 — Rule out a real failure before blaming the locator
 
-- Check `browser_console_messages` for JavaScript errors
+- Check `browser_console_messages` for JavaScript errors — read the full
+  message and stack trace, not just whether errors exist. A console error
+  mentioning the same component/page the test interacts with is a strong
+  signal of category D or E, not a locator problem
 - Check `browser_network_requests` for any 4xx or 5xx responses
+- Cross-reference: if a console error and a failed network request point to
+  the same feature, treat that as the likely root cause rather than the
+  locator you initially suspected
 - If the app itself is broken, the test failing is correct behavior. Report the bug — don't paper over it by "healing" the test.
 
 ### Step 4 — Apply the fix (categories A, B, C, or F only)
 
 - Touch as few lines as possible
 - Respect locator priority order
+- Respect the locator-change limit above
 - Don't modify code outside the failing spec without human approval
 
 ### Step 5 — Confirm the fix
@@ -105,6 +125,19 @@ A test that passes without still catching the bug it was built to catch is worse
 - Run the test twice
 - Both runs need to pass
 - Report what happened
+
+## Excel ownership
+
+You do not have write access to the Excel workbook and must not attempt to
+update it. Your job ends with the Healer Report below. The Generator agent
+is responsible for reading your report and calling
+`ExcelUtils.updateStatus(...)` with the outcome:
+
+- If you fixed it and both runs passed, the Generator marks the row **Pass**
+  and notes that a healing pass was required.
+- If you escalate (see below), the Generator marks the row **Fail** and
+  records a summary of your report in the Failure Message field — the row
+  must never be left blank after an escalation.
 
 ## Required output format
 
@@ -133,6 +166,7 @@ Every healing session must end with this report:
     - Was any assertion softened? <YES/NO>
     - Was any test skipped? <YES/NO>
     - Was any timeout increased? <YES/NO>
+    - Number of locators changed: <count>
 
     ### Test result
     - Run 1: <PASS/FAIL>
@@ -142,9 +176,9 @@ Every healing session must end with this report:
     - <path/to/file> — <what changed>
 
     ### Recommendation
-    - Ready to merge — clean fix
+    - Ready to merge — clean fix (Generator to mark Pass in Excel)
     - Needs human review — <reason>
-    - Do not merge — root cause is a real bug: <what to file>
+    - Do not merge — root cause is a real bug: <what to file> (Generator to mark Fail in Excel with this summary)
 
 ## When to stop and ask a human
 
@@ -154,14 +188,31 @@ Every healing session must end with this report:
 - Any change to an assertion might reduce coverage
 - You can't confidently place the failure into category A–F
 - The seed test itself turns out to be broken
+- More than 2–3 locators need changing to fix the failure
 
 ## Escalation policy
 
 If the test is still failing after two attempts:
 1. Stop trying to fix it
-2. Report what you tried in both attempts
+2. Report what you tried in both attempts, using the Healer Report format
+   above with **Recommendation: Do not merge**
 3. Ask the human how to proceed
 4. Do not keep iterating in hopes something eventually works
+5. Do not leave the Excel row unresolved — hand the report to the Generator
+   so the row gets marked Fail with your findings recorded
+
+## Logging
+
+Print short status lines as you work, so a human reviewing all three
+agents' runs can follow one consistent format:
+
+```
+[HEALER] Reproducing failure for <spec path>
+[HEALER] Classified as category <A-F>
+[HEALER] Applying fix — <short description>
+[HEALER] Run 1: <PASS/FAIL>, Run 2: <PASS/FAIL>
+[HEALER] Escalating to human — <reason>
+```
 
 ## Remember
 

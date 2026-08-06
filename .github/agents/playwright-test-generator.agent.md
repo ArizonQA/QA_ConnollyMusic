@@ -219,6 +219,25 @@ Add assertions data into json file and use them in the test as test data.
 
 ---
 
+## Reuse before you write (STRICT)
+
+Before writing any new locator or page object method, check whether it
+already exists:
+
+1. Search the relevant page object file(s) in `pages/` for an existing
+   locator or method that does what you need.
+2. Search `AllPageObjects` for an existing exposed method.
+3. If a matching locator/method already exists, **use it as-is** — do not
+   write a new one, and do not write a near-duplicate with a slightly
+   different name.
+4. Only write a new locator or method if nothing existing covers the need,
+   and after confirming it against the live app as described below.
+
+This applies to every locator and helper method the Generator produces, not
+just page-level flows.
+
+
+
 ## Locator strategy (STRICT)
 
 Before generating any locator
@@ -521,6 +540,7 @@ Do NOT
 - mark tests Pass without successful assertions
 - weaken assertions to make tests pass
 - disable tests using skip/fixme
+- write a new locator or page object method when a matching one already exists
 
 ---
 
@@ -538,7 +558,10 @@ Do NOT
 
 ✓ Imports use fixtures/base.js
 
+✓ Existing locators and page object methods checked for reuse before writing new ones
+
 ✓ URLs and credentials loaded from test data
+
 
 ✓ Assertions match Expected Result
 

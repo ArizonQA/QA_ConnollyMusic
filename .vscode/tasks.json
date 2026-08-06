@@ -1,0 +1,61 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run product spec",
+			"type": "shell",
+			"command": "npx playwright test tests/product.spec.js --project=chromium --reporter=list",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Run product spec",
+			"type": "shell",
+			"command": "npx playwright test tests/product.spec.js --project=chromium --reporter=list",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Run product spec",
+			"type": "shell",
+			"command": "npx playwright test tests/product.spec.js --project=chromium --reporter=list",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Run product spec",
+			"type": "shell",
+			"command": "npx playwright test tests/product.spec.js --project=chromium --reporter=list",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Run product spec",
+			"type": "shell",
+			"command": "npx playwright test tests/product.spec.js --project=chromium --reporter=list",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Inspect product save console",
+			"type": "shell",
+			"command": "node temp-console.js",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Inspect save buttons",
+			"type": "shell",
+			"command": "node temp-console.js",
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		}
+	]
+}

@@ -1,0 +1,279 @@
+- generic [ref=e1]:
+  - region "Notifications alt+T"
+  - alert [ref=e54]: Create Next App
+  - generic [ref=e55]:
+    - banner [ref=e56]:
+      - paragraph [ref=e61]: CommerceHub AI
+      - generic [ref=e62]:
+        - button [ref=e64] [cursor=pointer]:
+          - paragraph [ref=e71]: DemoStore
+        - button "Notifications" [ref=e74]
+        - button "K kathir.store Store User" [ref=e80]:
+          - generic [ref=e81]: K
+          - generic [ref=e82]:
+            - paragraph [ref=e83]: kathir.store
+            - paragraph [ref=e84]: Store User
+    - navigation "Store navigation" [ref=e88]:
+      - generic [ref=e89]:
+        - link "Dashboard" [ref=e90] [cursor=pointer]:
+          - /url: /store
+        - link "Templates" [ref=e91] [cursor=pointer]:
+          - /url: /templates
+        - link "Products" [active] [ref=e92] [cursor=pointer]:
+          - /url: /products
+        - link "Pricing" [ref=e93] [cursor=pointer]:
+          - /url: /pricing
+        - link "Cart & Orders" [ref=e94] [cursor=pointer]:
+          - /url: /cart-orders
+        - link "Payments" [ref=e95] [cursor=pointer]:
+          - /url: /payments
+        - link "Merchandising" [ref=e96] [cursor=pointer]:
+          - /url: /merchandising
+        - link "Rules Engine" [ref=e97] [cursor=pointer]:
+          - /url: /rules-engine
+        - link "B2B Customers" [ref=e98] [cursor=pointer]:
+          - /url: /b2b-customers
+        - link "Configuration" [ref=e99] [cursor=pointer]:
+          - /url: /configuration
+        - link "Audit Logs" [ref=e100] [cursor=pointer]:
+          - /url: /audit-logs
+        - link "Users" [ref=e101] [cursor=pointer]:
+          - /url: /store/users
+        - link "Subscription" [ref=e102] [cursor=pointer]:
+          - /url: /subscription
+    - generic [ref=e103]:
+      - main [ref=e104]:
+        - generic [ref=e277]:
+          - generic [ref=e279]:
+            - generic [ref=e280]:
+              - heading "Product Management" [level=1] [ref=e281]
+              - paragraph [ref=e282]: Manage and optimize your store inventory with AI insights
+            - button "Ask AI" [ref=e283] [cursor=pointer]
+          - generic [ref=e288]:
+            - link "All Products" [ref=e289] [cursor=pointer]:
+              - /url: /products
+            - link "Categories" [ref=e290] [cursor=pointer]:
+              - /url: /products/categories
+          - generic [ref=e291]:
+            - generic [ref=e292]:
+              - textbox "Search products by name, SKU..." [ref=e297]
+              - button "All" [ref=e298] [cursor=pointer]
+              - button "Active" [ref=e299] [cursor=pointer]
+              - button "Inactive" [ref=e300] [cursor=pointer]
+              - button "Low Stock" [ref=e301] [cursor=pointer]
+              - button "Out of Stock" [ref=e302] [cursor=pointer]
+            - generic [ref=e303]:
+              - button "Refresh" [ref=e304] [cursor=pointer]
+              - button "Export" [ref=e310] [cursor=pointer]
+              - button "Import" [ref=e314] [cursor=pointer]
+              - link "Add Product" [ref=e318] [cursor=pointer]:
+                - /url: /products/add
+          - table [ref=e321]:
+            - rowgroup [ref=e322]:
+              - row [ref=e323]:
+                - columnheader [ref=e324]:
+                  - checkbox "Select all products" [ref=e325] [cursor=pointer]
+                - columnheader "Product Name" [ref=e326]
+                - columnheader "Category" [ref=e327]
+                - columnheader "SKU" [ref=e328]
+                - columnheader "Price" [ref=e329]
+                - columnheader "Stock" [ref=e330]
+                - columnheader "Status" [ref=e331]
+                - columnheader "Actions" [ref=e332]
+            - rowgroup [ref=e333]:
+              - row [ref=e334]:
+                - cell [ref=e335]:
+                  - checkbox "Select Urban Explorer Backpack" [ref=e336] [cursor=pointer]
+                - cell [ref=e337]:
+                  - generic [ref=e338]:
+                    - img "Urban Explorer Backpack image" [ref=e340]
+                    - generic [ref=e341]:
+                      - paragraph [ref=e342]: Urban Explorer Backpack
+                      - paragraph [ref=e343]: SKU-123
+                - cell "Backpacks" [ref=e344]
+                - cell "SKU-123" [ref=e345]
+                - cell "$134.50" [ref=e346]
+                - cell "45" [ref=e347]
+                - cell "Active" [ref=e348]
+                - cell [ref=e349]:
+                  - generic [ref=e350]:
+                    - link "Edit Product" [ref=e351] [cursor=pointer]:
+                      - /url: /products/15/edit
+                    - button "Delete Product" [ref=e355] [cursor=pointer]
+              - row [ref=e359]:
+                - cell [ref=e360]:
+                  - checkbox "Select Graphite Notebook" [ref=e361] [cursor=pointer]
+                - cell [ref=e362]:
+                  - generic [ref=e363]:
+                    - img "Graphite Notebook image" [ref=e365]
+                    - generic [ref=e366]:
+                      - paragraph [ref=e367]: Graphite Notebook
+                      - paragraph [ref=e368]: SKU-842
+                - cell "NoteBooks" [ref=e369]
+                - cell "SKU-842" [ref=e370]
+                - cell "$56.25" [ref=e371]
+                - cell "5" [ref=e372]
+                - cell "Low Stock" [ref=e373]
+                - cell [ref=e374]:
+                  - generic [ref=e375]:
+                    - link "Edit Product" [ref=e376] [cursor=pointer]:
+                      - /url: /products/16/edit
+                    - button "Delete Product" [ref=e380] [cursor=pointer]
+              - row [ref=e384]:
+                - cell [ref=e385]:
+                  - checkbox "Select Naple Sofa" [ref=e386] [cursor=pointer]
+                - cell [ref=e387]:
+                  - generic [ref=e388]:
+                    - img "Naple Sofa image" [ref=e390]
+                    - generic [ref=e391]:
+                      - paragraph [ref=e392]: Naple Sofa
+                      - paragraph [ref=e393]: SKU-741
+                - cell "Sofa" [ref=e394]
+                - cell "SKU-741" [ref=e395]
+                - cell "$1255.55" [ref=e396]
+                - cell "12" [ref=e397]
+                - cell "Active" [ref=e398]
+                - cell [ref=e399]:
+                  - generic [ref=e400]:
+                    - link "Edit Product" [ref=e401] [cursor=pointer]:
+                      - /url: /products/17/edit
+                    - button "Delete Product" [ref=e405] [cursor=pointer]
+              - row [ref=e409]:
+                - cell [ref=e410]:
+                  - checkbox "Select Desk Lamp" [ref=e411] [cursor=pointer]
+                - cell [ref=e412]:
+                  - generic [ref=e413]:
+                    - img "Desk Lamp image" [ref=e415]
+                    - generic [ref=e416]:
+                      - paragraph [ref=e417]: Desk Lamp
+                      - paragraph [ref=e418]: SKU-101
+                - cell "Lighting" [ref=e419]
+                - cell "SKU-101" [ref=e420]
+                - cell "$5.00" [ref=e421]
+                - cell "25" [ref=e422]
+                - cell "Active" [ref=e423]
+                - cell [ref=e424]:
+                  - generic [ref=e425]:
+                    - link "Edit Product" [ref=e426] [cursor=pointer]:
+                      - /url: /products/20/edit
+                    - button "Delete Product" [ref=e430] [cursor=pointer]
+              - row [ref=e434]:
+                - cell [ref=e435]:
+                  - checkbox "Select AED LAMP 500 watts" [ref=e436] [cursor=pointer]
+                - cell [ref=e437]:
+                  - generic [ref=e438]:
+                    - img "AED LAMP 500 watts image" [ref=e440]
+                    - generic [ref=e441]:
+                      - paragraph [ref=e442]: AED LAMP 500 watts
+                      - paragraph [ref=e443]: SKU-105
+                - cell "Lighting" [ref=e444]
+                - cell "SKU-105" [ref=e445]
+                - cell "$5.00" [ref=e446]
+                - cell "20" [ref=e447]
+                - cell "Active" [ref=e448]
+                - cell [ref=e449]:
+                  - generic [ref=e450]:
+                    - link "Edit Product" [ref=e451] [cursor=pointer]:
+                      - /url: /products/23/edit
+                    - button "Delete Product" [ref=e455] [cursor=pointer]
+              - row [ref=e459]:
+                - cell [ref=e460]:
+                  - checkbox "Select TEST" [ref=e461] [cursor=pointer]
+                - cell "T TEST SKU-111" [ref=e462]:
+                  - generic [ref=e463]:
+                    - generic [ref=e464]: T
+                    - generic [ref=e465]:
+                      - paragraph [ref=e466]: TEST
+                      - paragraph [ref=e467]: SKU-111
+                - cell "A" [ref=e468]
+                - cell "SKU-111" [ref=e469]
+                - cell "$100.00" [ref=e470]
+                - cell "0" [ref=e471]
+                - cell "Out of Stock" [ref=e472]
+                - cell [ref=e473]:
+                  - generic [ref=e474]:
+                    - link "Edit Product" [ref=e475] [cursor=pointer]:
+                      - /url: /products/26/edit
+                    - button "Delete Product" [ref=e479] [cursor=pointer]
+              - row [ref=e483]:
+                - cell [ref=e484]:
+                  - checkbox "Select 6002 2RS1 SKF" [ref=e485] [cursor=pointer]
+                - cell "6 6002 2RS1 SKF 6002-2rs1-" [ref=e486]:
+                  - generic [ref=e487]:
+                    - generic [ref=e488]: "6"
+                    - generic [ref=e489]:
+                      - paragraph [ref=e490]: 6002 2RS1 SKF
+                      - paragraph [ref=e491]: 6002-2rs1-
+                - cell "Uncategorized" [ref=e492]
+                - cell "6002-2rs1-" [ref=e493]
+                - cell "$0.00" [ref=e494]
+                - cell "0" [ref=e495]
+                - cell "Active" [ref=e496]
+                - cell [ref=e497]:
+                  - generic [ref=e498]:
+                    - link "Edit Product" [ref=e499] [cursor=pointer]:
+                      - /url: /products/39/edit
+                    - button "Delete Product" [ref=e503] [cursor=pointer]
+              - row [ref=e507]:
+                - cell [ref=e508]:
+                  - checkbox "Select Trail Runner Cap" [ref=e509] [cursor=pointer]
+                - cell "T Trail Runner Cap SKU-9001" [ref=e510]:
+                  - generic [ref=e511]:
+                    - generic [ref=e512]: T
+                    - generic [ref=e513]:
+                      - paragraph [ref=e514]: Trail Runner Cap
+                      - paragraph [ref=e515]: SKU-9001
+                - cell "Backpacks" [ref=e516]
+                - cell "SKU-9001" [ref=e517]
+                - cell "$19.00" [ref=e518]
+                - cell "60" [ref=e519]
+                - cell "Active" [ref=e520]
+                - cell [ref=e521]:
+                  - generic [ref=e522]:
+                    - link "Edit Product" [ref=e523] [cursor=pointer]:
+                      - /url: /products/44/edit
+                    - button "Delete Product" [ref=e527] [cursor=pointer]
+              - row [ref=e531]:
+                - cell [ref=e532]:
+                  - checkbox "Select Cantilever Umbrella" [ref=e533] [cursor=pointer]
+                - cell [ref=e534]:
+                  - generic [ref=e535]:
+                    - img "Cantilever Umbrella image" [ref=e537]
+                    - generic [ref=e538]:
+                      - paragraph [ref=e539]: Cantilever Umbrella
+                      - paragraph [ref=e540]: UB-0981
+                - cell "Stationary" [ref=e541]
+                - cell "UB-0981" [ref=e542]
+                - cell "$65.50" [ref=e543]
+                - cell "100" [ref=e544]
+                - cell "Active" [ref=e545]
+                - cell [ref=e546]:
+                  - generic [ref=e547]:
+                    - link "Edit Product" [ref=e548] [cursor=pointer]:
+                      - /url: /products/48/edit
+                    - button "Delete Product" [ref=e552] [cursor=pointer]
+          - generic [ref=e556]:
+            - generic [ref=e557]:
+              - paragraph [ref=e558]: Showing 1 to 9 of 9 products
+              - generic [ref=e559]:
+                - generic [ref=e560]: "Per page:"
+                - combobox [ref=e561] [cursor=pointer]:
+                  - option "10" [selected]
+                  - option "25"
+                  - option "50"
+                  - option "100"
+            - generic [ref=e562]:
+              - button "Previous Page" [disabled] [ref=e563] [cursor=pointer]
+              - button "1" [disabled] [ref=e567]
+              - button "Next Page" [disabled] [ref=e568] [cursor=pointer]
+          - generic [ref=e579]:
+            - paragraph [ref=e580]:
+              - text: "AI Smart Analysis: Products in the"
+              - strong [ref=e581]: NoteBooks
+              - text: category have a 50% low stock rate with only 1 product available at a higher average price point of $50.25. Consider restocking to meet demand and avoid lost sales.
+            - button "Apply Optimization Strategy" [ref=e582] [cursor=pointer]
+      - contentinfo [ref=e269]:
+        - paragraph [ref=e270]: Arizon Digital CommerceHub AI
+        - paragraph [ref=e271]: Secure GraphQL-first platform for enterprise commerce operations
+    - button "Ask AI" [ref=e272]
+  - generic [ref=e275]: "0"

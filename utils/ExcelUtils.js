@@ -139,5 +139,27 @@ export default class ExcelUtils {
 
     return values;
   }
+
+  /**
+   * Reads the full Excel row for the requested test case.
+   * 
+   * @param {string} filePath   - Absolute path to the .xlsx file
+   * @param {string} sheetName  - Sheet name
+   * @param {string} testCaseId - Test Case ID to look up
+   * @returns {object} The full row object
+   */
+  static getTestCaseDetails(filePath, sheetName, testCaseId) {
+    const workbook = XLSX.readFile(filePath);
+    const sheet = workbook.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(sheet);
+
+    const row = data.find(r => String(r['Test Case ID']).trim() === testCaseId);
+
+    if (!row) {
+      throw new Error(`Test case '${testCaseId}' not found.`);
+    }
+
+    return row;
+  }
 }
 

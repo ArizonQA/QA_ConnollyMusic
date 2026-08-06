@@ -1,5 +1,4 @@
 ---
-
 description: 'Explores the app and writes numbered test scenarios directly into an Excel test-case workbook. Read-only browser. Writes only to the target .xlsx workbook.'
 tools:
   - codebase
@@ -160,7 +159,7 @@ The **Test Step / Action** column must contain **one atomic user action or syste
 
 - Write only one action per row.
 - Keep steps short and clear.
-- Use imperative action words such as **Click**, **Enter**, **Select**, **Verify**, **Navigate**, **Search**, **Upload**, or **Choose**.
+- Use imperative action words such as **Click**, **Enter**, **Select**, **Observe**, **Verify**, **Navigate**, **Search**, **Upload**, or **Choose**.
 - Preconditions such as *"Login page is open"* or *"User has a valid active account"* should appear as the first step when applicable.
 - Do combine multiple actions into a single row.
 - The **Expected Result** column should describe the outcome of that individual step.
@@ -180,6 +179,21 @@ Use `runCommands` to run a Python script (via `openpyxl`) that:
 
 Never hand-edit the `.xlsx` binary directly with `editFiles` — always go
 through the script, so formatting and existing sheets stay intact.
+
+## Logging
+
+Print a short, plain-English line for each meaningful step you take
+(navigation, snapshot taken, sheet created, sheet conflict found, rows
+written). This keeps your run traceable and matches the logging style used
+by the Generator and Healer agents, so a human reviewing all three logs can
+follow one consistent format:
+
+```
+[PLANNER] Navigated to <url>
+[PLANNER] Snapshot taken after <action>
+[PLANNER] Sheet '<name>' created — writing N rows
+[PLANNER] Sheet '<name>' already exists — asking user for alternate name
+```
 
 ## Quality checklist before saving
 

@@ -11,7 +11,7 @@ test.describe('Login Tests', () => {
   });
   
   const filePath = path.resolve('testcase/Commerce_Hub_AI_Test_cases.xlsx');
-  const sheetName = 'Login and Store Sync';
+  const sheetName = 'Login, ForgetPassword';
 
   function getCredentialFields(testData) {
     const email = testData?.Email ?? testData?.email;
@@ -106,6 +106,48 @@ test.describe('Login Tests', () => {
     } catch (error) {
       const endTime = new Date();
       ExcelUtils.updateStatus(filePath, sheetName, tc, 'Fail', startTime, endTime, '', error.message);
+      throw error;
+    }
+  });
+
+  // ─── TC_LOGIN_19 ─────────────────────────────────────────────────────────────
+  test('TC_LOGIN_19 - Verify caseinsensitive email works as expected @regression',
+  async ({ page, AllPageObjects, logs }) => {
+
+    const tc = 'TC_LOGIN_19';
+    const startTime = new Date();
+
+    try {
+
+      const data = ExcelUtils.getTestData(filePath, sheetName, tc);
+      const { email, password } = getCredentialFields(data);
+
+      await test.step('Enter uppercase email address', async () => {
+        await AllPageObjects.login().emailInput.fill(email);
+        await logs.info(`Filled uppercase email: ${email}`);
+      });
+
+      await test.step('Enter password from test data', async () => {
+        await AllPageObjects.login().passwordInput.fill(password);
+      });
+
+      await test.step('Click Sign In button', async () => {
+        await AllPageObjects.login().signInButton.click();
+        await logs.info('Clicked Sign In button with uppercase email test data');
+      });
+
+      await test.step('Verify successful authentication and dashboard redirect', async () => {
+        await expect(page).not.toHaveURL(/\/login/);
+        await expect(page.getByRole('heading').first()).toBeVisible();
+        await logs.info(`Post-login URL for ${tc}: ${page.url()}`);
+      });
+
+      const endTime = new Date();
+      await ExcelUtils.updateStatus(filePath, sheetName, tc, 'Pass', startTime, endTime,
+        'Uppercase email authentication succeeded and user was redirected to the merchant dashboard.');
+    } catch (error) {
+      const endTime = new Date();
+      await ExcelUtils.updateStatus(filePath, sheetName, tc, 'Fail', startTime, endTime, '', error.message);
       throw error;
     }
   });

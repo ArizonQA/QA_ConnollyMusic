@@ -130,6 +130,7 @@ jobs:
             Please find the attached execution artifacts:
               • Test Summary Report (test-summary.md)
               • Allure Execution Report (allure-report.html)
+              • Test Cases Sheet (testcase/Commerce_Hub_AI_Test_cases_Updated.xlsx)
 
            You can also view the workflow execution details using the link below:
              ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -138,4 +139,5 @@ jobs:
 
            Regards,
            Arizon QA Team
+          attachments: testcase/Commerce_Hub_AI_Test_cases_Updated.xlsx,test-summary.md,allure-report.html
            
