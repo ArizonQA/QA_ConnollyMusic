@@ -102,15 +102,15 @@ jobs:
         with:
           server_address: smtp.office365.com
           server_port: 587
-          secure: false
+          secure: true
 
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
+          username: ${{ secrets.OFFICE365_USER }}
+          password: ${{ secrets.OFFICE365_APP_PASSWORD }}
  
           subject: Playwright Test Report - Build #${{ github.run_number }} - ${{ job.status }}
 
           to: vijay@arizon.digital
-          from: ${{ secrets.EMAIL_USERNAME }}
+          from: ${{ secrets.OFFICE365_USER }}
 
           body: |
            Hello Team,
