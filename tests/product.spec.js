@@ -2,138 +2,226 @@ import { test, expect } from '../fixtures/base.js';
 import { AllPageObjects } from '../pages/all_objects.js';
 import ExcelUtils from '../utils/ExcelUtils.js';
 import path from 'path';
+import loginTestData from '../testcase/datas.js';
+
+const { merchantLogin } = loginTestData;
 
 test.describe('Products & Catalog', () => {
-  const filePath = path.resolve('testcase/Commerce_Hub_AI_Test_cases.xlsx');
-  const sheetName = 'Products & Catalog';
-  const testCaseId = 'TC_PM_49';
+	test.describe.configure({ mode: 'serial' });
 
-  test('TC_PM_49 - Verify a new product can be added manually with all mandatory fields @critical', async ({ page, AllPageObjects, logs }) => {
-    const startTime = new Date();
+	const filePath = path.resolve('testcase/Commerce_Hub_AI_Test_cases.xlsx');
+	const sheetName = 'Products & Catalog';
 
-    try {
-      const testCase = ExcelUtils.getTestCaseDetails(filePath, sheetName, testCaseId);
-      const testData = ExcelUtils.getTestData(filePath, sheetName, testCaseId);
+	async function loginAndOpenProductList({ page, AllPageObjects, storeName }) {
+		await page.goto('/store/login', { waitUntil: 'domcontentloaded' });
+		await AllPageObjects.login().login(merchantLogin.Email, merchantLogin.Password);
 
-      const email = testData.Email;
-      const password = testData.Password;
-      const productNameBase = String(testData.Name || '').replace(/^['"]|['"]$/g, '').trim();
-      const productSkuBase = String(testData.SKU || '').trim();
-      const price = String(testData.Price || '').trim();
-      const stock = String(testData.Stock || '').trim();
-      const category = String(testData.Category || '').trim();
+		if (/\/store\/login/.test(page.url())) {
+			await AllPageObjects.login().signInButton.first().click();
+		}
 
-      if (!email || !password || !productNameBase || !productSkuBase || !price || !stock || !category) {
-        throw new Error('Missing required product test data in Excel.');
-      }
+		await expect(page).toHaveURL(/\/store(?:\/)?$/);
+		await AllPageObjects.product().selectStoreFromHeader(storeName);
+		await AllPageObjects.product().goToProductsPage();
+	}
 
-      const productName = productNameBase;
-      const productSku = productSkuBase;
+	test('TC_PM_37 - Verify a new product can be added manually with all mandatory fields @critical', async ({ page, AllPageObjects, logs }) => {
+		const testCaseId = 'TC_PM_37';
+		const startTime = new Date();
 
-      await test.step('Login as merchant and open the store dashboard', async () => {
-        await page.goto('/store/login', { waitUntil: 'domcontentloaded' });
-        await AllPageObjects.login().login(email, password);
-        await expect(page).toHaveURL(/\/store(?:\/)?$/);
-        await logs.info(`Logged in as ${email} and opened the dashboard.`);
-      });
+		try {
+			const details = ExcelUtils.getTestCaseDetails(filePath, sheetName, testCaseId);
+			const testData = ExcelUtils.getTestData(filePath, sheetName, testCaseId);
 
-      await test.step('Open the add-product form', async () => {
-        await AllPageObjects.product().openAddProductPage();
-        await expect(page).toHaveURL(/\/products\/add$/);
-        await logs.info(`Opened add-product form for ${testCaseId}.`);
-      });
+			const store = String(testData.Store || '').trim();
+			const name = String(testData.Name || '').replace(/^['"]|['"]$/g, '').trim();
+			const sku = String(testData.SKU || '').trim();
+			const price = String(testData.Price || '').trim();
+			const stock = String(testData.Stock || '').trim();
+			const category = String(testData.Category || '').trim();
 
-      await test.step('Fill all mandatory product fields', async () => {
-        await AllPageObjects.product().fillRequiredProductDetails({
-          name: productName,
-          sku: productSku,
-          price,
-          stock,
-          category,
-        });
-        await logs.info(`Prepared product "${productName}" with SKU "${productSku}".`);
-      });
+			if (!store || !name || !sku || !price || !stock || !category) {
+				throw new Error('Missing required Store/Name/SKU/Price/Stock/Category fields for TC_PM_37 in Excel Test Data.');
+			}
 
-      await test.step('Save the product and verify it appears in the product list', async () => {
-        await AllPageObjects.product().saveProduct();
-        await AllPageObjects.product().goToProductsPage();
-        await AllPageObjects.product().refreshProductList();
-        await AllPageObjects.product().waitForProductInList(productName, productSku);
-        await expect(AllPageObjects.product().productSummaryLocator(productName, productSku)).toBeVisible();
-        await expect(page).toHaveURL(/\/products(?:\/)?$/);
-        await logs.info(`Verified product "${productName}" appears in the product list.`);
-      });
+			const productPage = AllPageObjects.product();
+			let preCount = 0;
 
-      const endTime = new Date();
-      await ExcelUtils.updateStatus(
-        filePath,
-        sheetName,
-        testCaseId,
-        'Pass',
-        startTime,
-        endTime,
-        `Created product "${productName}" with SKU "${productSku}" and verified it appears in the product list.`
-      );
-    } catch (error) {
-      const endTime = new Date();
-      await ExcelUtils.updateStatus(filePath, sheetName, testCaseId, 'Fail', startTime, endTime, '', error.message);
-      throw error;
-    }
-  });
+			await test.step('Login as merchant, select store and open products list', async () => {
+				await loginAndOpenProductList({ page, AllPageObjects, storeName: store });
+				await productPage.refreshProductList();
+				preCount = await productPage.totalProductsCount();
 
-  test('TC_PM_50 - Verify product cannot be added with mandatory fields missing @high', async ({ page, AllPageObjects, logs }) => {
-    const startTime = new Date();
-    let initialProductCount = 0;
+				await logs.info(`Executing ${testCaseId}: ${details['Test Summary']}`);
+			});
 
-    try {
-      const testCase = ExcelUtils.getTestCaseDetails(filePath, sheetName, 'TC_PM_50');
-      const testData = ExcelUtils.getTestData(filePath, sheetName, 'TC_PM_50');
-      const email = testData.Email;
-      const password = testData.Password;
+			await test.step('Open add product form and fill mandatory fields', async () => {
+				await productPage.clearProductSearch();
+				await productPage.openAddProductPage();
+				await productPage.fillRequiredProductDetails({ name, sku, price, stock, category });
+			});
 
-      if (!email || !password) {
-        throw new Error('Missing required login test data in Excel.');
-      }
+			await test.step('Save product and verify it appears with product count incremented', async () => {
+				await productPage.saveProduct();
+				await productPage.goToProductsPage();
+				await productPage.refreshProductList();
+				await productPage.clearProductSearch();
 
-      const productPage = AllPageObjects.product();
+				const postCount = await productPage.totalProductsCount();
+				await productPage.searchProductBySku(sku);
+				const createdRow = productPage.productRowBySku(sku);
+				await expect(createdRow).toBeVisible();
+				await expect(createdRow).toContainText(name);
+				expect(postCount).toBe(preCount + 1);
+			});
 
-      await test.step('Login as merchant and open the add-product form', async () => {
-        await page.goto('', { waitUntil: 'domcontentloaded' });
-        await AllPageObjects.login().login(email, password);
-        await expect(page).toHaveURL(/\/store(?:\/)?$/);
-        await productPage.openAddProductPage();
-        await expect(page).toHaveURL(/\/products\/add$/);
-        await logs.info(`Opened add-product form for ${'TC_PM_50'}.`);
-      });
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(
+				filePath,
+				sheetName,
+				testCaseId,
+				'Pass',
+				startTime,
+				endTime,
+				`Created product '${name}' (${sku}) in store '${store}' and verified it in product list with increased count.`
+			);
+		} catch (error) {
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(filePath, sheetName, testCaseId, 'Fail', startTime, endTime, '', error.message);
+			throw error;
+		}
+	});
 
-      await test.step('Leave required fields empty and attempt to save', async () => {
-        await productPage.clearRequiredProductDetails();
-        initialProductCount = await productPage.productRowsLocator().count();
-        await productPage.saveProduct();
-        await logs.info(`Attempted to save a product with missing required fields for ${'TC_PM_50'}.`);
-      });
+	test('TC_PM_38 - Verify product cannot be added with mandatory fields missing @regression', async ({ page, AllPageObjects, logs }) => {
+		const testCaseId = 'TC_PM_38';
+		const startTime = new Date();
 
-      await test.step('Verify submission is blocked and no new product is added', async () => {
-        await expect(productPage.validationMessageLocator('Please select at least one category before saving the product.')).toBeVisible();
-        await expect(productPage.productRowsLocator()).toHaveCount(initialProductCount);
-        await expect(page).toHaveURL(/\/products\/add$/);
-        await logs.info(`Verified ${'TC_PM_50'} was blocked and the product list count stayed unchanged.`);
-      });
+		try {
+			const details = ExcelUtils.getTestCaseDetails(filePath, sheetName, testCaseId);
+			const testData = ExcelUtils.getTestData(filePath, sheetName, testCaseId);
 
-      const endTime = new Date();
-      await ExcelUtils.updateStatus(
-        filePath,
-        sheetName,
-        'TC_PM_50',
-        'Pass',
-        startTime,
-        endTime,
-        'The add-product form blocked submission and showed a validation message without adding a product.'
-      );
-    } catch (error) {
-      const endTime = new Date();
-      await ExcelUtils.updateStatus(filePath, sheetName, 'TC_PM_50', 'Fail', startTime, endTime, '', error.message);
-      throw error;
-    }
-  });
+			const productName = String(testData['Product Name'] || '').replace(/^['"]|['"]$/g, '').trim();
+			const sku = String(testData.SKU || '').replace(/^['"]|['"]$/g, '').trim();
+
+			const productPage = AllPageObjects.product();
+			let preCount = 0;
+
+			await test.step('Login as merchant and navigate to products list', async () => {
+				await page.goto('/store/login', { waitUntil: 'domcontentloaded' });
+				await AllPageObjects.login().login(merchantLogin.Email, merchantLogin.Password);
+
+				if (/\/store\/login/.test(page.url())) {
+					await AllPageObjects.login().emailInput.fill(merchantLogin.Email);
+					await AllPageObjects.login().passwordInput.fill(merchantLogin.Password);
+					await AllPageObjects.login().signInButton.first().click();
+				}
+
+				await expect(page).toHaveURL(/\/store(?:\/)?$/);
+				await productPage.goToProductsPage();
+				await productPage.refreshProductList();
+				preCount = await productPage.totalProductsCount();
+				await logs.info(`Executing ${testCaseId}: ${details['Test Summary']}`);
+			});
+
+			await test.step('Navigate to Add Product, leave Product Name and SKU blank, then click Save Product', async () => {
+				await productPage.openAddProductPage();
+				await productPage.productNameInput.fill(productName);
+				await productPage.skuInput.fill(sku);
+				await productPage.saveProduct();
+			});
+
+			await test.step('Verify save is blocked and product count is unchanged', async () => {
+				await expect(productPage.saveProductButton).toBeVisible();
+				await productPage.goToProductsPage();
+				await productPage.refreshProductList();
+				await productPage.clearProductSearch();
+				const postCount = await productPage.totalProductsCount();
+				expect(postCount).toBe(preCount);
+			});
+
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(
+				filePath,
+				sheetName,
+				testCaseId,
+				'Pass',
+				startTime,
+				endTime,
+				'Save was blocked with Product Name and SKU left blank, and product count remained unchanged.'
+			);
+		} catch (error) {
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(filePath, sheetName, testCaseId, 'Fail', startTime, endTime, '', error.message);
+			throw error;
+		}
+	});
+
+	test('TC_PM_39 - Verify editing a product updates all fields correctly and reflects in the list @regression', async ({ page, AllPageObjects, logs }) => {
+		const testCaseId = 'TC_PM_39';
+		const startTime = new Date();
+
+		try {
+			const details = ExcelUtils.getTestCaseDetails(filePath, sheetName, testCaseId);
+			const testData = ExcelUtils.getTestData(filePath, sheetName, testCaseId);
+
+			const store = String(testData.Store || '').trim();
+			const updateSku = String(testData['Update SKU'] || '').trim();
+			const updatedPrice = String(testData['new Price'] || '').replace('$', '').trim();
+			const updatedCategory = String(testData.Category || '').trim();
+
+			if (!store || !updateSku || !updatedPrice || !updatedCategory) {
+				throw new Error('Missing required Store/Update SKU/new Price/Category fields for TC_PM_39 in Excel Test Data.');
+			}
+
+			const productPage = AllPageObjects.product();
+
+			await test.step('Login as merchant, select store and open products list', async () => {
+				await loginAndOpenProductList({ page, AllPageObjects, storeName: store });
+				await productPage.refreshProductList();
+				await productPage.clearProductSearch();
+				await logs.info(`Executing ${testCaseId}: ${details['Test Summary']}`);
+			});
+
+			await test.step('Open the product by SKU and update Price and Category', async () => {
+				await productPage.openProductForEditBySku(updateSku);
+				await productPage.priceInput.fill(updatedPrice);
+				await productPage.selectCategoryForEdit(updatedCategory);
+				await productPage.saveProduct();
+				await logs.info(`Updated SKU ${updateSku} with Price ${updatedPrice} and Category ${updatedCategory}.`);
+			});
+
+			await test.step('Verify list reflects updated Price and Category', async () => {
+				await productPage.goToProductsPage();
+				await productPage.refreshProductList();
+				await productPage.clearProductSearch();
+				await productPage.searchProductBySku(updateSku);
+				const updatedRow = productPage.productRowBySku(updateSku);
+				await expect(updatedRow).toContainText(updatedCategory);
+				await expect(updatedRow).toContainText(updatedPrice);
+			});
+
+			await test.step('Reopen same product and verify values persisted', async () => {
+				await productPage.openProductForEditBySku(updateSku);
+				const persistedPrice = Number(await productPage.priceInputValue());
+				expect(persistedPrice).toBeCloseTo(Number(updatedPrice), 2);
+				await expect(productPage.categoryCheckbox(updatedCategory)).toBeChecked();
+			});
+
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(
+				filePath,
+				sheetName,
+				testCaseId,
+				'Pass',
+				startTime,
+				endTime,
+				`Updated SKU ${updateSku} and verified Price ${updatedPrice} and Category ${updatedCategory} persisted in list and edit form.`
+			);
+		} catch (error) {
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(filePath, sheetName, testCaseId, 'Fail', startTime, endTime, '', error.message);
+			throw error;
+		}
+	});
 });
+

@@ -46,7 +46,7 @@ test.describe('Login Tests', () => {
       });
 
       await test.step('Click Sign In button', async () => {
-        await AllPageObjects.login().signInButton.click();
+        await AllPageObjects.login().signInButton.first().click();
         await logs.info('Clicked Sign In button');
       });
 
@@ -89,7 +89,7 @@ test.describe('Login Tests', () => {
       });
 
       await test.step('Click Sign In button', async () => {
-        await AllPageObjects.login().signInButton.click();
+        await AllPageObjects.login().signInButton.first().click();
         await logs.info('Clicked Sign In button');
       });
 
@@ -132,7 +132,7 @@ test.describe('Login Tests', () => {
       });
 
       await test.step('Click Sign In button', async () => {
-        await AllPageObjects.login().signInButton.click();
+        await AllPageObjects.login().signInButton.first().click();
         await logs.info('Clicked Sign In button with uppercase email test data');
       });
 

@@ -436,6 +436,7 @@ tests/<module>/<testCaseId>_<shortName>.spec.js
 
 The generated test must
 
+- read login datas from data.js file
 - read Excel test data
 - use AllPageObjects
 - contain meaningful assertions
@@ -560,7 +561,7 @@ Do NOT
 
 ✓ Existing locators and page object methods checked for reuse before writing new ones
 
-✓ URLs and credentials loaded from test data
+✓ URLs and Login credentials from data.js file and other datas are loaded from test data Commerce_Hub_AI_Test_cases.xlsx
 
 
 ✓ Assertions match Expected Result
