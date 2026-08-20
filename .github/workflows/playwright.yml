@@ -102,7 +102,7 @@ jobs:
         with:
           server_address: smtp.office365.com
           server_port: 587
-          secure: true
+          secure: false
 
           username: ${{ secrets.OFFICE365_USER }}
           password: ${{ secrets.OFFICE365_APP_PASSWORD }}
