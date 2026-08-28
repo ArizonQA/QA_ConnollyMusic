@@ -3,22 +3,26 @@ import { AllPageObjects } from '../pages/all_objects.js';
 import ExcelUtils from '../utils/ExcelUtils.js';
 import path from 'path';
 import loginTestData from '../testcase/datas.js';
+import { ProductPage } from '../pages/product.js';
 
 const { merchantLogin } = loginTestData;
 
 test.describe('Products & Catalog', () => {
-	test.describe.configure({ mode: 'serial' });
+	
 
 	const filePath = path.resolve('testcase/Commerce_Hub_AI_Test_cases.xlsx');
 	const sheetName = 'Products & Catalog';
 
 	async function loginAndOpenProductList({ page, AllPageObjects, storeName }) {
-		await page.goto('/store/login', { waitUntil: 'domcontentloaded' });
+		try {
+			await page.goto('/store/login', { waitUntil: 'domcontentloaded' });
+		} catch {
+			// Retry once if navigation was aborted (can happen after a prior test's navigation)
+			await page.goto('/store/login', { waitUntil: 'domcontentloaded' });
+		}
 		await AllPageObjects.login().login(merchantLogin.Email, merchantLogin.Password);
 
-		if (/\/store\/login/.test(page.url())) {
-			await AllPageObjects.login().signInButton.first().click();
-		}
+		await AllPageObjects.login().signInButton.first().click();
 
 		await expect(page).toHaveURL(/\/store(?:\/)?$/);
 		await AllPageObjects.product().selectStoreFromHeader(storeName);
@@ -223,5 +227,73 @@ test.describe('Products & Catalog', () => {
 			throw error;
 		}
 	});
+
+	test('TC_PM_55 - Verify system prevents adding a product with a SKU that already exists @critical', async ({ page, AllPageObjects, logs }) => {
+		const testCaseId = 'TC_PM_55';
+		const startTime = new Date();
+
+		try {
+			const details = ExcelUtils.getTestCaseDetails(filePath, sheetName, testCaseId);
+			const testData = ExcelUtils.getTestData(filePath, sheetName, testCaseId);
+
+			const store = String(testData.Store || '').trim();
+			const name = String(testData.Name || '').replace(/^['"]|['"]$/g, '').trim();
+			const sku = String(testData.SKU || '').trim();
+			const price = String(testData.Price || '').replace('$', '').trim();
+			const stock = String(testData.Stock || '').trim();
+			const category = String(testData.Category || '').trim();
+
+			if (!store || !sku) {
+				throw new Error('Missing required Store or SKU fields for TC_PM_55 in Excel Test Data.');
+			}
+
+			const productPage = AllPageObjects.product();
+			let preCount = 0;
+
+			await test.step('Login as merchant, select store and open products list', async () => {
+				await loginAndOpenProductList({ page, AllPageObjects, storeName: store });
+				await productPage.refreshProductList();
+				await productPage.clearProductSearch();
+				preCount = await productPage.totalProductsCount();
+				await logs.info(`Executing ${testCaseId}: ${details['Test Summary']}`);
+			});
+
+			await test.step('Open Add Product and fill all mandatory fields using an already-existing SKU', async () => {
+				await productPage.openAddProductPage();
+				await productPage.fillRequiredProductDetails({ name, sku, price, stock, category });
+			});
+
+			await test.step('Attempt to save and verify duplicate SKU error is shown', async () => {
+				await productPage.saveProduct();
+				await productPage.waitForDuplicateSkuError();
+				await expect(productPage.duplicateSkuErrorMessage()).toBeVisible();
+			});
+
+			await test.step('Verify product count is unchanged after blocked save', async () => {
+				await productPage.goToProductsPage();
+				await productPage.refreshProductList();
+				await productPage.clearProductSearch();
+				const postCount = await productPage.totalProductsCount();
+				expect(postCount).toBe(preCount);
+			});
+
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(
+				filePath,
+				sheetName,
+				testCaseId,
+				'Pass',
+				startTime,
+				endTime,
+				`Duplicate SKU '${sku}' was correctly rejected; validation error displayed and product count remained at ${preCount}.`
+			);
+		} catch (error) {
+			const endTime = new Date();
+			await ExcelUtils.updateStatus(filePath, sheetName, testCaseId, 'Fail', startTime, endTime, '', error.message);
+			throw error;
+		}
+	});
+
+
 });
 

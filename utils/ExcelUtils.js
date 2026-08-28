@@ -134,7 +134,9 @@ export default class ExcelUtils {
 
     testData.split(",").forEach(item => {
       const [key, value] = item.split(":");
-      values[key.trim()] = value.trim();
+      if (key && value) {
+        values[key.trim()] = value.trim();
+      }
     });
 
     return values;

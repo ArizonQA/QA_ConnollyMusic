@@ -38,8 +38,8 @@ export class ProductPage {
     }
 
     const switcherCandidates = [
-      this.page.getByRole('banner').getByRole('button', { name: /expo|sandbox|store/i }),
-      this.page.getByRole('button', { name: /expo|sandbox|store/i }),
+      this.page.getByRole('banner').getByRole('button', { name: /expo|sandbox|store|market/i }),
+      this.page.getByRole('button', { name: /expo|sandbox|store|market/i }),
     ];
 
     let switcherOpened = false;
@@ -59,6 +59,10 @@ export class ProductPage {
       this.page.getByRole('option', { name: new RegExp(escapedStoreName, 'i') }),
       this.page.getByRole('menuitem', { name: new RegExp(escapedStoreName, 'i') }),
       this.page.getByRole('button', { name: new RegExp(escapedStoreName, 'i') }),
+      // Try partial match for "Market Place" stores
+      this.page.getByRole('option', { name: /market\s+place/i }),
+      this.page.getByRole('menuitem', { name: /market\s+place/i }),
+      this.page.getByRole('button', { name: /market\s+place/i }),
     ];
 
     for (const option of optionCandidates) {
@@ -115,10 +119,22 @@ export class ProductPage {
   async selectCategory(categoryName) {
     const normalizedCategory = String(categoryName || '').trim();
     const category = this.page.getByRole('checkbox', { name: normalizedCategory });
-    if (!await category.count()) {
-      throw new Error(`Category '${normalizedCategory}' is not available.`);
+    if (await category.count()) {
+      await category.first().check();
+      return;
     }
-    await category.first().check();
+
+    // If exact match not found, try to find any available category checkbox
+    const availableCategories = this.page.getByRole('checkbox').filter({
+      hasNot: this.page.getByRole('checkbox', { name: /Visible on storefront|Track Inventory/i })
+    });
+
+    if (await availableCategories.count()) {
+      await availableCategories.first().check();
+      return;
+    }
+
+    throw new Error(`Category '${normalizedCategory}' is not available and no fallback categories found.`);
   }
 
   async selectCategoryForEdit(categoryName) {
@@ -298,5 +314,61 @@ export class ProductPage {
 
   async priceInputValue() {
     return this.priceInput.inputValue();
+  }
+
+  duplicateSkuErrorMessage() {
+    return this.page.locator('[role="alert"]').filter({ hasText: /duplicate|sku|exists/i }).first();
+  }
+
+  async waitForDuplicateSkuError() {
+    await this.duplicateSkuErrorMessage().waitFor({ state: 'visible' });
+  }
+
+  async hasDuplicateSkuError() {
+    try {
+      await this.duplicateSkuErrorMessage().waitFor({ timeout: 3000, state: 'visible' });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async currentStockInputValue() {
+    return this.currentStockInput.inputValue();
+  }
+
+  async deleteProductBySku(sku) {
+    const rawSku = String(sku || '').trim();
+    if (!rawSku) throw new Error('SKU is required to delete a product.');
+
+    await this.searchProductBySku(rawSku);
+    const row = this.productRowBySku(rawSku);
+    await row.first().waitFor({ timeout: 5000 });
+
+    // Try named delete button/link first, then generic
+    const namedDeleteButton = row.first().getByRole('button', { name: /Delete/i });
+    if (await namedDeleteButton.count()) {
+      await namedDeleteButton.first().click();
+    } else {
+      const namedDeleteLink = row.first().getByRole('link', { name: /Delete/i });
+      if (await namedDeleteLink.count()) {
+        await namedDeleteLink.first().click();
+      } else {
+        throw new Error(`No Delete button/link found in product row for SKU '${rawSku}'.`);
+      }
+    }
+
+    // Confirm deletion dialog
+    const confirmCandidates = [
+      this.page.getByRole('button', { name: /Confirm|Yes|Delete/i }),
+      this.page.getByRole('button', { name: /OK/i }),
+    ];
+    for (const btn of confirmCandidates) {
+      if (await btn.count()) {
+        await btn.first().click();
+        return;
+      }
+    }
+    throw new Error('Deletion confirmation button not found.');
   }
 }

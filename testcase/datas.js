@@ -1,6 +1,6 @@
 export const loginTestData = {
 	merchantLogin: {
-		Email: 'stevenrogersvvm@gmail.com',
+		Email: 'vijay@arizon.digital',
 		Password: 'Pass@123',
 	},
 	arizonAdminLogin: {
