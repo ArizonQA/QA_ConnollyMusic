@@ -1,5 +1,5 @@
 import { LoginPage } from './login.js';
-import { ProductPage } from './product.js';
+import { ProductPage } from './products.js';
 import { B2BCustomersPage } from './b2b-customers.js';
 
 export class AllPageObjects {

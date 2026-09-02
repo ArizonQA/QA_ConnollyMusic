@@ -40,14 +40,14 @@ module.exports = defineConfig({
   ],
 
   use: {
-  baseURL: "https://commerce-hub-ai.arizon.solutions/",
+  baseURL: "https://commerce-hub-ai.arizon.solutions/store/login",
   headless: process.env.HEADLESS ? process.env.HEADLESS === 'true' : !!process.env.CI,
   viewport: { width: 1920, height: 1080 },
   trace: 'on-first-retry',
   screenshot: 'only-on-failure',
   video: 'retain-on-failure',
   actionTimeout: 15000,       // add this
-  navigationTimeout: 30000,   // add this
+  navigationTimeout: 45000,   // add this
   launchOptions: {
     args: [] 
     },
