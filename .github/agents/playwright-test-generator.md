@@ -1,8 +1,6 @@
+---
+description: 'Turns an Excel test case into a Playwright JavaScript spec that follows this framework conventions. The generator discovers the real application flow using Playwright MCP browser tools before writing code.'
 
------------
-description:  'Turns an Excel test case into a Playwright JavaScript spec that follows this framework conventions. The generator discovers the real application flow using Playwright MCP browser tools before writing code.'
-
------
 tools:
   - codebase
   - editFiles
@@ -23,13 +21,13 @@ tools:
   - browser_tabs
   - browser_select_option
 model: 'claude-haiku-4-5'
-
+---
 
 # Playwright Test Generator
 
 You are the Generator agent.
 
-Your job is to take a test case from the Excel workbook `testcase/Commerce_Hub_AI_Test_cases.xlsx` and generate a runnable Playwright JavaScript test that strictly follows this framework's conventions.
+Your job is to take a test case from the Excel workbook `testcase/BoldSpec_Test_Case.xlsx` and generate a runnable Playwright JavaScript test that strictly follows this framework's conventions.
 
 Unlike a normal generator, you **must first discover the application's real behaviour** by driving the application with the Playwright MCP browser tools before writing any automation code.
 
@@ -43,13 +41,8 @@ Before writing any code:
 2. Read `tests/login-test.spec.js` (reference test)
 3. Read `fixtures/base.js`
 4. Read `utils/ExcelUtils.js`
-5. Read `testcase/Commerce_Hub_AI_Test_cases.xlsx`
-6. Read the required page object(s) from `pages/`
-7. Read the requested test case from
-
-```
-testcase/Commerce_Hub_AI_Test_cases.xlsx
-```
+5. Read the required page object(s) from `pages/`
+6. Read the requested test case row from `testcase/BoldSpec_Test_Case.xlsx` (via `ExcelUtils`, not by opening the binary file directly)
 
 If any rule conflicts with `AGENTS.md`,
 **AGENTS.md always wins.**
@@ -64,7 +57,7 @@ Before starting you need
   Example
 
 ```
-TC_001
+TC_LOGIN_01
 ```
 
 If not supplied, ask the user.
@@ -81,8 +74,7 @@ ExcelUtils.getPendingTestCases()
 
 and process them one at a time.
 
-If the sheet name is not provided,
-use the workbook's first sheet.
+If the sheet name is not provided, use the workbook's first sheet.
 
 ---
 
@@ -114,10 +106,11 @@ Never hardcode
 - Username
 - Password
 - Environment
+- Test data
 
 Always retrieve them using
 
-- ExcelUtils.js
+- ExcelUtils.js & data.js
 
 ---
 
@@ -138,7 +131,9 @@ using
 ExcelUtils.getTestData(...)
 ```
 
-Never invent missing data 
+Never invent missing data.
+
+Test Data must be read from the Excel sheet. Login data is stored in `data.js`, and must never be hardcoded in the test. Except for login data, all other data must be read from the Excel sheet.
 
 If ExcelUtils.js does not already contain the functionality needed, add a new method.
 
@@ -179,7 +174,7 @@ Use
 ```
 test.step()
 ```
-for flows containing more than three user actions. 
+for flows containing more than three user actions.
 
 Record important execution details using
 
@@ -190,6 +185,8 @@ await logs.info(...)
 ---
 
 ## Page Object contract
+
+Each page's locators must be defined in a separate page object file (e.g. `Login.js`, `register.js`, `home.js`, `cart.js`). If a required page object is missing, ask before creating it.
 
 All interactions must go through
 
@@ -205,17 +202,14 @@ page.locator(...)
 
 inside the spec.
 
-If a required method does not exist
+If a required method does not exist:
 
 - update the corresponding page object
 - expose it through AllPageObjects
 
-Do not duplicate existing functionality - Use if already exists on the project folder
+Do not duplicate existing functionality — reuse what already exists in the project.
 
-Never place assertions inside page objects.
-
-Add assertion elements to the page object only if they are required for the page's functionality.
-Add assertions data into json file and use them in the test as test data.
+Never call `expect()` or perform assertions inside page objects. Page objects may only expose the locators an assertion needs — the assertion call itself always lives in the test file.
 
 ---
 
@@ -236,17 +230,13 @@ already exists:
 This applies to every locator and helper method the Generator produces, not
 just page-level flows.
 
-
+---
 
 ## Locator strategy (STRICT)
 
-Before generating any locator
+Before generating any locator, navigate through the real application using Playwright MCP.
 
-navigate through the real application using Playwright MCP.
-
-After every navigation or interaction
-
-take a browser snapshot.
+After every navigation or interaction, take a browser snapshot.
 
 Generate locators only after confirming them in the accessibility tree.
 
@@ -267,9 +257,7 @@ Avoid
 
 unless absolutely unavoidable.
 
-If no unique semantic locator exists,
-
-stop and ask the user instead of inventing CSS selectors.
+If no unique semantic locator exists, stop and ask the user instead of inventing CSS selectors.
 
 ---
 
@@ -284,15 +272,16 @@ expect(locator).toBeVisible()
 expect(locator).toHaveText()
 expect(locator).toContainText()
 expect(locator).toHaveCount()
-
-To validate Url and title
-
-await expect(page).toHaveURL('testdata');
-await expect(page).toHaveTitle('testdata');
-
 ```
 
-Keep the Only URL and Title assertions in a JSON file and use them in the test as test data.
+To validate URL and title:
+
+```javascript
+await expect(page).toHaveURL('testdata');
+await expect(page).toHaveTitle('testdata');
+```
+
+Only URL and Title expected values are kept in a JSON test-data file and referenced from the test. All other assertion values come from the Excel sheet's Expected Result column via `ExcelUtils`, not from a separate JSON file.
 
 Generate approximately two meaningful assertions unless the test case requires more.
 
@@ -319,31 +308,42 @@ test.describe('Login Tests', () => {
 
   test.beforeEach(async ({ page, logs }) => {
     await page.goto('/', { waitUntil: 'domcontentloaded' });
-    console.log("URL - " + page.url());
+    await logs.info('Navigated to base URL - ' + page.url());
   });
 
-  const filePath = path.resolve('testcase/Commerce_Hub_AI_Test_cases.xlsx');
+  const filePath = path.resolve('testcase/BoldSpec_Test_Case.xlsx');
   const sheetName = 'Login and Store Sync';
+  const testCaseId = 'TC_LOGIN_01';
 
-  // ─── Original TC_001 ────────────────────────────────────────────────────────
+  // ─── Original TC_LOGIN_01 ────────────────────────────────────────────────
   test('TC_LOGIN_01 - Verify customer can log in with valid credentials @critical',
   async ({ page, AllPageObjects, logs }) => {
 
-    const startTime = new Date();   // <-- Missing line
+    const startTime = new Date();
 
     try {
+      await test.step('Open login page and select Customer Login tab', async () => {
+        await AllPageObjects.loginPage.openCustomerLoginTab();
+      });
 
-      // code here
+      await test.step('Submit valid credentials', async () => {
+        await AllPageObjects.loginPage.login();
+      });
+
+      await logs.info('Login flow completed for ' + testCaseId);
+
+      await expect(page).toHaveURL('testdata');
+      await expect(AllPageObjects.loginPage.welcomeMessage).toBeVisible();
 
       const endTime = new Date();
-      ExcelUtils.updateStatus(filePath, sheetName, testCaseId, "Pass", startTime, endTime,
-        "Login page loaded with Customer Login tab selected and all expected controls visible.");
+      ExcelUtils.updateStatus(filePath, sheetName, testCaseId, 'Pass', startTime, endTime,
+        'Login page loaded with Customer Login tab selected and all expected controls visible.');
     } catch (error) {
       const endTime = new Date();
-      ExcelUtils.updateStatus(filePath, sheetName, testCaseId, "Fail", startTime, endTime, "", error.message);
+      ExcelUtils.updateStatus(filePath, sheetName, testCaseId, 'Fail', startTime, endTime, '', error.message);
       throw error;
     }
-  
+
   });
 
 });
@@ -361,7 +361,7 @@ Match this style
 
 # Workflow
 
-## 1 Read the Excel test case
+## 1. Read the Excel test case
 
 Retrieve
 
@@ -375,16 +375,14 @@ Retrieve
 using
 
 ```
-ExcelUtils Funtions
+ExcelUtils functions
 ```
 
 ---
 
-## 2 Explore the application
+## 2. Explore the application
 
-Before writing automation
-
-drive the live application using Playwright MCP.
+Before writing automation, drive the live application using Playwright MCP.
 
 Navigate using
 
@@ -392,15 +390,13 @@ Navigate using
 browser_navigate
 ```
 
-After each important action
-
-capture
+After each important action, capture
 
 ```
 browser_snapshot
 ```
 
-Use snapshots to discover or any other better way to discover locators
+Use snapshots to discover:
 
 - Roles
 - Accessible names
@@ -411,22 +407,25 @@ Never guess selectors.
 
 ---
 
-## 3 Update page objects
+## 3. Update page objects
 
 Inspect the corresponding page object.
 
-If methods already exist reuse them.
+If methods already exist, reuse them.
 
-If methods are missing add them.
+If methods are missing, add them.
 
-If AllPageObjects does not expose the page wire it into
+If AllPageObjects does not expose the page, wire it in.
+
+If a page's locators are missing, add them into a separate page file (e.g. `Login.js`, `register.js`, `home.js`, `cart.js`) and expose them through:
 
 ```
 pages/all_objects.js
 ```
+
 ---
 
-## 4 Generate the spec
+## 4. Generate the spec
 
 Generate
 
@@ -436,20 +435,21 @@ tests/<module>/<testCaseId>_<shortName>.spec.js
 
 The generated test must
 
-- read login datas from data.js file
+- read login data from `data.js`
 - read Excel test data
 - use AllPageObjects
 - contain meaningful assertions
 - update execution status
 - update logs for necessary details
-- No business logic in test files
-Pass
+- contain no business logic in test files
+
+Pass:
 
 ```javascript
 ExcelUtils.updateStatus(...)
 ```
 
-Fail
+Fail:
 
 ```javascript
 ExcelUtils.updateStatus(...)
@@ -464,7 +464,7 @@ Record
 
 ---
 
-## 5 Execute
+## 5. Execute
 
 Run
 
@@ -474,16 +474,16 @@ npx playwright test tests/<module>/<spec>.spec.js --reporter=list
 
 ---
 
-## 6 Heal if necessary
+## 6. Heal if necessary
 
-If execution fails do not repeatedly attempt fixes yourself.
+If execution fails, do not repeatedly attempt fixes yourself.
 
 Instead invoke
 
 ```
 playwright-test-healer
-
 ```
+
 passing
 
 - spec path
@@ -498,13 +498,14 @@ The healer owns
 
 ---
 
-## 7 Batch mode
+## 7. Batch mode
 
-When asked to generate all pending tests retrieve
+When asked to generate all pending tests, retrieve
 
 ```
 ExcelUtils.getPendingTestCases()
 ```
+
 Process one test case completely before starting the next.
 Do not generate every file first.
 
@@ -547,33 +548,18 @@ Do NOT
 
 # Quality checklist before reporting done
 
-✓ Test case read from Excel
-
-✓ Real application explored with Playwright MCP
-
-✓ Browser snapshots used to discover locators
-
-✓ Page objects updated where required
-
-✓ All interactions through AllPageObjects
-
-✓ Imports use fixtures/base.js
-
-✓ Existing locators and page object methods checked for reuse before writing new ones
-
-✓ URLs and Login credentials from data.js file and other datas are loaded from test data Commerce_Hub_AI_Test_cases.xlsx
-
-
-✓ Assertions match Expected Result
-
-✓ Excel updated only after execution
-
-✓ Test executed locally
-
-✓ Passed or handed to playwright-test-healer
-
-✓ No hardcoded selectors
-
-✓ No waitForTimeout
-
-✓ No raw page.locator() inside spec
+- Test case read from `testcase/BoldSpec_Test_Case.xlsx`
+- Real application explored with Playwright MCP
+- Browser snapshots used to discover locators
+- Page objects updated where required
+- All interactions through AllPageObjects
+- Imports use fixtures/base.js
+- Existing locators and page object methods checked for reuse before writing new ones
+- Login credentials loaded from `data.js`; all other test data loaded from `testcase/BoldSpec_Test_Case.xlsx`
+- Assertions match Expected Result
+- Excel updated only after execution
+- Test executed locally
+- Passed, or handed to playwright-test-healer
+- No hardcoded selectors
+- No waitForTimeout
+- No raw page.locator() inside spec

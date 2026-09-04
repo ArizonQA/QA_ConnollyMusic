@@ -1,0 +1,11 @@
+{
+  "TC_EDE_01": {
+    "confirmPageUrlFragment": "/checkout/confirm",
+    "finishPageUrlFragment": "/checkout/finish",
+    "finishPageTitle": "Order finished | Shopware"
+  },
+  "TC_EDE_02": {
+    "accountOverviewUrlFragment": "/account",
+    "accountOverviewPageTitle": "Overview | Shopware"
+  }
+}

@@ -23,7 +23,7 @@ GitHub Copilot — it has no rules of its own. If any other document
 - `fixtures/` — Custom fixtures extending base test (`fixtures/base.js`)
 - `utils/` — Pure helpers, no test logic (includes `utils/ExcelUtils.js`)
 - `tests/` — Spec files, organized as `tests/<module>/<testCaseId>_<shortName>.spec.js`
-- `testcase/` — Excel test data (e.g. `testcase/Commerce_Hub_AI_Test_cases.xlsx`),
+- `testcase/` — Excel test data (e.g. `testcase/*.xlsx`),
   read and written via `utils/ExcelUtils.js`. This is the only test-data format
   used in this project — do not introduce JSON/CSV test-data files.
 

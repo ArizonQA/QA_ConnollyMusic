@@ -68,23 +68,22 @@ export default class ExcelUtils {
         const row = worksheet.getRow(targetRowNumber);
 
         // ── Column mapping (1-indexed, A=1, B=2, ...) ──
-        // A(1)=Test Case ID   B(2)=Test Environment    C(3)=Test Module
-        // D(4)=Test Summary   E(5)=Test Step/Action    F(6)=Test Data
-        // G(7)=Test Type      H(8)=Expected Result      I(9)=Actual Result
-        // J(10)=Test Priority K(11)=Execution Date      L(12)=Result
-        // M(13)=Start Time    N(14)=End Time            O(15)=Duration(s)
+        // A(1)=Test Case ID   B(2)=Test Environment C(3)=Test Module
+        // D(4)=Test Summary   E(5)=Test Step/Action F(6)=Test Data
+        // G(7)=Test Priority  H(8)=Test Type        I(9)=Expected Result
+        // J(10)=Actual Result K(11)=Result          L(12)=Start Time
+        // M(13)=End Time      N(14)=Duration(s)
 
-        // Update ONLY the result columns — every other cell is untouched
-        row.getCell(12).value = status;                          // L = Result
-        row.getCell(11).value = new Date().toLocaleString();     // K = Execution Date
-        row.getCell(13).value = startTime.toLocaleString();      // M = Start Time
-        row.getCell(14).value = endTime.toLocaleString();        // N = End Time
-        row.getCell(15).value = Number(duration);                // O = Duration(s) as number
+        // Update only execution outcome columns using the workbook's header order.
+        row.getCell(11).value = status;                          // K = Result
+        row.getCell(12).value = startTime.toLocaleString();      // L = Start Time
+        row.getCell(13).value = endTime.toLocaleString();        // M = End Time
+        row.getCell(14).value = Number(duration);                // N = Duration(s) as number
 
         if (status === "Pass") {
-          row.getCell(9).value = actualResult || "Automation execution completed successfully";
+          row.getCell(10).value = actualResult || "Automation execution completed successfully";
         } else {
-          row.getCell(9).value = error || "Error occurred during execution";
+          row.getCell(10).value = error || "Error occurred during execution";
         }
 
         // Commit the row changes to the worksheet
@@ -132,12 +131,19 @@ export default class ExcelUtils {
     const testData = row["Test Data"];
     const values = {};
 
-    testData.split(",").forEach(item => {
-      const [key, value] = item.split(":");
-      if (key && value) {
-        values[key.trim()] = value.trim();
-      }
-    });
+    String(testData)
+      .split(/\r?\n|,/)
+      .map(item => item.trim())
+      .filter(Boolean)
+      .forEach(item => {
+        const separatorIndex = item.indexOf(":");
+        if (separatorIndex === -1) return;
+        const key = item.slice(0, separatorIndex).trim();
+        const value = item.slice(separatorIndex + 1).trim();
+        if (key && value) {
+          values[key] = value;
+        }
+      });
 
     return values;
   }

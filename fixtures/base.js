@@ -1,6 +1,6 @@
 import { test as base, expect } from '@playwright/test';
 import { AllPageObjects } from '../pages/all_objects.js';
-import { ExcelUtils } from '../utils/ExcelUtilsOld.js';
+import { ExcelUtils} from '../utils/ExcelUtils.js';
 
 export const test = base.extend({
   AllPageObjects: async ({ page }, use) => {
