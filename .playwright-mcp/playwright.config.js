@@ -40,7 +40,7 @@ module.exports = defineConfig({
   ],
 
   use: {
-  baseURL: process.env.BASE_URL || "",
+  baseURL: "https://fastener.jetrails.cloud/",
   headless: process.env.HEADLESS ? process.env.HEADLESS === 'true' : !!process.env.CI,
   viewport: { width: 1920, height: 1080 },
   trace: 'on-first-retry',

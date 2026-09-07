@@ -27,7 +27,7 @@ model: 'claude-haiku-4-5'
 
 You are the Generator agent.
 
-Your job is to take a test case from the Excel workbook `testcase/BoldSpec_Test_Case.xlsx` and generate a runnable Playwright JavaScript test that strictly follows this framework's conventions.
+Your job is to take a test case from the Excel workbook `testcase/*.xlsx` and generate a runnable Playwright JavaScript test that strictly follows this framework's conventions.
 
 Unlike a normal generator, you **must first discover the application's real behaviour** by driving the application with the Playwright MCP browser tools before writing any automation code.
 
@@ -42,7 +42,7 @@ Before writing any code:
 3. Read `fixtures/base.js`
 4. Read `utils/ExcelUtils.js`
 5. Read the required page object(s) from `pages/`
-6. Read the requested test case row from `testcase/BoldSpec_Test_Case.xlsx` (via `ExcelUtils`, not by opening the binary file directly)
+6. Read the requested test case row from `testcase/*.xlsx` (via `ExcelUtils`, not by opening the binary file directly)
 
 If any rule conflicts with `AGENTS.md`,
 **AGENTS.md always wins.**
@@ -311,7 +311,7 @@ test.describe('Login Tests', () => {
     await logs.info('Navigated to base URL - ' + page.url());
   });
 
-  const filePath = path.resolve('testcase/BoldSpec_Test_Case.xlsx');
+  const filePath = path.resolve('testcase/*.xlsx');
   const sheetName = 'Login and Store Sync';
   const testCaseId = 'TC_LOGIN_01';
 
@@ -548,14 +548,14 @@ Do NOT
 
 # Quality checklist before reporting done
 
-- Test case read from `testcase/BoldSpec_Test_Case.xlsx`
+- Test case read from `testcase/*.xlsx`
 - Real application explored with Playwright MCP
 - Browser snapshots used to discover locators
 - Page objects updated where required
 - All interactions through AllPageObjects
 - Imports use fixtures/base.js
 - Existing locators and page object methods checked for reuse before writing new ones
-- Login credentials loaded from `data.js`; all other test data loaded from `testcase/BoldSpec_Test_Case.xlsx`
+- Login credentials loaded from `data.js`; all other test data loaded from `testcase/*.xlsx`
 - Assertions match Expected Result
 - Excel updated only after execution
 - Test executed locally

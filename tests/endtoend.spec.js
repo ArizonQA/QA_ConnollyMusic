@@ -86,9 +86,6 @@ test.describe('End To End Order', () => {
       await logs.info(`Executing ${testCaseId} in ${testCaseDetails['Test Environment']} for module ${testCaseDetails['Test Module']}`);
       await logs.info(`Summary: ${testCaseDetails['Test Summary']}`);
 
-      const emailPrefix = String(testData['Email address'] || '').split('@')[0];
-      const uniqueEmail = `${emailPrefix}+${Date.now()}@gmail.com`;
-
       await page.goto('/', { waitUntil: 'domcontentloaded' });
 
       await test.step('Open registration page', async () => {
@@ -101,7 +98,7 @@ test.describe('End To End Order', () => {
           salutation: testData['Salutation'],
           firstName: testData['First name'],
           lastName: testData['Last name'],
-          email: uniqueEmail,
+          email: testData['Email address'],
           password: testData['Password'],
           streetAddress: testData['Street address'],
           postalCode: testData['Postal code'],
