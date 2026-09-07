@@ -83,18 +83,23 @@ jobs:
           echo "Reports Folder"
           ls -R reports || true
 
+      - name: Compress Report
+        if: always()
+        run: |
+          zip -r Test-Report-${{ github.run_number }}.zip \
+            reports \
+            allure-report.html \
+            test-summary.md \
+            testcase/*.xlsx \
+            testdata/*.xlsx
+
       - name: Upload Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Test-Reports
           if-no-files-found: warn
-          path: |
-            reports
-            allure-report.html
-            test-summary.md
-            testcase/Commerce_Hub_AI_Test_cases.xlsx
-            testdata/Commerce_Hub_AI_Test_cases.xlsx
+          path: Test-Report-${{ github.run_number }}.zip
 
       - name: Send Email
         if: always()
@@ -106,7 +111,7 @@ jobs:
 
           username: ${{ secrets.OFFICE365_USER }}
           password: ${{ secrets.OFFICE365_APP_PASSWORD }}
- 
+
           subject: Playwright Test Report - Build #${{ github.run_number }} - ${{ job.status }}
 
           to: vijay@arizon.digital
@@ -127,17 +132,16 @@ jobs:
              Workflow     : ${{ github.workflow }}
             ----------------------------------------
 
-            Please find the attached execution artifacts:
+            Please find the attached execution artifact (Test-Report-${{ github.run_number }}.zip), which includes:
               • Test Summary Report (test-summary.md)
               • Allure Execution Report (allure-report.html)
-              • Test Cases Sheet (testcase/Commerce_Hub_AI_Test_cases_Updated.xlsx)
+              • Test Case Sheets (testcase/*.xlsx, testdata/*.xlsx)
 
            You can also view the workflow execution details using the link below:
              ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-           Kindly review the attached reports for detailed test results, execution statistics, and failure analysis.
+           Kindly review the attached report for detailed test results, execution statistics, and failure analysis.
 
            Regards,
            Arizon QA Team
-          attachments: testcase/Commerce_Hub_AI_Test_cases_Updated.xlsx,test-summary.md,allure-report.html
-           
+          attachments: Test-Report-${{ github.run_number }}.zip

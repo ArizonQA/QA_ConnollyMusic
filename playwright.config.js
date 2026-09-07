@@ -40,18 +40,18 @@ module.exports = defineConfig({
   ],
 
   use: {
-  baseURL: process.env.BASE_URL || "",
-  headless: process.env.HEADLESS ? process.env.HEADLESS === 'true' : !!process.env.CI,
-  viewport: { width: 1920, height: 1080 },
-  trace: 'on-first-retry',
-  screenshot: 'only-on-failure',
-  video: 'retain-on-failure',
-  actionTimeout: 15000,       // add this
-  navigationTimeout: 45000,   // add this
-  launchOptions: {
-    args: [] 
+    baseURL: process.env.BASE_URL || "https://ad-sandbox-connolly-music-theme-upgrade.mybigcommerce.com/",
+    headless: process.env.HEADLESS ? process.env.HEADLESS === 'true' : !!process.env.CI,
+    viewport: { width: 1920, height: 1080 },
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
+    actionTimeout: 15000,       // add this
+    navigationTimeout: 45000,   // add this
+    launchOptions: {
+      args: []
     },
-},
+  },
 
   projects: [
     {
