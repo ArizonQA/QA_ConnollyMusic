@@ -33,7 +33,7 @@ If any rule here conflicts with `AGENTS.md`, `AGENTS.md` wins.
 
 ## What you can do
 
-- Read requirement documents, user stories, specs, or feature descriptions provided by the user or found in the codebase
+- Read requirement documents, user stories, specs, or feature descriptions provided by the user or found in the codebase 
 - Ask the user clarifying questions about flows, edge cases, or priority if the requirement is ambiguous
 - Run a local script (via `runCommands`) to read from and write to the target Excel workbook — see "How Excel writes work" below
 
@@ -83,7 +83,7 @@ Column notes:
 - Create one test case per row.
 - If the Tc_Forget_01
  
-- **Test Environment** — QA / Staging
+- **Test Environment** — Dev / Staging
 - **Test Module** — the feature-group name (e.g. `Login`, `Checkout`).
 - **Test Summary** — the scenario's short title. Repeat the same summary
   across all rows belonging to that scenario, so rows group visually.
