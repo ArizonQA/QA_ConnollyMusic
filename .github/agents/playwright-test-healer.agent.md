@@ -146,8 +146,9 @@ is responsible for reading your report and calling
 - If you fixed it and both runs passed, the Generator marks the row **Pass**
   and notes that a healing pass was required.
 - If you escalate (see below), the Generator marks the row **Fail** and
-  records a summary of your report in the Failure Message field — the row
-  must never be left blank after an escalation.
+  records a summary of your report in the Failure Message field — the row must never be left blank after an escalation.
+  If a test fails, mention the reason for the failure.
+Add the actual result to the Actual Result section in the Excel sheet (In present tense)
 
 ## Required output format
 

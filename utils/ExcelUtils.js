@@ -18,6 +18,7 @@
 
 import ExcelJS from 'exceljs';
 import XLSX from 'xlsx';
+import fs from 'fs';
 
 export default class ExcelUtils {
 
@@ -89,8 +90,11 @@ export default class ExcelUtils {
         // Commit the row changes to the worksheet
         row.commit();
 
-        // ── Save — writes full workbook including all original styles ──
-        await workbook.xlsx.writeFile(filePath);
+        // ── Save atomically to avoid file corruption ──
+        const tempPath = `${filePath}.${Date.now()}-${Math.random().toString(36).substring(2)}.tmp`;
+        await workbook.xlsx.writeFile(tempPath);
+        fs.copyFileSync(tempPath, filePath);
+        try { fs.unlinkSync(tempPath); } catch { }
 
         break; // Success — exit retry loop
 

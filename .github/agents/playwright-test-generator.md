@@ -133,7 +133,7 @@ ExcelUtils.getTestData(...)
 
 Never invent missing data.
 
-Test Data must be read from the Excel sheet. Login data is stored in `data.js`, and must never be hardcoded in the test. Except for login data, all other data must be read from the Excel sheet.
+Test Data must be read from the Excel sheet. URL & Login data is stored in `data.js`, and must never be hardcoded in the test. Except for login data, all other data must be read from the Excel sheet.
 
 If ExcelUtils.js does not already contain the functionality needed, add a new method.
 
@@ -263,7 +263,7 @@ If no unique semantic locator exists, stop and ask the user instead of inventing
 
 ## Assertion rules
 
-Assertions must directly verify the Expected Result from the Excel sheet.
+Assertions must directly verify the Expected Result from the Excel sheet and if necessary, check for visibility of text, error messages, or other UI elements.
 
 Prefer
 
@@ -556,7 +556,7 @@ Do NOT
 - Imports use fixtures/base.js
 - Existing locators and page object methods checked for reuse before writing new ones
 - Login credentials loaded from `data.js`; all other test data loaded from `testcase/*.xlsx`
-- Assertions match Expected Result
+- Assertions must match Expected Result
 - Excel updated only after execution
 - Test executed locally
 - Passed, or handed to playwright-test-healer
