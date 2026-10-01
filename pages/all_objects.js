@@ -1,6 +1,9 @@
 import { LoginPage } from './login.js';
 import { CategoryPage } from './category.js';
 import { ProfilePage } from './profile.js';
+import { AddressPage } from './address.js';
+import { QuotePage } from './quote.js';
+import { ReorderPage } from './reorder.js';
 
 export class AllPageObjects {
   
@@ -9,6 +12,9 @@ export class AllPageObjects {
     this.categorypage = null;
     this.loginpage = null;
     this.profilepage = null;
+    this.addresspage = null;
+    this.quotepage = null;
+    this.reorderpage = null;
   }
   
   category() {
@@ -25,4 +31,20 @@ export class AllPageObjects {
     if (!this.profilepage) this.profilepage = new ProfilePage(this.page);
     return this.profilepage;
   }
-}
+
+  address() {
+    if (!this.addresspage) this.addresspage = new AddressPage(this.page);
+    return this.addresspage;
+  }
+
+  quote() {
+    if (!this.quotepage) this.quotepage = new QuotePage(this.page);
+    return this.quotepage;
+  }
+
+  reorder() {
+    if (!this.reorderpage) this.reorderpage = new ReorderPage(this.page);
+    return this.reorderpage;
+  }
+}
+

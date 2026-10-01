@@ -1,0 +1,48 @@
+{
+  "Tc_Reorders_54": {
+    "loginPageUrlFragment": "/account/login",
+    "reorderPageUrlFragment": "/account/reorder"
+  },
+  "Tc_Reorders_22": {
+    "modalTitle": "Create New Project Shopping List",
+    "modalDescription": "Group recurring CAD specs and parts into a reusable shopping list for instant one-click replenishments."
+  },
+  "Tc_Reorders_24": {
+    "validationAlert": "Please enter a project name"
+  },
+  "Tc_Reorders_23": {
+    "defaultProjectName": "Deck Railing Hardware Kit #2",
+    "defaultCategory": "Structural"
+  },
+  "Tc_Reorders_28": {
+    "heading": "Smart Reorder Hub",
+    "subtext": "Bundle frequent fastener orders into reusable projects, predict restocking needs, and automate procurement – all from one place.",
+    "reusableProjectsHeading": "Your Reusable Projects (Saved Bundles)",
+    "predictedSourcingHeading": "Predicted Sourcing Needs",
+    "aiRecommendationsHeading": "AI Smart Reorder Recommendations",
+    "volumePatternHeading": "Monthly Volume Sourcing Pattern",
+    "timelineHeading": "Procurement Timeline",
+    "autoProcureHeading": "Set up fully automatic procurement"
+  },
+  "Tc_Reorders_29": {
+    "buttonText": "One-Click Reorder"
+  },
+  "Tc_Reorders_33": {
+    "toggleLabel": "AI Autopilot Suggestions",
+    "subtext": "Proactive recommendations"
+  },
+  "Tc_Reorders_40": {
+    "heading": "Monthly Volume Sourcing Pattern",
+    "insightSnippet": "Your replenishment rate peaks every September/October"
+  },
+  "Tc_Reorders_45": {
+    "modalTitle": "Enable Auto-Reordering",
+    "modalDescription": "Schedule automatic order placement for your saved project shopping lists."
+  },
+  "Tc_Reorders_48": {
+    "pastDateAlert": "Scheduled time must be in the future."
+  },
+  "Tc_Reorders_47": {
+    "validFutureDate": "2026-10-15T09:00"
+  }
+}

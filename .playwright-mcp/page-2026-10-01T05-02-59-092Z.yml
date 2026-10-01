@@ -1,0 +1,307 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3] [cursor=pointer]:
+      - /url: "#content-main"
+    - link "Skip to search" [ref=e4] [cursor=pointer]:
+      - /url: "#header-main-search-input"
+    - link "Skip to main navigation" [ref=e5] [cursor=pointer]:
+      - /url: "#main-navigation-menu"
+  - banner [ref=e6]:
+    - generic [ref=e8]:
+      - link "BOLTSPEC" [ref=e10] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e15]:
+        - link "Home" [ref=e16] [cursor=pointer]:
+          - /url: /
+        - link "Catalog" [ref=e17] [cursor=pointer]:
+          - /url: /account/login
+        - link "✦ Agentic Ordering" [ref=e18] [cursor=pointer]:
+          - /url: /account/login
+          - generic [ref=e19]: ✦
+          - generic [ref=e20]: Agentic Ordering
+        - link "Orders" [ref=e21] [cursor=pointer]:
+          - /url: /account/login
+        - link "Profile Settings" [ref=e22] [cursor=pointer]:
+          - /url: /account/login
+      - generic [ref=e25]:
+        - button "Search" [ref=e26] [cursor=pointer]
+        - combobox "Search parts"
+        - button "Close the dropdown search" [ref=e31] [cursor=pointer]
+      - generic [ref=e36]:
+        - button "Your account" [ref=e39] [cursor=pointer]:
+          - generic [ref=e45]: Sign In
+        - link "Shopping cart" [ref=e47] [cursor=pointer]:
+          - /url: /checkout/cart
+          - generic [ref=e48]: "0"
+          - generic [ref=e53]: Shopping cart contains 0 items. The cart total value is $0.00.
+  - button "Open FastenerFox AI Assistant" [ref=e55] [cursor=pointer]:
+    - generic [ref=e59]: FastenerFox
+  - main [ref=e60]:
+    - generic [ref=e65]:
+      - heading "Fastener" [level=1] [ref=e71]
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - heading "Filters" [level=5] [ref=e81]
+            - button "Clear All" [ref=e82] [cursor=pointer]
+          - region "Filter products" [ref=e83]:
+            - list [ref=e84]:
+              - listitem [ref=e85]:
+                - generic "Filter by price" [ref=e86] [cursor=pointer]:
+                  - generic [ref=e87]: Price
+                  - text: +
+        - generic [ref=e89]:
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - heading "Precision Fasteners Catalog" [level=2] [ref=e92]
+              - generic [ref=e93]: Showing 1–10 of 10 precision fasteners
+            - generic [ref=e94]:
+              - combobox "Sorting" [ref=e97]:
+                - option "Name A-Z" [selected]
+                - option "Name Z-A"
+                - option "Price ascending"
+                - option "Price descending"
+                - option "Topseller"
+              - group [ref=e98]:
+                - button [ref=e99] [cursor=pointer]
+                - button [ref=e105] [cursor=pointer]
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e113]:
+                - heading "Natural Language Fastener Sourcing" [level=6] [ref=e114]
+                - text: Powered by FastenerFox AI
+              - link "Launch Full Agentic Draft" [ref=e115] [cursor=pointer]:
+                - /url: /agentic-ordering
+            - generic [ref=e120]:
+              - 'textbox "Describe CAD requirements: e.g. M10 DIN 933 marine grade stainless under $2.50..." [ref=e125]'
+              - button "Parse with AI" [ref=e126] [cursor=pointer]
+            - generic [ref=e127]:
+              - generic [ref=e128]: "Popular prompts:"
+              - button "M8 DIN 933 316 SS" [ref=e129] [cursor=pointer]
+              - button "Grade 10.9 High Tensile" [ref=e130] [cursor=pointer]
+              - button "A4-80 under $3.00" [ref=e131] [cursor=pointer]
+          - generic [ref=e132]:
+            - generic [ref=e134]:
+              - img "Generic Fastener, DP-M3(3MM)-12MM-PLN, Dowel Pin, M3, 12 mm, Hardened Steel, DIN 6325" [ref=e136]
+              - heading [level=6] [ref=e137]:
+                - link "Generic Fastener, DP-M3(3MM)-12MM-PLN, Dowel Pin, M3, 12 mm, Hardened Steel, DIN 6325" [ref=e138] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-DP-M3-3MM-12MM-PLN-Dowel-Pin-M3-12-mm-Hardened-Steel-DIN-6325/31772193
+              - generic [ref=e139]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e140]:
+                - generic [ref=e141]:
+                  - generic [ref=e142]: $175.00 / pc
+                  - generic [ref=e143]: min 100 pcs
+                - link "Ask AI" [ref=e144] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20DP-M3%283MM%29-12MM-PLN%2C%20Dowel%20Pin%2C%20M3%2C%2012%20mm%2C%20Hardened%20Steel%2C%20DIN%206325+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e149]:
+              - img "Generic Fastener, FW-ZN-063, Flat Washer, M6, DIN 125A, Steel, Zinc Plated" [ref=e151]
+              - heading [level=6] [ref=e152]:
+                - link "Generic Fastener, FW-ZN-063, Flat Washer, M6, DIN 125A, Steel, Zinc Plated" [ref=e153] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-FW-ZN-063-Flat-Washer-M6-DIN-125A-Steel-Zinc-Plated/31775400
+              - generic [ref=e154]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e155]:
+                - generic [ref=e156]:
+                  - generic [ref=e157]: $325.00 / pc
+                  - generic [ref=e158]: min 100 pcs
+                - link "Ask AI" [ref=e159] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20FW-ZN-063%2C%20Flat%20Washer%2C%20M6%2C%20DIN%20125A%2C%20Steel%2C%20Zinc%20Plated+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e164]:
+              - img "Generic Fastener, SFCC-M8-1.25-40MM-BLUE, Countersunk Socket Screw, M8, 1.25 mm Pitch, 40 mm, Steel" [ref=e166]
+              - heading [level=6] [ref=e167]:
+                - link "Generic Fastener, SFCC-M8-1.25-40MM-BLUE, Countersunk Socket Screw, M8, 1.25 mm Pitch, 40 mm, Steel" [ref=e168] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-SFCC-M8-1.25-40MM-BLUE-Countersunk-Socket-Screw-M8-1.25-mm-Pitch-40-mm-Steel/31776131
+              - generic [ref=e169]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e170]:
+                - generic [ref=e171]:
+                  - generic [ref=e172]: $350.00 / pc
+                  - generic [ref=e173]: min 100 pcs
+                - link "Ask AI" [ref=e174] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20SFCC-M8-1.25-40MM-BLUE%2C%20Countersunk%20Socket%20Screw%2C%20M8%2C%201.25%20mm%20Pitch%2C%2040%20mm%2C%20Steel+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e179]:
+              - img "Generic Fastener, SHCS-M3-0.5-6MM-C8.8-ZN-001, Socket Cap Screw, M3, 6 mm, Class 8.8" [ref=e181]
+              - heading [level=6] [ref=e182]:
+                - link "Generic Fastener, SHCS-M3-0.5-6MM-C8.8-ZN-001, Socket Cap Screw, M3, 6 mm, Class 8.8" [ref=e183] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-SHCS-M3-0.5-6MM-C8.8-ZN-001-Socket-Cap-Screw-M3-6-mm-Class-8.8/31772091
+              - generic [ref=e184]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e185]:
+                - generic [ref=e186]:
+                  - generic [ref=e187]: $170.00 / pc
+                  - generic [ref=e188]: min 100 pcs
+                - link "Ask AI" [ref=e189] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20SHCS-M3-0.5-6MM-C8.8-ZN-001%2C%20Socket%20Cap%20Screw%2C%20M3%2C%206%20mm%2C%20Class%208.8+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e194]:
+              - img "Generic Fastener, SHCS-M5-0.8-12MM-BO-001, Socket Cap Screw, M5, 0.8 mm, 12 mm, Alloy Steel, Black Oxide" [ref=e196]
+              - heading [level=6] [ref=e197]:
+                - link "Generic Fastener, SHCS-M5-0.8-12MM-BO-001, Socket Cap Screw, M5, 0.8 mm, 12 mm, Alloy Steel, Black Oxide" [ref=e198] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-SHCS-M5-0.8-12MM-BO-001-Socket-Cap-Screw-M5-0.8-mm-12-mm-Alloy-Steel-Black-Oxide/31773293
+              - generic [ref=e199]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e200]:
+                - generic [ref=e201]:
+                  - generic [ref=e202]: $75.00 / pc
+                  - generic [ref=e203]: min 100 pcs
+                - link "Ask AI" [ref=e204] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20SHCS-M5-0.8-12MM-BO-001%2C%20Socket%20Cap%20Screw%2C%20M5%2C%200.8%20mm%2C%2012%20mm%2C%20Alloy%20Steel%2C%20Black%20Oxide+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e209]:
+              - img "Generic Fastener, SHCS-M5-0.8-25MM-PLN, Socket Cap Screw, M5 x 25 mm, Alloy Steel, Nylon Patch" [ref=e211]
+              - heading [level=6] [ref=e212]:
+                - link "Generic Fastener, SHCS-M5-0.8-25MM-PLN, Socket Cap Screw, M5 x 25 mm, Alloy Steel, Nylon Patch" [ref=e213] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-SHCS-M5-0.8-25MM-PLN-Socket-Cap-Screw-M5-x-25-mm-Alloy-Steel-Nylon-Patch/31773531
+              - generic [ref=e214]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e215]:
+                - generic [ref=e216]:
+                  - generic [ref=e217]: $120.00 / pc
+                  - generic [ref=e218]: min 100 pcs
+                - link "Ask AI" [ref=e219] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20SHCS-M5-0.8-25MM-PLN%2C%20Socket%20Cap%20Screw%2C%20M5%20x%2025%20mm%2C%20Alloy%20Steel%2C%20Nylon%20Patch+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e224]:
+              - img "Generic Fastener, SHCS-M5-0.8-70MM-PREMIU, Socket Cap Screw, M5 x 0.8 mm, 70 mm, Steel, Blue" [ref=e226]
+              - heading [level=6] [ref=e227]:
+                - link "Generic Fastener, SHCS-M5-0.8-70MM-PREMIU, Socket Cap Screw, M5 x 0.8 mm, 70 mm, Steel, Blue" [ref=e228] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-SHCS-M5-0.8-70MM-PREMIU-Socket-Cap-Screw-M5-x-0.8-mm-70-mm-Steel-Blue/31773775
+              - generic [ref=e229]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e230]:
+                - generic [ref=e231]:
+                  - generic [ref=e232]: $100.00 / pc
+                  - generic [ref=e233]: min 100 pcs
+                - link "Ask AI" [ref=e234] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20SHCS-M5-0.8-70MM-PREMIU%2C%20Socket%20Cap%20Screw%2C%20M5%20x%200.8%20mm%2C%2070%20mm%2C%20Steel%2C%20Blue+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e239]:
+              - img "Generic Fastener, SN-0625-11-DURAC-001, Square Nut, 5/8 in, 11 TPI, UNC, Steel, Dura-Con Coated" [ref=e241]
+              - heading [level=6] [ref=e242]:
+                - link "Generic Fastener, SN-0625-11-DURAC-001, Square Nut, 5/8 in, 11 TPI, UNC, Steel, Dura-Con Coated" [ref=e243] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-SN-0625-11-DURAC-001-Square-Nut-5-8-in-11-TPI-UNC-Steel-Dura-Con-Coated/31776988
+              - generic [ref=e244]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e245]:
+                - generic [ref=e246]:
+                  - generic [ref=e247]: $250.00 / pc
+                  - generic [ref=e248]: min 100 pcs
+                - link "Ask AI" [ref=e249] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20SN-0625-11-DURAC-001%2C%20Square%20Nut%2C%205%2F8%20in%2C%2011%20TPI%2C%20UNC%2C%20Steel%2C%20Dura-Con%20Coated+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - img "Generic Fastener, SP-M3(3MM)-14MM-SS, Spring Pin, M3, 14 mm, 18-8 Stainless Steel"
+              - heading [level=6] [ref=e256]:
+                - link "Generic Fastener, SP-M3(3MM)-14MM-SS, Spring Pin, M3, 14 mm, 18-8 Stainless Steel" [ref=e257] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-SP-M3-3MM-14MM-SS-Spring-Pin-M3-14-mm-18-8-Stainless-Steel/31772201
+              - generic [ref=e258]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e259]:
+                - generic [ref=e260]:
+                  - generic [ref=e261]: $55.00 / pc
+                  - generic [ref=e262]: min 100 pcs
+                - link "Ask AI" [ref=e263] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20SP-M3%283MM%29-14MM-SS%2C%20Spring%20Pin%2C%20M3%2C%2014%20mm%2C%2018-8%20Stainless%20Steel+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+            - generic [ref=e268]:
+              - generic [ref=e269]:
+                - img "Generic Fastener, UB-0375-16-PLN-002, Square U-Bolt, Steel, 3/8 in, 4 in x 3 in, UNC"
+              - heading [level=6] [ref=e270]:
+                - link "Generic Fastener, UB-0375-16-PLN-002, Square U-Bolt, Steel, 3/8 in, 4 in x 3 in, UNC" [ref=e271] [cursor=pointer]:
+                  - /url: https://fastener.jetrails.cloud/Generic-Fastener-UB-0375-16-PLN-002-Square-U-Bolt-Steel-3-8-in-4-in-x-3-in-UNC/31784887
+              - generic [ref=e272]: Grade 8.8 Structural Steel • Coarse
+              - generic [ref=e273]:
+                - generic [ref=e274]:
+                  - generic [ref=e275]: $300.00 / pc
+                  - generic [ref=e276]: min 100 pcs
+                - link "Ask AI" [ref=e277] [cursor=pointer]:
+                  - /url: /agentic-ordering?prompt=Ask+about+Generic%20Fastener%2C%20UB-0375-16-PLN-002%2C%20Square%20U-Bolt%2C%20Steel%2C%203%2F8%20in%2C%204%20in%20x%203%20in%2C%20UNC+with+spec+Grade%208.8%20Structural%20Steel%20%E2%80%A2%20Coarse
+  - contentinfo [ref=e281]:
+    - generic [ref=e282]:
+      - generic [ref=e283]:
+        - generic [ref=e284]:
+          - link "BoltSpec" [ref=e285] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=e290]: Industrial fasteners, ordered intelligently.
+        - generic [ref=e291]:
+          - heading "Get product updates" [level=4] [ref=e292]
+          - paragraph [ref=e293]: Subscribe for new standards, AI features, and sourcing tips.
+          - generic [ref=e295]:
+            - textbox "Email address for newsletter" [ref=e297]:
+              - /placeholder: you@company.com
+            - button "Subscribe" [ref=e298] [cursor=pointer]
+      - generic [ref=e299]:
+        - generic [ref=e300]:
+          - heading "Products" [level=5] [ref=e301]
+          - list [ref=e302]:
+            - listitem [ref=e303]:
+              - link "Bolts" [ref=e304] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e305]:
+              - link "Screws" [ref=e306] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e307]:
+              - link "Nuts" [ref=e308] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e309]:
+              - link "Washers" [ref=e310] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e311]:
+              - link "Anchors" [ref=e312] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e313]:
+              - link "Rivets" [ref=e314] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e315]:
+              - link "All Categories" [ref=e316] [cursor=pointer]:
+                - /url: /account/login
+        - generic [ref=e317]:
+          - heading "Solutions" [level=5] [ref=e318]
+          - list [ref=e319]:
+            - listitem [ref=e320]:
+              - link "AI Ordering" [ref=e321] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e322]:
+              - link "Instant Quoting" [ref=e323] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e324]:
+              - link "Smart Reorder" [ref=e325] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e326]:
+              - link "Custom Fasteners" [ref=e327] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e328]:
+              - link "Bulk Orders" [ref=e329] [cursor=pointer]:
+                - /url: /account/login
+        - generic [ref=e330]:
+          - heading "Company" [level=5] [ref=e331]
+          - list [ref=e332]:
+            - listitem [ref=e333]:
+              - link "About Us" [ref=e334] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e335]:
+              - link "Careers" [ref=e336] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e337]:
+              - link "Blog" [ref=e338] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e339]:
+              - link "Press" [ref=e340] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e341]:
+              - link "Contact" [ref=e342] [cursor=pointer]:
+                - /url: /account/login
+        - generic [ref=e343]:
+          - heading "Support" [level=5] [ref=e344]
+          - list [ref=e345]:
+            - listitem [ref=e346]:
+              - link "Help Center" [ref=e347] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e348]:
+              - link "API Documentation" [ref=e349] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e350]:
+              - link "Shipping Info" [ref=e351] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e352]:
+              - link "Returns" [ref=e353] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=e354]:
+              - link "FAQs" [ref=e355] [cursor=pointer]:
+                - /url: /account/login
+      - generic [ref=e356]:
+        - generic [ref=e357]: © 2026 BoltSpec. All rights reserved.
+        - generic [ref=e358]: Powered by CommerceHub AI
+        - generic [ref=e359]:
+          - link "Privacy Policy" [ref=e360] [cursor=pointer]:
+            - /url: /account/login
+          - link "Terms of Service" [ref=e361] [cursor=pointer]:
+            - /url: /account/login
+          - button "Cookie Settings" [ref=e362] [cursor=pointer]

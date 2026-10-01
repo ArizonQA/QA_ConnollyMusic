@@ -1,0 +1,176 @@
+- generic [ref=f3e1]:
+  - generic [ref=f3e2]:
+    - link "Skip to main content" [ref=f3e3] [cursor=pointer]:
+      - /url: "#content-main"
+    - link "Skip to search" [ref=f3e4] [cursor=pointer]:
+      - /url: "#header-main-search-input"
+    - link "Skip to main navigation" [ref=f3e5] [cursor=pointer]:
+      - /url: "#main-navigation-menu"
+  - banner [ref=f3e6]:
+    - generic [ref=f3e8]:
+      - link "BOLTSPEC" [ref=f3e10] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=f3e15]:
+        - link "Home" [ref=f3e16] [cursor=pointer]:
+          - /url: /
+        - link "Catalog" [ref=f3e17] [cursor=pointer]:
+          - /url: /account/login
+        - link "✦ Agentic Ordering" [ref=f3e18] [cursor=pointer]:
+          - /url: /account/login
+          - generic [ref=f3e19]: ✦
+          - generic [ref=f3e20]: Agentic Ordering
+        - link "Orders" [ref=f3e21] [cursor=pointer]:
+          - /url: /account/login
+        - link "Profile Settings" [ref=f3e22] [cursor=pointer]:
+          - /url: /account/login
+      - generic [ref=f3e25]:
+        - button "Search" [ref=f3e26] [cursor=pointer]
+        - combobox "Search parts"
+        - button "Close the dropdown search" [ref=f3e31] [cursor=pointer]
+      - generic [ref=f3e36]:
+        - button "Your account" [ref=f3e39] [cursor=pointer]:
+          - generic [ref=f3e45]: Sign In
+        - link "Shopping cart" [ref=f3e47] [cursor=pointer]:
+          - /url: /checkout/cart
+          - generic [ref=f3e180]: "0"
+          - generic [ref=f3e185]: Shopping cart contains 0 items. The cart total value is $0.00.
+  - button "Open FastenerFox AI Assistant" [ref=f3e55] [cursor=pointer]:
+    - generic [ref=f3e59]: FastenerFox
+  - main [ref=f3e60]:
+    - main [ref=f3e63]:
+      - generic [ref=f3e64]:
+        - generic "BoltSpec" [ref=f3e65]
+        - heading "Sign in to your account" [level=1] [ref=f3e70]
+        - paragraph [ref=f3e71]: Access BoltSpec agentic quoting & logistics portal
+        - generic [ref=f3e72]:
+          - generic [ref=f3e73]:
+            - generic [ref=f3e74]: Work Email
+            - textbox "Work Email" [ref=f3e75]:
+              - /placeholder: you@company.com
+              - text: vijay@arizon.digital
+          - generic [ref=f3e76]:
+            - generic [ref=f3e77]:
+              - generic [ref=f3e78]: Password
+              - link "Forgot password?" [ref=f3e79] [cursor=pointer]:
+                - /url: /account/recover
+            - generic [ref=f3e80]:
+              - textbox "Password" [active] [ref=f3e81]:
+                - /placeholder: Enter your password
+              - button "Show password" [ref=f3e82] [cursor=pointer]: 👁
+          - button "Sign In" [ref=f3e83] [cursor=pointer]
+          - generic [ref=f3e84]:
+            - text: Don't have an account?
+            - link "Request Access" [ref=f3e85] [cursor=pointer]:
+              - /url: /account/access-request
+  - contentinfo [ref=f3e86]:
+    - generic [ref=f3e87]:
+      - generic [ref=f3e88]:
+        - generic [ref=f3e89]:
+          - link "BoltSpec" [ref=f3e90] [cursor=pointer]:
+            - /url: /
+          - paragraph [ref=f3e95]: Industrial fasteners, ordered intelligently.
+        - generic [ref=f3e96]:
+          - heading "Get product updates" [level=4] [ref=f3e97]
+          - paragraph [ref=f3e98]: Subscribe for new standards, AI features, and sourcing tips.
+          - generic [ref=f3e100]:
+            - textbox "Email address for newsletter" [ref=f3e102]:
+              - /placeholder: you@company.com
+            - button "Subscribe" [ref=f3e103] [cursor=pointer]
+      - generic [ref=f3e104]:
+        - generic [ref=f3e105]:
+          - heading "Products" [level=5] [ref=f3e106]
+          - list [ref=f3e107]:
+            - listitem [ref=f3e108]:
+              - link "Bolts" [ref=f3e109] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e110]:
+              - link "Screws" [ref=f3e111] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e112]:
+              - link "Nuts" [ref=f3e113] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e114]:
+              - link "Washers" [ref=f3e115] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e116]:
+              - link "Anchors" [ref=f3e117] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e118]:
+              - link "Rivets" [ref=f3e119] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e120]:
+              - link "All Categories" [ref=f3e121] [cursor=pointer]:
+                - /url: /account/login
+        - generic [ref=f3e122]:
+          - heading "Solutions" [level=5] [ref=f3e123]
+          - list [ref=f3e124]:
+            - listitem [ref=f3e125]:
+              - link "AI Ordering" [ref=f3e126] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e127]:
+              - link "Instant Quoting" [ref=f3e128] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e129]:
+              - link "Smart Reorder" [ref=f3e130] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e131]:
+              - link "Custom Fasteners" [ref=f3e132] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e133]:
+              - link "Bulk Orders" [ref=f3e134] [cursor=pointer]:
+                - /url: /account/login
+        - generic [ref=f3e135]:
+          - heading "Company" [level=5] [ref=f3e136]
+          - list [ref=f3e137]:
+            - listitem [ref=f3e138]:
+              - link "About Us" [ref=f3e139] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e140]:
+              - link "Careers" [ref=f3e141] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e142]:
+              - link "Blog" [ref=f3e143] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e144]:
+              - link "Press" [ref=f3e145] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e146]:
+              - link "Contact" [ref=f3e147] [cursor=pointer]:
+                - /url: /account/login
+        - generic [ref=f3e148]:
+          - heading "Support" [level=5] [ref=f3e149]
+          - list [ref=f3e150]:
+            - listitem [ref=f3e151]:
+              - link "Help Center" [ref=f3e152] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e153]:
+              - link "API Documentation" [ref=f3e154] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e155]:
+              - link "Shipping Info" [ref=f3e156] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e157]:
+              - link "Returns" [ref=f3e158] [cursor=pointer]:
+                - /url: /account/login
+            - listitem [ref=f3e159]:
+              - link "FAQs" [ref=f3e160] [cursor=pointer]:
+                - /url: /account/login
+      - generic [ref=f3e161]:
+        - generic [ref=f3e162]: © 2026 BoltSpec. All rights reserved.
+        - generic [ref=f3e163]: Powered by CommerceHub AI
+        - generic [ref=f3e164]:
+          - link "Privacy Policy" [ref=f3e165] [cursor=pointer]:
+            - /url: /account/login
+          - link "Terms of Service" [ref=f3e166] [cursor=pointer]:
+            - /url: /account/login
+          - button "Cookie Settings" [ref=f3e167] [cursor=pointer]
+  - region "Cookie preferences" [ref=f3e168]:
+    - generic [ref=f3e170]:
+      - generic [ref=f3e171]:
+        - text: This website uses cookies to ensure the best experience possible.
+        - link "More information..." [ref=f3e172] [cursor=pointer]:
+          - /url: /page/cms/019d9d24fe367380bb4dc310c2e1df26
+      - generic [ref=f3e173]:
+        - button "Only technically required" [ref=f3e175] [cursor=pointer]
+        - button "Configure" [ref=f3e177] [cursor=pointer]
+        - button "Accept all cookies" [ref=f3e179] [cursor=pointer]

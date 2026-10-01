@@ -1,0 +1,12 @@
+{
+  "loginPageUrlFragment": "/account/login",
+  "loginPageTitle": "Sign up | Shopware",
+  "homePageUrlFragment": "/",
+  "homePageTitle": "Home",
+  "forgotPasswordUrlFragment": "/account/recover",
+  "requestAccessUrlFragment": "/account/access-request",
+  "requestAccessHeading": "Request Platform Access",
+  "accountOverviewUrlFragment": "/account",
+  "accountOverviewPageTitle": "Overview | Shopware",
+  "ordersPageUrlFragment": "/account/order"
+}

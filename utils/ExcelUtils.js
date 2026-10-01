@@ -84,7 +84,10 @@ export default class ExcelUtils {
         if (status === "Pass") {
           row.getCell(10).value = actualResult || "Automation execution completed successfully";
         } else {
-          row.getCell(10).value = error || "Error occurred during execution";
+          const failMessage = actualResult && error
+            ? (error.startsWith(actualResult) ? error : `${actualResult} Reason: ${error}`)
+            : (error || actualResult || "Error occurred during execution");
+          row.getCell(10).value = failMessage;
         }
 
         // Commit the row changes to the worksheet
