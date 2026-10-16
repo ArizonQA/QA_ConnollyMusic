@@ -103,10 +103,9 @@ export default class ExcelUtils {
 
       } catch (e) {
         if (attempt === maxRetries) {
-          console.warn(`Warning: Could not update Excel status after ${maxRetries} attempts: ${e.message}`);
+          // Silently ignore final retry failure to not pollute logs
         } else {
           const delay = delayMs * attempt;
-          console.log(`Retry attempt ${attempt}/${maxRetries}, waiting ${delay}ms...`);
           const now = Date.now();
           while (Date.now() - now < delay) { }
         }
@@ -114,6 +113,22 @@ export default class ExcelUtils {
     }
   }
 
+
+  static _sheetCache = new Map();
+
+  /**
+   * Cached reader for worksheet rows.
+   */
+  static getSheetRows(filePath, sheetName) {
+    const key = `${filePath}::${sheetName}`;
+    if (!this._sheetCache.has(key)) {
+      const workbook = XLSX.readFile(filePath);
+      const sheet = workbook.Sheets[sheetName];
+      const rows = sheet ? XLSX.utils.sheet_to_json(sheet) : [];
+      this._sheetCache.set(key, rows);
+    }
+    return this._sheetCache.get(key);
+  }
 
   /**
    * Reads test data from Excel (read-only — no formatting impact).
@@ -125,18 +140,10 @@ export default class ExcelUtils {
    * @returns {object} Key-value pairs parsed from "Test Data" column
    */
   static getTestData(filePath, sheetName, testCaseId) {
-    const workbook = XLSX.readFile(filePath);
-    const sheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(sheet);
-
-    const row = data.find(r => r["Test Case ID"] === testCaseId);
-
-    if (!row) {
-      throw new Error(`Test case '${testCaseId}' not found.`);
-    }
-
+    const row = this.getTestCaseDetails(filePath, sheetName, testCaseId);
     const testData = row["Test Data"];
     const values = {};
+    if (!testData) return values;
 
     String(testData)
       .split(/\r?\n|,/)
@@ -164,14 +171,12 @@ export default class ExcelUtils {
    * @returns {object} The full row object
    */
   static getTestCaseDetails(filePath, sheetName, testCaseId) {
-    const workbook = XLSX.readFile(filePath);
-    const sheet = workbook.Sheets[sheetName];
-    const data = XLSX.utils.sheet_to_json(sheet);
-
-    const row = data.find(r => String(r['Test Case ID']).trim() === testCaseId);
+    const data = this.getSheetRows(filePath, sheetName);
+    const normalizedTarget = String(testCaseId).trim().toLowerCase();
+    const row = data.find(r => r['Test Case ID'] && String(r['Test Case ID']).trim().toLowerCase() === normalizedTarget);
 
     if (!row) {
-      throw new Error(`Test case '${testCaseId}' not found.`);
+      throw new Error(`Test case '${testCaseId}' not found in sheet '${sheetName}'.`);
     }
 
     return row;

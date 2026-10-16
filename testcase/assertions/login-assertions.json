@@ -2,7 +2,7 @@
   "loginPageUrlFragment": "/account/login",
   "loginPageTitle": "Sign up | Shopware",
   "homePageUrlFragment": "/",
-  "homePageTitle": "Home",
+  "homePageTitle": "Fastener",
   "forgotPasswordUrlFragment": "/account/recover",
   "requestAccessUrlFragment": "/account/access-request",
   "requestAccessHeading": "Request Platform Access",

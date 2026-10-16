@@ -23,7 +23,7 @@ test.describe('Profile Module Tests', () => {
       }
     }
   } catch (e) {
-    console.warn('Warning: Could not preload test cases:', e.message);
+    // Silently ignore preload errors
   }
 
   function getDetails(id) {

@@ -4,7 +4,7 @@
     "reorderPageUrlFragment": "/account/reorder"
   },
   "Tc_Reorders_22": {
-    "modalTitle": "Create New Project Shopping List",
+    "modalTitle": "Create Reorder List",
     "modalDescription": "Group recurring CAD specs and parts into a reusable shopping list for instant one-click replenishments."
   },
   "Tc_Reorders_24": {
@@ -17,7 +17,7 @@
   "Tc_Reorders_28": {
     "heading": "Smart Reorder Hub",
     "subtext": "Bundle frequent fastener orders into reusable projects, predict restocking needs, and automate procurement – all from one place.",
-    "reusableProjectsHeading": "Your Reusable Projects (Saved Bundles)",
+    "reusableProjectsHeading": "Your Reusable Reorder Lists (Saved Bundles)",
     "predictedSourcingHeading": "Predicted Sourcing Needs",
     "aiRecommendationsHeading": "AI Smart Reorder Recommendations",
     "volumePatternHeading": "Monthly Volume Sourcing Pattern",
@@ -25,11 +25,15 @@
     "autoProcureHeading": "Set up fully automatic procurement"
   },
   "Tc_Reorders_29": {
-    "buttonText": "One-Click Reorder"
+    "buttonText": "One-Click Reorder",
+    "confirmUrlFragment": "/checkout/confirm"
   },
   "Tc_Reorders_33": {
     "toggleLabel": "AI Autopilot Suggestions",
     "subtext": "Proactive recommendations"
+  },
+  "Tc_Reorders_35": {
+    "recommendationsHeading": "AI Smart Reorder Recommendations"
   },
   "Tc_Reorders_40": {
     "heading": "Monthly Volume Sourcing Pattern",
@@ -44,5 +48,15 @@
   },
   "Tc_Reorders_47": {
     "validFutureDate": "2026-10-15T09:00"
+  },
+  "Tc_Reorders_16": {
+    "modalTitle": "Adjust Replenishment Quantity"
+  },
+  "Tc_Reorders_10": {
+    "modalTitle": "Add Item to Reorder List"
+  },
+  "Tc_Reorders_89": {
+    "defaultOption": "5",
+    "testOption": "10"
   }
 }

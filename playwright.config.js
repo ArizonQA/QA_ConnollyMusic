@@ -1,6 +1,6 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
-require('dotenv').config();
+require('dotenv').config({ quiet: true });
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -55,10 +55,16 @@ module.exports = defineConfig({
 
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*auth\.setup\.js/,
+    },
+    {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome']
       },
+      dependencies: ['setup'],
+      testIgnore: /.*auth\.setup\.js/,
     },
     // {
     //   name: 'firefox',

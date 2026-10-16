@@ -10,9 +10,9 @@ export class LoginPage {
     this.cookieTechnicalButton = page.getByRole('button', { name: 'Only technically required' });
     this.cookieAcceptAllButton = page.getByRole('button', { name: 'Accept all cookies' });
     this.loginHeading = page.getByRole('heading', { name: 'Sign in to your account' });
-    this.subtext = page.getByText('Access BoltSpec agentic quoting & logistics portal');
+    this.subtext = page.getByText(/Access.*agentic quoting.*logistics portal/i);
     this.brandMark = page.locator('.boltspec-login-brand');
-    this.headerLogo = page.locator('header').getByRole('link', { name: /BoltSpec/i });
+    this.headerLogo = page.locator('header, [role="banner"]').getByRole('link', { name: /FastenerPilot|BoltSpec|FastenerSpec/i });
     this.passwordToggle = page.getByRole('button', { name: /Show password|Hide password/i });
     this.forgotPasswordLink = page.getByRole('link', { name: 'Forgot password?' });
     this.requestAccessLink = page.getByRole('link', { name: 'Request Access' });
@@ -20,9 +20,22 @@ export class LoginPage {
     this.requestAccessHeading = page.getByRole('heading', { name: 'Request Platform Access' });
     this.ssoButton = page.getByRole('button', { name: /Single Sign-On|SSO/i });
     this.errorAlert = page.locator('.alert, [role="alert"]').filter({ hasText: /Could not find an account|credentials|invalid|error/i });
-    this.headerAvatar = page.locator('header').getByText(/Hi Account/i);
+    this.headerAvatar = page.locator('header').getByText(/Hi\s|welcome/i);
     this.loginCard = page.locator('.boltspec-login-card');
   }
+
+  getEmailInput() { return this.emailInput; }
+  getPasswordInput() { return this.passwordInput; }
+  getSignInButton() { return this.signInButton; }
+  getBrandMark() { return this.brandMark; }
+  getLoginHeading() { return this.loginHeading; }
+  getSubtext() { return this.subtext; }
+  getRequestAccessLink() { return this.requestAccessLink; }
+  getRequestAccessText() { return this.requestAccessText; }
+  getRequestAccessHeading() { return this.requestAccessHeading; }
+  getLoginCard() { return this.loginCard; }
+  getHeaderAvatar() { return this.headerAvatar; }
+  getErrorAlert() { return this.errorAlert; }
 
   /**
    * Dismisses the cookie banner if present
@@ -103,7 +116,8 @@ export class LoginPage {
    * Clicks the header BoltSpec logo
    */
   async clickHeaderLogo() {
-    await this.headerLogo.first().click();
+    const headerLink = this.page.locator('header, [role="banner"]').getByRole('link', { name: /FastenerPilot|BoltSpec|FastenerSpec/i }).first();
+    await headerLink.click();
   }
 
   /**

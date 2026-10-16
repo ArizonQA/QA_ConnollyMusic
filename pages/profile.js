@@ -1,3 +1,5 @@
+import loginTestData from '../testcase/datas.js';
+
 export class ProfilePage {
   /**
    * @param {import('@playwright/test').Page} page
@@ -31,7 +33,9 @@ export class ProfilePage {
     this.requiredFieldsHelperText = page.locator('#profilePersonalForm').getByText(/Fields marked with asterisks/i);
 
     // Login Data section links and buttons
-    this.registeredEmailText = page.getByText(/vijay@arizon\.digital/i).first();
+    const userEmail = loginTestData.customerLogin.Email || 'user@example.com';
+    const emailPattern = new RegExp(userEmail.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&'), 'i');
+    this.registeredEmailText = page.getByText(emailPattern).first();
     this.changeEmailButton = page.getByRole('button', { name: 'Change email address' });
     this.changeEmailLink = this.changeEmailButton;
     this.changePasswordButton = page.getByRole('button', { name: 'Change password' });

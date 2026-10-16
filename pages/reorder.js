@@ -14,7 +14,7 @@ export class ReorderPage {
 
     // Sections
     this.predictedSourcingHeading = page.getByRole('heading', { name: 'Predicted Sourcing Needs' });
-    this.reusableProjectsHeading = page.getByRole('heading', { name: /Your Reusable Projects/i });
+    this.reusableProjectsHeading = page.getByRole('heading', { name: /Your Reusable (Projects|Reorder Lists)/i });
     this.aiRecommendationsHeading = page.getByRole('heading', { name: 'AI Smart Reorder Recommendations' });
     this.volumePatternHeading = page.getByRole('heading', { name: 'Monthly Volume Sourcing Pattern' });
     this.timelineHeading = page.getByRole('heading', { name: 'Procurement Timeline' });
@@ -26,19 +26,19 @@ export class ReorderPage {
     this.aiAutopilotSubtext = page.getByText('Proactive recommendations');
 
     // Create New Project modal & triggers
-    this.createProjectButton = page.getByRole('button', { name: /Create New Project/i });
+    this.createProjectButton = page.getByRole('button', { name: /\+? ?Create (Reorder List|New Project)/i });
     this.createProjectModal = page.locator('#createProjectModal');
     this.createProjectModalTitle = page.locator('#createProjectModalLabel');
     this.newProjectNameInput = page.locator('#newProjectNameInput');
     this.newProjectCategorySelect = page.locator('#newProjectCategorySelect');
-    this.saveProjectButton = page.locator('#saveProjectBtn');
+    this.saveProjectButton = page.locator('#saveProjectBtn, #createProjectModal button.btn-primary');
     this.cancelProjectButton = page.locator('#createProjectModal').getByRole('button', { name: 'Cancel' });
     this.closeProjectModalButton = page.locator('#createProjectModal .btn-close');
 
     // Your Reusable Projects elements
     this.viewAllListsLink = page.getByRole('link', { name: /View All Lists/i });
     this.projectCards = page.locator('.card, [class*="project-card"]').filter({ hasText: /One-Click Reorder/i });
-    this.oneClickReorderButton = page.getByRole('button', { name: 'One-Click Reorder' }).first();
+    this.oneClickReorderButton = page.locator('button.ch-btn-bundle-reorder, button:has-text("One-Click Reorder")').first();
 
     // Enable Auto-Reordering modal & elements
     this.enableAutoReorderingButton = page.getByRole('button', { name: 'Enable Auto-Reordering' });
@@ -48,8 +48,8 @@ export class ReorderPage {
     this.autoProcureListSelect = page.locator('#autoProcureListSelect');
     this.autoProcureScheduleDateTime = page.locator('#autoProcureScheduleDateTime');
     this.autoProcureEmailNotify = page.locator('#autoProcureEmailNotify');
-    this.confirmAutoProcureButton = page.locator('#autoProcureModal').getByRole('button', { name: 'Schedule Auto-Reorder' });
-    this.closeAutoProcureModalButton = page.locator('#autoProcureModal').getByRole('button', { name: 'Close' });
+    this.confirmAutoProcureButton = page.locator('#btnConfirmAutoProcure, #autoProcureModal button.btn-confirm-autoprocure');
+    this.closeAutoProcureModalButton = page.locator('#autoProcureModal button.btn-modal-close, #autoProcureModal button.btn-close').first();
     this.dismissAutoProcureBtn = page.locator('#autoProcureModal .btn-close');
 
     // Monthly Volume Sourcing Pattern
@@ -65,14 +65,22 @@ export class ReorderPage {
     this.adjustQtyInput = page.locator('#adjustQtyInput');
     this.adjustMinus50Btn = page.locator('#adjustQtyModal').getByRole('button', { name: '- 50' });
     this.adjustPlus50Btn = page.locator('#adjustQtyModal').getByRole('button', { name: '+ 50' });
-    this.closeAdjustModalBtn = page.locator('#adjustQtyModal').getByRole('button', { name: 'Close' });
+    this.closeAdjustModalBtn = page.locator('#adjustQtyModal button.btn-light, #adjustQtyModal button.btn-close').first();
 
     // Add to Project Modal
     this.addToProjectModal = page.locator('#addToProjectModal');
     this.addToProjectListSelect = page.locator('#addToProjectListSelect');
     this.addToProjectQtyInput = page.locator('#addToProjectQtyInput');
-    this.confirmAddToProjectBtn = page.locator('#btnConfirmAddToProject');
+    this.confirmAddToProjectBtn = page.locator('#btnConfirmAddToProject, #addToProjectModal button.btn-primary');
     this.cancelAddToProjectBtn = page.locator('#addToProjectModal').getByRole('button', { name: 'Cancel' });
+
+    // Predicted Sourcing items controls
+    this.showDropdown = page.getByLabel('Show:');
+    this.adjustQuantityButton = page.getByRole('button', { name: 'Adjust' }).first();
+    this.oneTapReorderButton = page.getByRole('button', { name: 'One-Tap Reorder' }).first();
+    this.addToListButton = page.getByRole('button', { name: /\+ (Add to List|Project)/i }).first();
+    this.orderNowButton = page.getByRole('button', { name: 'Order Now' }).first();
+    this.remindMeButton = page.getByRole('button', { name: 'Remind Me' }).first();
   }
 
   /**
@@ -142,7 +150,48 @@ export class ReorderPage {
    * Closes Auto-Reordering modal via Close button
    */
   async closeAutoReorderModal() {
-    await this.closeAutoProcureModalButton.click();
+    const closeBtn = this.page.locator('#autoProcureModal [data-bs-dismiss="modal"], #autoProcureModal .btn-close, #autoProcureModal button.btn-modal-close').first();
+    await closeBtn.click();
+  }
+
+  /**
+   * Opens Adjust Replenishment Quantity modal
+   */
+  async openAdjustQtyModal() {
+    await this.adjustQuantityButton.click();
+    await this.adjustQtyModal.waitFor({ state: 'visible' });
+  }
+
+  /**
+   * Closes Adjust Replenishment Quantity modal
+   */
+  async closeAdjustQtyModal() {
+    const closeBtn = this.page.locator('#adjustQtyModal [data-bs-dismiss="modal"], #adjustQtyModal .btn-close, #adjustQtyModal button.btn-light').first();
+    await closeBtn.click();
+  }
+
+  /**
+   * Opens Add Item to Reorder List modal
+   */
+  async openAddToListModal() {
+    await this.addToListButton.click();
+    await this.addToProjectModal.waitFor({ state: 'visible' });
+  }
+
+  /**
+   * Closes Add Item to Reorder List modal
+   */
+  async closeAddToListModal() {
+    const cancelBtn = this.page.locator('#addToProjectModal [data-bs-dismiss="modal"], #addToProjectModal .btn-close, #addToProjectModal button:has-text("Cancel")').first();
+    await cancelBtn.click();
+  }
+
+  /**
+   * Selects Show per page option
+   * @param {string|number} option
+   */
+  async selectShowOption(option) {
+    await this.showDropdown.selectOption(String(option));
   }
 
   /**
@@ -152,7 +201,15 @@ export class ReorderPage {
   async setAiAutopilot(enable) {
     const isCurrentlyChecked = await this.aiAutopilotSwitch.isChecked();
     if (isCurrentlyChecked !== enable) {
-      await this.aiAutopilotSwitch.click();
+      const slider = this.page.locator('.ch-custom-slider, .ch-custom-switch, label:has(#aiAutopilotSwitch)').first();
+      if (await slider.isVisible().catch(() => false)) {
+        await slider.click();
+      } else {
+        await this.aiAutopilotSwitch.evaluate(el => {
+          el.checked = !el.checked;
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      }
     }
   }
 
@@ -160,7 +217,12 @@ export class ReorderPage {
    * Clicks One-Click Reorder button on first project card
    */
   async clickOneClickReorder() {
-    await this.oneClickReorderButton.click();
+    const activeBtn = this.page.locator('button.ch-btn-bundle-reorder:not([disabled]), button:has-text("One-Click Reorder"):not([disabled])').first();
+    if (await activeBtn.isVisible().catch(() => false)) {
+      await activeBtn.click();
+    } else {
+      await this.oneClickReorderButton.click();
+    }
   }
 
   /**

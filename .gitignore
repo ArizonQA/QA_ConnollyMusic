@@ -1,6 +1,7 @@
 node_modules/
 .env
 .env.*
+!.env.example
 allure-results/
 test-results/
 reports/
@@ -9,3 +10,8 @@ reports/
 
 # Test Companion onboarding (local, per-machine)
 .test-companion/
+# Auth storage state and temporary files
+.auth/
+*storage-state*.json
+*storageState*.json
+*.tmp

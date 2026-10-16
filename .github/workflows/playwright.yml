@@ -114,7 +114,7 @@ jobs:
 
           subject: Playwright Test Report - Build #${{ github.run_number }} - ${{ job.status }}
 
-          to: vijay@arizon.digital
+          to: ${{ secrets.REPORT_EMAIL_TO || 'vijay@arizon.digital' }}
           from: ${{ secrets.OFFICE365_USER }}
 
           body: |
